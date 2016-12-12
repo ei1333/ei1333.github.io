@@ -1,0 +1,15 @@
+html {
+  visibility: hidden;
+}
+
+html.wf-active {
+  visibility: visible;
+}
+
+body {
+  font-family: source-code-pro, sans-serif;
+}
+
+h1, h2, h3, h4, h5 {
+  font-weight: normal;
+}
