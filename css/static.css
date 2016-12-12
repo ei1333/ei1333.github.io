@@ -9,7 +9,7 @@ html.wf-active {
 h1 {
   margin: 0;
   padding: 0.5em;
-  background: #353535;
+  background: #666666;
   color: #f9f9f9;
 }
 
@@ -23,8 +23,20 @@ p {
   padding-left: 1em;
 }
 
+html {
+  background: #cccccc;
+}
+
 body {
   font-family: source-code-pro, "Yu Gothic UI", "Meiryo UI", Meiryo, "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "ＭＳ Ｐゴシック", Osaka, sans-serif;
   background: #f9f9f9;
+
+  color: #666666;
+  border: 1px solid #ccc;
+  width: 90%;
+  margin: 0.5em auto;
+  padding: 0.5em;
+  max-width: 1000px;
+  line-height: 1.25;  
 }
 
