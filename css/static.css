@@ -6,10 +6,25 @@ html.wf-active {
   visibility: visible;
 }
 
-body {
-  font-family: source-code-pro, sans-serif;
+h1 {
+  margin: 0;
+  padding: 0.5em;
+  background: #353535;
+  color: #f9f9f9;
 }
 
-h1, h2, h3, h4, h5 {
-  font-weight: normal;
+h2 {
+  border-left: 0.5em solid;
+  border-bottom: 1px solid;
+  padding: 0.25em 0.5em;
 }
+
+p {
+  padding-left: 1em;
+}
+
+body {
+  font-family: source-code-pro, "Yu Gothic UI", "Meiryo UI", Meiryo, "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "ＭＳ Ｐゴシック", Osaka, sans-serif;
+  background: #f9f9f9;
+}
+
