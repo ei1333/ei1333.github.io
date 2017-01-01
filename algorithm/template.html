@@ -27,47 +27,17 @@ MathJax.Hub.Config({
     </header>
     <main>
       <section>
-	<h2>セグメント木(Segment-Tree)</h2>
+	<h2></h2>
 	
 	<h4>説明</h4>
-	<p>完全2分木である。区間に対する様々な演算が$O(\log N)$で実現できるが, ここでは一般的な操作であるRMQを実装している。</p>
+	<p></p>
 
 	<h4>計算量</h4>
-	<p>$O(\log N)$</p>
+	<p></p>
 
 	<h4>実装例</h4>
-	<pre><code class="cpp">struct SegmentTree
-{
-  vector< int > seg;
-  int sz;
- 
-  SegmentTree(int n)
-  {
-    sz = 1;
-    while(sz < n) sz <<= 1;
-    seg.assign(2 * sz - 1, INF);
-  }
-  int rmq(int a, int b, int k, int l, int r)
-  {
-    if(a >= r || b <= l) return(INF);
-    if(a <= l && r <= b) return(seg[k]);
-    return(min(rmq(a, b, 2 * k + 1, l, (l + r) >> 1),
-               rmq(a, b, 2 * k + 2, (l + r) >> 1, r)));
-  }
-  int rmq(int a, int b)
-  {
-    return(rmq(a, b, 0, 0, sz));
-  }
-  void update(int k, int x)
-  {
-    k += sz - 1;
-    seg[k] = x;
-    while(k > 0) {
-      k = (k - 1) >> 1;
-      seg[k] = min(seg[2 * k + 1], seg[2 * k + 2]);
-    }
-  }
-};</code></pre>
+	<pre><code class="cpp">
+</code></pre>
 	<h4>問題例</h4>
       </section>
     </main>

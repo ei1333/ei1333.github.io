@@ -27,45 +27,31 @@ MathJax.Hub.Config({
     </header>
     <main>
       <section>
-	<h2>セグメント木(Segment-Tree)</h2>
+	<h2>BIT(Binary-Indexed-Tree)</h2>
 	
 	<h4>説明</h4>
-	<p>完全2分木である。区間に対する様々な演算が$O(\log N)$で実現できるが, ここでは一般的な操作であるRMQを実装している。</p>
+	<p>Fenwick Tree とも呼ばれる。数列に対し, ある要素に値を加える操作と, 区間和を求める操作をそれぞれ対数時間で行うことが出来るデータ構造。セグメント木や平衡二分探索木に比べ実装が非常に単純で, 定数倍も軽い。</p>
 
 	<h4>計算量</h4>
 	<p>$O(\log N)$</p>
 
 	<h4>実装例</h4>
-	<pre><code class="cpp">struct SegmentTree
+	<pre><code class="cpp">struct BinaryIndexedTree
 {
-  vector< int > seg;
-  int sz;
- 
-  SegmentTree(int n)
+  vector< int > data;
+  BinaryIndexedTree(int sz)
   {
-    sz = 1;
-    while(sz < n) sz <<= 1;
-    seg.assign(2 * sz - 1, INF);
+    data.assign(++sz, 0);
   }
-  int rmq(int a, int b, int k, int l, int r)
+  int sum(int k)
   {
-    if(a >= r || b <= l) return(INF);
-    if(a <= l && r <= b) return(seg[k]);
-    return(min(rmq(a, b, 2 * k + 1, l, (l + r) >> 1),
-               rmq(a, b, 2 * k + 2, (l + r) >> 1, r)));
+    int ret = 0;
+    for(++k; k > 0; k -= k & -k) ret += data[k];
+    return(ret);
   }
-  int rmq(int a, int b)
+  void add(int k, int x)
   {
-    return(rmq(a, b, 0, 0, sz));
-  }
-  void update(int k, int x)
-  {
-    k += sz - 1;
-    seg[k] = x;
-    while(k > 0) {
-      k = (k - 1) >> 1;
-      seg[k] = min(seg[2 * k + 1], seg[2 * k + 2]);
-    }
+    for(++k; k < data.size(); k += k & -k) data[k] += x;
   }
 };</code></pre>
 	<h4>問題例</h4>

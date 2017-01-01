@@ -27,45 +27,39 @@ MathJax.Hub.Config({
     </header>
     <main>
       <section>
-	<h2>セグメント木(Segment-Tree)</h2>
+	<h2>素集合データ構造(Union-Find)</h2>
 	
 	<h4>説明</h4>
-	<p>完全2分木である。区間に対する様々な演算が$O(\log N)$で実現できるが, ここでは一般的な操作であるRMQを実装している。</p>
+	<p>集合を高速に扱うためのデータ構造。集合を合併する操作(unite), ある要素がどの集合に属しているか(find)を問い合わせる操作を行うことが出来る。</p>
 
 	<h4>計算量</h4>
-	<p>$O(\log N)$</p>
+	<p>$O(\alpha(n))$</p>
 
 	<h4>実装例</h4>
-	<pre><code class="cpp">struct SegmentTree
+	<pre><code class="cpp">struct UnionFind
 {
-  vector< int > seg;
-  int sz;
- 
-  SegmentTree(int n)
+  vector< int > data;
+  UnionFind(int sz)
   {
-    sz = 1;
-    while(sz < n) sz <<= 1;
-    seg.assign(2 * sz - 1, INF);
+    data.assign(sz, -1);
   }
-  int rmq(int a, int b, int k, int l, int r)
+  void unite(int x, int y)
   {
-    if(a >= r || b <= l) return(INF);
-    if(a <= l && r <= b) return(seg[k]);
-    return(min(rmq(a, b, 2 * k + 1, l, (l + r) >> 1),
-               rmq(a, b, 2 * k + 2, (l + r) >> 1, r)));
-  }
-  int rmq(int a, int b)
-  {
-    return(rmq(a, b, 0, 0, sz));
-  }
-  void update(int k, int x)
-  {
-    k += sz - 1;
-    seg[k] = x;
-    while(k > 0) {
-      k = (k - 1) >> 1;
-      seg[k] = min(seg[2 * k + 1], seg[2 * k + 2]);
+    x = find(x), y = find(y);
+    if(x != y) {
+      if(data[x] > data[y]) swap(x, y);
+      data[x] += data[y];
+      data[y] = x;
     }
+  }
+  int find(int k)
+  {
+    if(data[k] < 0) return(k);
+    return(data[k] = find(data[k]));
+  }
+  int size(int k)
+  {
+    return(-data[find(k)]);
   }
 };</code></pre>
 	<h4>問題例</h4>
