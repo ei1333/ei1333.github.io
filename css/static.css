@@ -93,8 +93,17 @@ a:hover {
 pre {
   margin-left: 1em;
 }
+
 .hljs {
   font-size: 85%;
   font-family: source-code-pro;
   border: 1px solid #ccc;
+}
+
+.verified {
+  font-size: 70%;
+  background: #900;
+  color: white;
+  padding: 0.25em 0.5em;
+  margin-right: 0.5em;
 }

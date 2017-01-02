@@ -32,6 +32,12 @@ MathJax.Hub.Config({
 	<h4>説明</h4>
 	<p>Fenwick Tree とも呼ばれる。数列に対し, ある要素に値を加える操作と, 区間和を求める操作をそれぞれ対数時間で行うことが出来るデータ構造。セグメント木や平衡二分探索木に比べ実装が非常に単純で, 定数倍も軽い。</p>
 
+        <h4>使い方</h4>
+        <ul>
+          <li>sum(k): 区間 $[0, k]$ の合計を求める(閉区間なので注意)</li>
+          <li>add(k): 要素 $k$ に値 $x$ を加える</li>
+        </ul>
+
 	<h4>計算量</h4>
 	<p>$O(\log N)$</p>
 
@@ -54,7 +60,15 @@ MathJax.Hub.Config({
     for(++k; k &lt; data.size(); k += k &amp; -k) data[k] += x;
   }
 };</code></pre>
-	<h4>問題例</h4>
+        <h4>問題例</h4>
+        <ul>
+          <li><span class="verified">検証済</span><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=DSL_2_B&lang=jp">AOJ DSL_2_B Range SUM Query (RSQ)</a></li>
+        </ul>
+
+        <h4>参考資料</h4>
+        <ul>
+          <li><a href="http://hos.ac/slides/20140319_bit.pdf">Binary Indexed Tree のはなし - hos.ac</a></li>
+        </ul>
       </section>
     </main>
     <hr>

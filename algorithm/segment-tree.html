@@ -32,9 +32,25 @@ MathJax.Hub.Config({
 	<h4>説明</h4>
 	<p>完全2分木である。区間に対する様々な演算が$O(\log N)$で実現できるが, ここでは一般的な操作であるRMQを実装している。</p>
 
-	<h4>計算量</h4>
-	<p>$O(\log N)$</p>
+        <p>実装では木を配列で実現している。ノード $k$ について, 親ノードは $(k - 1) / 2$, 子ノードは $2k+1, 2k+2$ である。</p>
 
+        <h4>使い方</h4>
+        <ul>
+          <li>set(k, x): $k$ 番目の要素に値 $x$ をセットする</li>
+	  <li>build(): 構築する</li>
+        </ul>
+        
+        <ul>
+          <li>rmq(l, r): 区間 $[l, r)$ の最小値を求める</li>
+          <li>update(k, x): $k$ 番目の要素を値 $x$ に変更する</li> 
+        </ul>
+
+	<h4>計算量</h4>
+	<ul>
+         <li>build: $O(N)$</li>
+         <li>rmq, update: $O(\log N)$</li>
+        </ul>
+       
 	<h4>実装例</h4>
 	<pre><code class="cpp">struct SegmentTree
 {
@@ -85,6 +101,14 @@ MathJax.Hub.Config({
 
 };</code></pre>
 	<h4>問題例</h4>
+	<ul>
+          <li><span class="verified">検証済</span><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=DSL_2_A&lang=jp">AOJ DSL_2_A Range Minimum Query (RMQ)</a></li>
+	</ul>
+
+	<h4>参考資料</h4>
+	<ul>
+	  <li><a href="http://www.slideshare.net/iwiwi/ss-3578491">プログラミングコンテストでのデータ構造 - iwi</a></li>
+	</ul>
       </section>
     </main>
     <hr>
