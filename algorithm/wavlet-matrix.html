@@ -40,7 +40,7 @@ MathJax.Hub.Config({
 {
   size_t length;
   size_t blocks;
-  vector< unsigned > bit, sum;
+  vector&lt; unsigned &gt; bit, sum;
  
   SuccinctIndexableDictionary()
   {
@@ -49,32 +49,32 @@ MathJax.Hub.Config({
   SuccinctIndexableDictionary(size_t _length)
   {
     length = _length;
-    blocks = (length + 31) >> 5;
+    blocks = (length + 31) &gt;&gt; 5;
     bit.assign(blocks, 0U);
     sum.assign(blocks, 0U);
   }
  
   void set(int k)
   {
-    bit[k >> 5] |= 1U << (k & 31);
+    bit[k &gt;&gt; 5] |= 1U &lt;&lt; (k &amp; 31);
   }
  
   void build()
   {
     sum[0] = 0U;
-    for(int i = 1; i < blocks; i++) {
+    for(int i = 1; i &lt; blocks; i++) {
       sum[i] = sum[i - 1] + __builtin_popcount(bit[i - 1]);
     }
   }
  
   bool operator[](int k) const
   {
-    return (bool((bit[k >> 5] >> (k & 31)) & 1));
+    return (bool((bit[k &gt;&gt; 5] &gt;&gt; (k &amp; 31)) &amp; 1));
   }
  
   int rank(int k)
   {
-    return (sum[k >> 5] + __builtin_popcount(bit[k >> 5] & ((1U << (k & 31)) - 1)));
+    return (sum[k &gt;&gt; 5] + __builtin_popcount(bit[k &gt;&gt; 5] &amp; ((1U &lt;&lt; (k &amp; 31)) - 1)));
   }
  
   int rank(bool val, int k)
@@ -84,11 +84,11 @@ MathJax.Hub.Config({
  
   int select(bool val, int k)
   {
-    if(k < 0 || rank(val, length) <= k) return (-1);
+    if(k &lt; 0 || rank(val, length) &lt;= k) return (-1);
     int low = 0, high = length;
-    while(high - low > 1) {
-      int mid = (low + high) >> 1;
-      if(rank(val, mid) >= k + 1) high = mid;
+    while(high - low &gt; 1) {
+      int mid = (low + high) &gt;&gt; 1;
+      if(rank(val, mid) &gt;= k + 1) high = mid;
       else low = mid;
     }
     return (high - 1);
@@ -100,7 +100,7 @@ MathJax.Hub.Config({
   }
 };
  
-template<class T, int MAXLOG>
+template&lt;class T, int MAXLOG&gt;
 struct WaveletMatrix
 {
   size_t length;
@@ -108,24 +108,24 @@ struct WaveletMatrix
   int zs[MAXLOG];
   int buff1[MAXLOG], buff2[MAXLOG];
  
-  void max_dfs(int d, int l, int r, int& k, T val, vector< T >& vs)
+  void max_dfs(int d, int l, int r, int&amp; k, T val, vector&lt; T &gt;&amp; vs)
   {
-    if(l >= r || !k) return;
+    if(l &gt;= r || !k) return;
     if(d == MAXLOG) {
-      while(l++ < r && k > 0) vs.push_back(val), k--;
+      while(l++ &lt; r &amp;&amp; k &gt; 0) vs.push_back(val), k--;
       return;
     }
     int lc = matrix[d].rank(1, l), rc = matrix[d].rank(1, r);
-    max_dfs(d + 1, lc + zs[d], rc + zs[d], k, 1ULL << (MAXLOG - d - 1) | val, vs);
+    max_dfs(d + 1, lc + zs[d], rc + zs[d], k, 1ULL &lt;&lt; (MAXLOG - d - 1) | val, vs);
     max_dfs(d + 1, l - lc, r - rc, k, val, vs);
   }
  
   T max_dfs(int d, int l, int r, T val, T a, T b)
   {
-    if(r - l <= 0 || val >= b) return -1;
-    if(d == MAXLOG) return val >= a ? val : -1;
+    if(r - l &lt;= 0 || val &gt;= b) return -1;
+    if(d == MAXLOG) return val &gt;= a ? val : -1;
     int lc = matrix[d].rank(1, l), rc = matrix[d].rank(1, r);
-    T ret = max_dfs(d + 1, lc + zs[d], rc + zs[d], 1ULL << (MAXLOG - d - 1) | val, a, b);
+    T ret = max_dfs(d + 1, lc + zs[d], rc + zs[d], 1ULL &lt;&lt; (MAXLOG - d - 1) | val, a, b);
     if(~ret) return ret;
     return max_dfs(d + 1, l - lc, r - rc, val, a, b);
   }
@@ -133,46 +133,46 @@ struct WaveletMatrix
   int freq_dfs(int d, int l, int r, T val, T a, T b)
   {
     if(l == r) return 0;
-    if(d == MAXLOG) return (a <= val && val < b) ? r - l : 0;
-    T nv = 1ULL << (MAXLOG - d - 1) | val, nnv = ((1ULL << (MAXLOG - d - 1)) - 1) | nv;
-    if(nnv < a || b <= val) return 0;
-    if(a <= val && nnv < b) return r - l;
+    if(d == MAXLOG) return (a &lt;= val &amp;&amp; val &lt; b) ? r - l : 0;
+    T nv = 1ULL &lt;&lt; (MAXLOG - d - 1) | val, nnv = ((1ULL &lt;&lt; (MAXLOG - d - 1)) - 1) | nv;
+    if(nnv &lt; a || b &lt;= val) return 0;
+    if(a &lt;= val &amp;&amp; nnv &lt; b) return r - l;
     int lc = matrix[d].rank(1, l), rc = matrix[d].rank(1, r);
     return freq_dfs(d + 1, l - lc, r - rc, val, a, b) +
            freq_dfs(d + 1, lc + zs[d], rc + zs[d], nv, a, b);
   }
  
-  void list_dfs(int d, int l, int r, T val, T a, T b, vector< pair< T, int>>& vs)
+  void list_dfs(int d, int l, int r, T val, T a, T b, vector&lt; pair&lt; T, int&gt;&gt;&amp; vs)
   {
-    if(val >= b || r - l <= 0) return;
+    if(val &gt;= b || r - l &lt;= 0) return;
     if(d == MAXLOG) {
-      if(a <= val) vs.push_back(make_pair(val, r - l));
+      if(a &lt;= val) vs.push_back(make_pair(val, r - l));
       return;
     }
-    T nv = val | (1LL << (MAXLOG - d - 1)), nnv = nv | (((1LL << (MAXLOG - d - 1)) - 1));
-    if(nnv < a) return;
+    T nv = val | (1LL &lt;&lt; (MAXLOG - d - 1)), nnv = nv | (((1LL &lt;&lt; (MAXLOG - d - 1)) - 1));
+    if(nnv &lt; a) return;
     int lc = matrix[d].rank(1, l), rc = matrix[d].rank(1, r);
     list_dfs(d + 1, l - lc, r - rc, val, a, b, vs);
     list_dfs(d + 1, lc + zs[d], rc + zs[d], nv, a, b, vs);
   }
  
  
-  WaveletMatrix(vector< T > data)
+  WaveletMatrix(vector&lt; T &gt; data)
   {
     length = data.size();
-    vector< T > l(length), r(length);
-    for(int depth = 0; depth < MAXLOG; depth++) {
+    vector&lt; T &gt; l(length), r(length);
+    for(int depth = 0; depth &lt; MAXLOG; depth++) {
       matrix[depth] = SuccinctIndexableDictionary(length + 1);
       int left = 0, right = 0;
-      for(int i = 0; i < length; i++) {
-        bool k = (data[i] >> (MAXLOG - depth - 1)) & 1;
+      for(int i = 0; i &lt; length; i++) {
+        bool k = (data[i] &gt;&gt; (MAXLOG - depth - 1)) &amp; 1;
         if(k) r[right++] = data[i], matrix[depth].set(i);
         else l[left++] = data[i];
       }
       zs[depth] = left;
       matrix[depth].build();
       swap(l, data);
-      for(int i = 0; i < right; i++) data[left + i] = r[i];
+      for(int i = 0; i &lt; right; i++) data[left + i] = r[i];
     }
   }
  
@@ -180,9 +180,9 @@ struct WaveletMatrix
   {
     int ret = 0;
     bool bit;
-    for(int depth = 0; depth < MAXLOG; depth++) {
+    for(int depth = 0; depth &lt; MAXLOG; depth++) {
       bit = matrix[depth][k];
-      ret = (ret << 1) | bit;
+      ret = (ret &lt;&lt; 1) | bit;
       k = matrix[depth].rank(bit, k) + zs[depth] * bit;
     }
     return (ret);
@@ -191,9 +191,9 @@ struct WaveletMatrix
   int rank(T val, int k)
   {
     int l = 0, r = k;
-    for(int depth = 0; depth < MAXLOG; depth++) {
+    for(int depth = 0; depth &lt; MAXLOG; depth++) {
       buff1[depth] = l, buff2[depth] = r;
-      bool bit = (val >> (MAXLOG - depth - 1)) & 1;
+      bool bit = (val &gt;&gt; (MAXLOG - depth - 1)) &amp; 1;
       l = matrix[depth].rank(bit, l) + zs[depth] * bit;
       r = matrix[depth].rank(bit, r) + zs[depth] * bit;
     }
@@ -203,10 +203,10 @@ struct WaveletMatrix
   int select(T val, int kth)
   {
     rank(val, length);
-    for(int depth = MAXLOG - 1; depth >= 0; depth--) {
-      bool bit = (val >> (MAXLOG - depth - 1)) & 1;
+    for(int depth = MAXLOG - 1; depth &gt;= 0; depth--) {
+      bool bit = (val &gt;&gt; (MAXLOG - depth - 1)) &amp; 1;
       kth = matrix[depth].select(bit, kth, buff1[depth]);
-      if(kth >= buff2[depth] || kth < 0) return (-1);
+      if(kth &gt;= buff2[depth] || kth &lt; 0) return (-1);
       kth -= buff1[depth];
     }
     return (kth);
@@ -220,15 +220,15 @@ struct WaveletMatrix
  
   int quantile(int left, int right, int kth)
   {
-    if(right - left <= kth || kth < 0) return (-1);
+    if(right - left &lt;= kth || kth &lt; 0) return (-1);
     T ret = 0;
-    for(int depth = 0; depth < MAXLOG; depth++) {
+    for(int depth = 0; depth &lt; MAXLOG; depth++) {
       int l = matrix[depth].rank(1, left);
       int r = matrix[depth].rank(1, right);
-      if(r - l > kth) {
+      if(r - l &gt; kth) {
         left = l + zs[depth];
         right = r + zs[depth];
-        ret |= 1ULL << (MAXLOG - depth - 1);
+        ret |= 1ULL &lt;&lt; (MAXLOG - depth - 1);
       } else {
         kth -= r - l;
         left -= l;
@@ -238,28 +238,28 @@ struct WaveletMatrix
     return (ret);
   }
  
-  vector< T > topk(int l, int r, int k)
+  vector&lt; T &gt; topk(int l, int r, int k)
   {
-    if(r - l < k) k = r - l;
-    if(k < 0) return (vector< T >());
-    vector< T > ret;
+    if(r - l &lt; k) k = r - l;
+    if(k &lt; 0) return (vector&lt; T &gt;());
+    vector&lt; T &gt; ret;
     max_dfs(0, l, r, k, 0, ret);
     return (ret);
   }
  
-  vector< pair< T, int > > freq_list(int l, int r, T a, T b)
+  vector&lt; pair&lt; T, int &gt; &gt; freq_list(int l, int r, T a, T b)
   {
-    vector< pair< T, int > > ret;
+    vector&lt; pair&lt; T, int &gt; &gt; ret;
     list_dfs(0, l, r, 0, a, b, ret);
     return (ret);
   }
  
-  vector< pair< int, T > > get_rect(int l, int r, T a, T b)
+  vector&lt; pair&lt; int, T &gt; &gt; get_rect(int l, int r, T a, T b)
   {
-    vector< pair< T, int > > res = freq_list(l, r, a, b);
-    vector< pair< int, T > > ret;
-    for(auto& e : res) {
-      for(int i = 0; i < e.second; i++) {
+    vector&lt; pair&lt; T, int &gt; &gt; res = freq_list(l, r, a, b);
+    vector&lt; pair&lt; int, T &gt; &gt; ret;
+    for(auto&amp; e : res) {
+      for(int i = 0; i &lt; e.second; i++) {
         ret.emplace_back(select(e.first, i, l), e.first);
       }
     }

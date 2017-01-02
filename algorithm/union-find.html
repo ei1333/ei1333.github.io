@@ -38,7 +38,7 @@ MathJax.Hub.Config({
 	<h4>実装例</h4>
 	<pre><code class="cpp">struct UnionFind
 {
-  vector< int > data;
+  vector&lt; int &gt; data;
   UnionFind(int sz)
   {
     data.assign(sz, -1);
@@ -47,14 +47,14 @@ MathJax.Hub.Config({
   {
     x = find(x), y = find(y);
     if(x != y) {
-      if(data[x] > data[y]) swap(x, y);
+      if(data[x] &gt; data[y]) swap(x, y);
       data[x] += data[y];
       data[y] = x;
     }
   }
   int find(int k)
   {
-    if(data[k] < 0) return(k);
+    if(data[k] &lt; 0) return(k);
     return(data[k] = find(data[k]));
   }
   int size(int k)

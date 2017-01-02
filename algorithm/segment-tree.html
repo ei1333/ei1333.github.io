@@ -38,35 +38,51 @@ MathJax.Hub.Config({
 	<h4>実装例</h4>
 	<pre><code class="cpp">struct SegmentTree
 {
-  vector< int > seg;
+  vector&lt; int &gt; seg;
   int sz;
  
   SegmentTree(int n)
   {
     sz = 1;
-    while(sz < n) sz <<= 1;
+    while(sz &lt; n) sz &lt;&lt;= 1;
     seg.assign(2 * sz - 1, INF);
   }
+
+  void set(int k, int x)
+  {
+    seg[k + sz - 1] = x;
+  }
+
+  void build()
+  {
+    for(int k = sz - 2; k &gt;= 0; k--) {
+      seg[k] = min(seg[2 * k + 1], seg[2 * k + 2]);
+    }  
+  }
+
   int rmq(int a, int b, int k, int l, int r)
   {
-    if(a >= r || b <= l) return(INF);
-    if(a <= l && r <= b) return(seg[k]);
-    return(min(rmq(a, b, 2 * k + 1, l, (l + r) >> 1),
-               rmq(a, b, 2 * k + 2, (l + r) >> 1, r)));
+    if(a &gt;= r || b &lt;= l) return(INF);
+    if(a &lt;= l &amp;&amp; r &lt;= b) return(seg[k]);
+    return(min(rmq(a, b, 2 * k + 1, l, (l + r) &gt;&gt; 1),
+               rmq(a, b, 2 * k + 2, (l + r) &gt;&gt; 1, r)));
   }
+
   int rmq(int a, int b)
   {
     return(rmq(a, b, 0, 0, sz));
   }
+
   void update(int k, int x)
   {
     k += sz - 1;
     seg[k] = x;
-    while(k > 0) {
-      k = (k - 1) >> 1;
+    while(k &gt; 0) {
+      k = (k - 1) &gt;&gt; 1;
       seg[k] = min(seg[2 * k + 1], seg[2 * k + 2]);
     }
   }
+
 };</code></pre>
 	<h4>問題例</h4>
       </section>
