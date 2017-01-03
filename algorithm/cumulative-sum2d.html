@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+    <title>ei1333's page</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://use.edgefonts.net/source-code-pro.js"></script>
+    <link rel="stylesheet" href="../css/static.css">
+    <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+    </script>
+    <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/styles/github.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </head>
+  <body>
+    <header>
+      <h1>ei1333's page</h1>
+      <div class="path">
+	<a href="../index.html">ホーム</a> &gt;
+	<a href="index.html">Wiki</a>
+      </div>
+    </header>
+    <main>
+      <section>
+	<h2>二次元累積和</h2>
+	
+	<h4>説明</h4>
+	<p>点add, 矩形sumの $2$ 次元の累積和。前計算として事前に累積させておけば, 累積和を $O(1)$ で求めることが出来る。</p>
+
+	<h4>使い方</h4>
+	<ul>
+	  <li>set(x, y, z): 要素 $(x, y)$ に値 $z$ を加える</li>
+          <li>build(): 累積和を構築する</li>
+        </ul>
+        <ul>
+          <li>query(sx, sy, gx, gy): 左上 $[sx, sy]$, 右下 $(gx, gy)$ の矩形内の和を求める(半開区間)</li>
+        </ul>
+    
+	<h4>計算量</h4>
+	<ul>
+          <li>build: $O(WH)$</li>
+          <li>add, query: $O(1)$</li>
+	</ul>
+
+
+	<h4>実装例</h4>
+	<pre><code class="cpp">template&lt; class T &gt;
+struct CumulativeSum2D
+{
+  vector&lt; vector&lt; T &gt; &gt; data;
+
+  CumulativeSum2D(int W, int H) : data(W + 1, vector&lt; int &gt;(H + 1, 0)) {}
+
+  void add(int x, int y, int z)
+  {
+    ++x, ++y;
+    if(x &gt;= data.size() || y &gt;= data[0].size()) return;
+    data[x][y] += z;
+  }
+
+  void build()
+  {
+    for(int i = 1; i &lt; data.size(); i++) {
+      for(int j = 1; j &lt; data[i].size(); j++) {
+        data[i][j] += data[i][j - 1] + data[i - 1][j] - data[i - 1][j - 1];
+      }
+    }
+  }
+
+  T query(int sx, int sy, int gx, int gy)
+  {
+    return (data[gx][gy] - data[sx][gy] - data[gx][sy] + data[sx][sy]);
+  }
+};</code></pre>
+	<h4>問題例</h4>
+
+
+        <h4>参考資料</h4>
+        <ul>
+          <li><a href="https://imoz.jp/algorithms/imos_method.html">いもす法 - いもす研 (imos laboratory)</a></li>
+        </ul>
+      </section>
+    </main>
+    <hr>
+    <footer>
+      <small>Copyright&copy; ei1333's page All Rights Reserved.</small>
+    </footer>
+
+  </body>
+</html>

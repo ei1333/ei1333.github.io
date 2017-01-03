@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+    <title>ei1333's page</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://use.edgefonts.net/source-code-pro.js"></script>
+    <link rel="stylesheet" href="../css/static.css">
+    <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+    </script>
+    <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/styles/github.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </head>
+  <body>
+    <header>
+      <h1>ei1333's page</h1>
+      <div class="path">
+	<a href="../index.html">ホーム</a> &gt;
+	<a href="index.html">Wiki</a>
+      </div>
+    </header>
+    <main>
+      <section>
+	<h2>二部グラフの最大マッチング(Bipartite-Matching)</h2>
+	
+	<h4>説明</h4>
+	<p>二部グラフの最大マッチングを求める。</p>
+
+	<h4>計算量</h4>
+	<p>$O(VE)$</p>
+
+	<h4>実装例</h4>
+	<pre><code class="cpp">struct Bipartite_Matching
+{
+  vector&lt; vector&lt; int &gt; &gt; graph;
+  vector&lt; int &gt; match;
+  vector&lt; bool &gt; used;
+
+  Bipartite_Matching(int n)
+  {
+    graph.resize(n);
+  }
+
+  void add_edge(int u, int v)
+  {
+    graph[u].push_back(v);
+    graph[v].push_back(u);
+  }
+
+  bool dfs(int v)
+  {
+    used[v] = true;
+    for(int i = 0; i &lt; graph[v].size(); i++) {
+      int u = graph[v][i], w = match[u];
+      if(w == -1 || (!used[w] &amp;&amp; dfs(w))) {
+        match[v] = u;
+        match[u] = v;
+        return (true);
+      }
+    }
+    return (false);
+  }
+
+  int bipartite_matching()
+  {
+    int ret = 0;
+    match.assign(graph.size(), -1);
+    for(int i = 0; i &lt; graph.size(); i++) {
+      if(match[i] == -1) {
+        used.assign(graph.size(), false);
+        ret += dfs(i);
+      }
+    }
+    return (ret);
+  }
+};</code></pre>
+	<h4>問題例</h4>
+      </section>
+    </main>
+    <hr>
+    <footer>
+      <small>Copyright&copy; ei1333's page All Rights Reserved.</small>
+    </footer>
+
+  </body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+    <title>ei1333's page</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://use.edgefonts.net/source-code-pro.js"></script>
+    <link rel="stylesheet" href="../css/static.css">
+    <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+    </script>
+    <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/styles/github.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </head>
+  <body>
+    <header>
+      <h1>ei1333's page</h1>
+      <div class="path">
+	<a href="../index.html">ホーム</a> &gt;
+	<a href="index.html">Wiki</a>
+      </div>
+    </header>
+    <main>
+      <section>
+	<h2>一次元累積和</h2>
+	
+	<h4>説明</h4>
+	<p>$1$ 次元の累積和。前計算として事前に累積させておけば, 累積和を $O(1)$ で求めることが出来る。</p>
+
+	<h4>使い方</h4>
+	<ul>
+	  <li>set(k, x): 要素 $k$ に値 $x$ を加える</li>
+          <li>build(): 累積和を構築する</li>
+        </ul>
+        <ul>
+          <li>query(k): 区間 $[0, k]$ の和を求める</li>
+        </ul>
+    
+	<h4>計算量</h4>
+	<ul>
+          <li>build: $O(n)$</li>
+          <li>add, query: $O(1)$</li>
+	</ul>
+
+
+	<h4>実装例</h4>
+	<pre><code class="cpp">template&lt; class T &gt;
+struct CumulativeSum
+{
+  vector&lt; T &gt; data;
+
+  CumulativeSum(int sz) : data(sz, 0) {};
+
+  void add(int k, int x)
+  {
+    data[k] += x;
+  }
+
+  void build()
+  {
+    for(int i = 1; i &lt; data.size(); i++) {
+      data[i] += data[i - 1];
+    }
+  }
+
+  T query(int k)
+  {
+    if(k &lt; 0) return (0);
+    return (data[min(k, (int) data.size() - 1)]);
+  }
+};</code></pre>
+	<h4>問題例</h4>
+      </section>
+    </main>
+    <hr>
+    <footer>
+      <small>Copyright&copy; ei1333's page All Rights Reserved.</small>
+    </footer>
+
+  </body>
+</html>
