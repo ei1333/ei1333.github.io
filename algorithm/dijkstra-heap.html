@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+    <title>ei1333's page</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://use.edgefonts.net/source-code-pro.js"></script>
+    <link rel="stylesheet" href="../css/static.css">
+    <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+    </script>
+    <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/styles/github.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </head>
+  <body>
+    <header>
+      <h1>ei1333's page</h1>
+      <div class="path">
+	<a href="../index.html">ホーム</a> &gt;
+	<a href="index.html">Wiki</a>
+      </div>
+    </header>
+    <main>
+      <section>
+	<h2>単一始点最短路(Dijkstra)</h2>
+	
+	<h4>説明</h4>
+	<p>負辺のない単一始点全点間最短路を求めるアルゴリズム。負辺が無いと仮定すると、各地点でもっとも近いところから距離が確定していく。距離順でソートされたヒープを用いると、効率よく距離を確定していくことができる。</p>
+
+        <h4>使い方</h4>
+        <ul>
+          <li>Dijkstra(g, s, t): 重み付き有向グラフ $g$ 上で, 頂点 $s$ から $t$ への最短路を求める。ただし非連結の時 $-1$ を返す。</li>
+        </ul>
+
+	<h4>計算量</h4>
+	<p>$O(E \log V)$</p>
+        <p>$V$: 頂点数, $E$: 辺数</p>
+
+	<h4>実装例</h4>
+	<pre><code class="cpp">template&lt; typename T = int &gt;
+T Dijkstra(Graph &amp;g, int s, int t)
+{
+  typedef pair&lt; T, int &gt; Pi;
+
+  vector&lt; T &gt; min_cost(g.size(), numeric_limits&lt; T &gt;::max());
+  priority_queue&lt; Pi, vector&lt; Pi &gt;, greater&lt; Pi &gt; &gt; que;
+  que.emplace(0, s);
+  min_cost[s] = 0;
+  while(!que.empty()) {
+    auto p = que.top();
+    que.pop();
+    if(p.second == t) return (p.first);
+    if(p.first &gt; min_cost[p.second]) continue;
+    for(auto &amp;e : g[p.second]) {
+      if(p.first + e.cost &gt;= min_cost[e.to]) continue;
+      min_cost[e.to] = p.first + e.cost;
+      que.emplace(min_cost[e.to], e.to);
+    }
+  }
+  return (-1);
+}</code></pre>
+        <h4>問題例</h4>
+        <ul>
+          <li><span class="verified">検証済</span><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_1_A&lang=jp">AOJ GPL_1_A 単一始点最短経路</a></li>
+        </ul>
+
+        <h4>参考資料</h4>
+        <ul>
+          <li><a href="https://ja.wikipedia.org/wiki/ダイクストラ法">ダイクストラ法 - Wikipedia</a></li>
+        </ul>
+      </section>
+    </main>
+    <hr>
+    <footer>
+      <small>Copyright&copy; ei1333's page All Rights Reserved.</small>
+    </footer>
+
+  </body>
+</html>

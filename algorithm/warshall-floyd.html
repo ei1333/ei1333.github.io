@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+    <title>ei1333's page</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://use.edgefonts.net/source-code-pro.js"></script>
+    <link rel="stylesheet" href="../css/static.css">
+    <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+    </script>
+    <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/styles/github.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </head>
+  <body>
+    <header>
+      <h1>ei1333's page</h1>
+      <div class="path">
+	<a href="../index.html">ホーム</a> &gt;
+	<a href="index.html">Wiki</a>
+      </div>
+    </header>
+    <main>
+      <section>
+	<h2>全点対間最短路(Warshall-Floyd)</h2>
+	
+	<h4>説明</h4>
+	<p>隣接行列で表されるグラフの全点間最短路を求めるアルゴリズム。負辺路が存在する場合はそれも検出する(ある頂点 $k$ から $k$ への最短路が負ならば負閉路が存在)。</p>
+
+        <h4>使い方</h4>
+        <ul>
+          <li>Warshall(g): 隣接行列 $g$ 上の全点対間最短路を求める</li>
+        </ul>
+
+        <p>
+          隣接行列 $g$ の各要素は最初に $INF$ で初期化しておく必要がある。ただし $INF \ge 2^{30}$ のときオーバーフローするので注意。
+        </p>
+
+	<h4>計算量</h4>
+	<p>$O(V^3)$</p>
+        <p>$V$: 頂点数</p>
+	<h4>実装例</h4>
+	<pre><code class="cpp">void Warshall(vector&lt; vector&lt; int &gt; &gt; &amp;g)
+{
+  for(int k = 0; k &lt; g.size(); k++) {
+    for(int i = 0; i &lt; g.size(); i++) {
+      for(int j = 0; j &lt; g.size(); j++) {
+        g[i][j] = min(g[i][j], g[i][k] + g[k][j]);
+      }
+    }
+  }
+}</code></pre>
+        <h4>問題例</h4>
+        <ul>
+          <li><span class="verified">検証済</span><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_1_C&lang=jp">AOJ GPL_1_C 全点対間最短経路</a></li>
+        </ul>
+
+        <h4>参考資料</h4>
+        <ul>
+          <li><a href="https://ja.wikipedia.org/wiki/ワーシャル–フロイド法">ワーシャル–フロイド法 - Wikipedia</a></li>
+        </ul>
+      </section>
+    </main>
+    <hr>
+    <footer>
+      <small>Copyright&copy; ei1333's page All Rights Reserved.</small>
+    </footer>
+
+  </body>
+</html>

@@ -43,20 +43,24 @@ MathJax.Hub.Config({
 	<p>$O(\log N)$</p>
 
 	<h4>実装例</h4>
-	<pre><code class="cpp">struct BinaryIndexedTree
+	<pre><code class="cpp">template&lt; class T &gt;
+struct BinaryIndexedTree
 {
-  vector&lt; int &gt; data;
+  vector&lt; T &gt; data;
+
   BinaryIndexedTree(int sz)
   {
     data.assign(++sz, 0);
   }
-  int sum(int k)
+
+  T sum(int k)
   {
-    int ret = 0;
+    T ret = 0;
     for(++k; k &gt; 0; k -= k &amp; -k) ret += data[k];
-    return(ret);
+    return (ret);
   }
-  void add(int k, int x)
+
+  void add(int k, T x)
   {
     for(++k; k &lt; data.size(); k += k &amp; -k) data[k] += x;
   }
@@ -65,6 +69,36 @@ MathJax.Hub.Config({
         <ul>
           <li><span class="verified">検証済</span><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=DSL_2_B&lang=jp">AOJ DSL_2_B Range SUM Query (RSQ)</a></li>
         </ul>
+
+        <h4>応用</h4>
+        <p>
+          $\sum_{i=0}^{k} a_k \ge w$ となる最小の $k$ を求めたい(std::lower_bound()のイメージ)とき, BIT上を二分探索することで $O(\log N)$ 時間で行うことができる。
+        </p>
+      
+        <pre><code class="cpp">template&lt; class T &gt;
+struct AdditionalBIT : BinaryIndexedTree&lt; T &gt;
+{
+  int curr;
+
+  AdditionalBIT(int sz) : BinaryIndexedTree&lt; T &gt;(sz)
+  {
+    curr = 1;
+    while(curr &lt;= sz) curr &lt;&lt;= 1;
+  }
+
+  int lower_bound(T w)
+  {
+    if(w &lt;= 0) return (0);
+    int i = 0;
+    for(int k = curr; k &gt; 0; k &gt;&gt;= 1) {
+      if(i + k &lt; BinaryIndexedTree&lt; T &gt;::data.size() &amp;&amp; BinaryIndexedTree&lt; T &gt;::data[i + k] &lt; w) {
+        w -= BinaryIndexedTree&lt; T &gt;::data[i + k];
+        i += k;
+      }
+    }
+    return (i);
+  }
+};</code></pre>
 
         <h4>参考資料</h4>
         <ul>

@@ -47,10 +47,12 @@ MathJax.Hub.Config({
 	<pre><code class="cpp">struct UnionFind
 {
   vector&lt; int &gt; data;
+
   UnionFind(int sz)
   {
     data.assign(sz, -1);
   }
+
   bool unite(int x, int y)
   {
     x = find(x), y = find(y);
@@ -60,11 +62,13 @@ MathJax.Hub.Config({
     data[y] = x;
     return(true);
   }
+
   int find(int k)
   {
     if(data[k] &lt; 0) return(k);
     return(data[k] = find(data[k]));
   }
+
   int size(int k)
   {
     return(-data[find(k)]);
