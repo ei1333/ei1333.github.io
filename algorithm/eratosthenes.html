@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+    <title>ei1333's page</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://use.edgefonts.net/source-code-pro.js"></script>
+    <link rel="stylesheet" href="../css/static.css">
+    <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+    </script>
+    <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/styles/github.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </head>
+  <body>
+    <header>
+      <h1>ei1333's page</h1>
+      <div class="path">
+	<a href="../index.html">ホーム</a> &gt;
+	<a href="index.html">Wiki</a>
+      </div>
+    </header>
+    <main>
+      <section>
+	<h2>素数列挙(Sieve of Eratosthenes)</h2>
+	
+	<h4>説明</h4>
+	<p>エラトステネスの篩による素数列挙アルゴリズム。指定された自然数以下の全ての素数を発見するための単純なアルゴリズム。具体的には, まず $2$ の倍数を除外する。次に $3$ の倍数を除外する。 $4$ は除外されているので $5$ の倍数を除外する。 $6$ は除外されているので $7$ を除外する。... というふうに, 素数の倍数を貪欲に除外していく。</p>
+
+	<h4>計算量</h4>
+	<p>$O(\log \log N)$</p>
+
+	<h4>実装例</h4>
+	<pre><code class="cpp">vector&lt; bool &gt; get_prime(int n){
+  vector&lt; bool &gt; prime( n + 1, true);
+  
+  if(n &gt;= 0) prime[0] = false;
+  if(n &gt;= 1) prime[1] = false;
+  
+  for(int i = 2; i * i &lt;= n; i++){
+    if(prime[i]){
+      for(int j = i + i; j &lt;= n; j += i) prime[j] = false;
+    }
+  }
+  
+  return(prime);
+}</code></pre>
+	<h4>問題例</h4>
+      </section>
+    </main>
+    <hr>
+    <footer>
+      <small>Copyright&copy; ei1333's page All Rights Reserved.</small>
+    </footer>
+
+  </body>
+</html>

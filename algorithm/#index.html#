@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+    <title>ei1333's page</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://use.edgefonts.net/source-code-pro.js"></script>
+    <link rel="stylesheet" href="../css/static.css">
+  </head>
+  <body>
+    <header>
+      <h1>ei1333's page</h1>
+      <div class="path">
+        <a href="../index.html">ホーム</a>
+      </div>
+    </header>
+    <main>
+      <section>
+				<h2>Wiki</h2>
+				<p>競技プログラミングをするときのまとめ。</p>
+
+				<h3>データ構造</h3>
+				<ul>
+					<li><a href="segment-tree.html">セグメント木(Segment-Tree)</a></li>
+					<li><a href="binary-indexed-tree.html">BIT(Binary-Indexed-Tree)</a></li>
+					<li><a href="union-find.html">素集合データ構造(Union-Find)</a></li>
+					<li><a href="rbst.html">平衡二分探索木(RBST)</a></li>
+					<li><a href="wavlet-matrix.html">ウェーブレット行列(Wavlet-Matrix)</a></li>
+					<li>トライ木(Trie)</li>
+				</ul>
+
+				<h3>グラフ</h3>
+				<ul>
+					<li><a href="grid-bfs.html">グリッド上の幅優先探索(Grid-BFS)</a></li>
+					<li><a href="dijkstra-heap.html">単一始点最短路(Dijkstra)</a></li>
+					<li><a href="warshall-floyd.html">全点対間最短路(Warshall-Floyd)</a></li>
+					<li><a href="prim.html">最小全域木(Prim)</a></li>
+					<li><a href="kruskal.html">最小全域木(Kruskal)</a></li>
+					<li><a href="primal-dual.html">最小費用流(Primal-Dual)</a></li>
+					<li><a href="dinic.html">最大流(Dinic)</a></li>
+					<li><a href="bipartite-matching.html">二部グラフの最大マッチング(Bipartite-Matching)</a></li>
+					<li><a href="strongly-connected-components.html">強連結成分分解(Strongly-Connected-Components)</a></li>
+					<li><a href="biconnected-components.html">二重辺連結成分分解(Biconnected-Components)</a></li>
+				</ul>
+
+				<h3>木</h3>
+				<ul>
+					<li>重心分解(Centroid-Path-Decomposition)</li>
+					<li>直径(Double-Sweep)</li>
+					<li>最小共通祖先(LCA)</li>
+				</ul>
+
+				<h3>数学</h3>
+				<ul>
+					<li>素因数分解</li>
+          <li>約数列挙</li>
+					<li>繰返し二乗法</li>
+					<li>素数列挙</li>
+					<li>組み合わせ</li>
+				</ul>
+
+				<h3>幾何</h3>
+				<ul>
+					<li>テンプレート(交差/内包判定, 交点検出など)</li>
+					<li>凸包</li>
+					<li>線分アレジメント</li>
+					<li>ボノロイ図</li>
+					<li>最近点対</li>
+					<li>凸多角形の切断</li>
+					<li>多角形の面積</li>
+          <li>凸多角形の直径</li>
+				</ul>
+
+				<h3>文字列</h3>
+				<ul>
+					<li>接尾辞配列(Suffix-Array)</li>
+					<li>ローリングハッシュ(Rolling-Hash)</li>
+					<li>Z-Algorithm</li>
+				</ul>
+
+				<h3>動的計画法</h3>
+				<ul>
+					<li><a href="cumulative-sum.html">一次元累積和</a></li>
+					<li><a href="cumulative-sum2d.html">二次元累積和</a></li>
+				</ul>
+
+				<h3>未分類</h3>
+				<ul>
+					<li>乱数</li>
+				</ul>
+      </section>
+
+      <section>
+				<h2>リンク集</h2>
+				<ul>
+					<li><a href="https://oeis.org/?language=japanese">OEIS(オンライン整数列大辞典)</a></li>
+					<li><a href="http://www.wolframalpha.com/">WolframAlpha(計算知識エンジン)</a></li>
+					<li><a href="https://csacademy.com/app/graph_editor/">Graph Editor(グラフ可視化)</a></li>
+					<li><a href="https://csacademy.com/app/geometry_widget/">Geometry Tool(幾何可視化)</a></li>
+				</ul>
+      </section>
+    </main>
+    <hr>
+    <footer>
+      <small>Copyright&copy; ei1333's page All Rights Reserved.</small>
+    </footer>
+  </body>
+</html>

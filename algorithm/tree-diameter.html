@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+    <title>ei1333's page</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://use.edgefonts.net/source-code-pro.js"></script>
+    <link rel="stylesheet" href="../css/static.css">
+    <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+    </script>
+    <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/styles/github.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </head>
+  <body>
+    <header>
+      <h1>ei1333's page</h1>
+      <div class="path">
+	<a href="../index.html">ホーム</a> &gt;
+	<a href="index.html">Wiki</a>
+      </div>
+    </header>
+    <main>
+      <section>
+	<h2>木の直径</h2>
+	
+	<h4>説明</h4>
+	<p>非負の重み付き無向木の直径を求める。適当な頂点 $s$ から最も遠い頂点 $u$ を求める。次に $u$ から最も遠い頂点 $v$ を求める。このとき、($u$, $v$) が最遠頂点対であり、すなわち木の直径である。</p>
+
+	<h4>計算量</h4>
+	<p>$O(E)$</p>
+
+	<h4>実装例</h4>
+	<pre><code class="cpp">struct edge
+{ 
+  int to, cost;
+};
+typedef vector&lt; vector&lt; edge &gt; &gt; Graph;
+
+pair&lt; int, int &gt; dfs(const Graph&amp; graph, int idx, int prev)
+{
+  pair&lt; int, int &gt; ret = make_pair(0, -1);
+  for(int i = 0; i &lt; graph[idx].size(); i++) {
+    if(graph[idx][i].to != prev){
+      pair&lt; int, int &gt; cost = dfs(graph, graph[idx][i].to, idx);
+      cost.first += graph[idx][i].cost;
+      ret = max(ret, cost);
+    }
+  }
+  return(ret);
+}
+int Diameter(Graph&amp; tree)
+{
+  pair&lt; int, int &gt; p = dfs(tree, 0, -1);
+  pair&lt; int, int &gt; q = dfs(tree, p.second, -1);
+  return(q.first);
+}</code></pre>
+	<h4>問題例</h4>
+      </section>
+    </main>
+    <hr>
+    <footer>
+      <small>Copyright&copy; ei1333's page All Rights Reserved.</small>
+    </footer>
+
+  </body>
+</html>
