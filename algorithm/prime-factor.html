@@ -38,11 +38,11 @@ MathJax.Hub.Config({
 
 	<h4>実装例</h4>
 	<pre><code class="cpp">typedef long long int64;
-
-map&lt; int64, int &gt; prime_factor(T n)
+template&lt; typename T = int &gt;
+map&lt; T, int &gt; prime_factor(T n)
 {
-  map&lt; int64, int &gt; ret;
-  for(int64 i = 2; 1LL * i * i &lt;= n; i++){
+  map&lt; T, int &gt; ret;
+  for(T i = 2; 1LL * i * i &lt;= n; i++){
     while(n % i == 0) {
       ret[i]++;
       n /= i;

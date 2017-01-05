@@ -37,14 +37,13 @@ MathJax.Hub.Config({
 	<p>$O(\log N)$</p>
 
 	<h4>実装例</h4>
-	<pre><code class="cpp">typedef long long int64;
-
-int64 pow_mod(int64 x, int64 n, int64 mod)
+	<pre><code class="cpp">template&lt; typename T = long long &gt;
+T pow_mod(T x, T n, T mod)
 {
-  int64 ret = 1LL;
+  T ret = 1;
   while(n &gt; 0) {
-    if(n &amp; 1) (ret *= x) %= mod;
-    (x *= x) %= mod;
+    if(n &amp; 1) ret = 1LL * ret * x % mod;
+    x = 1LL * x * x % mod;
     n &gt;&gt;= 1;
   }
   return ret;
