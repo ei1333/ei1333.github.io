@@ -31,35 +31,44 @@ MathJax.Hub.Config({
 	<h2>二部グラフの最大マッチング(Bipartite-Matching)</h2>
 	
 	<h4>説明</h4>
-	<p>二部グラフの最大マッチングを求める。</p>
+	<p>グラフ $G=(V, E)$ において, $V$ が $2$ つの部分集合 $X$ と $Y$ に分割され, $E$ のどの辺も一方の端点は $X$ に, もう一方の端点は $Y$ に属しているとき, $G$ を <b>二部グラフ</b> という.</p>
+        <p>グラフ $G=(V, E)$ において, $M$ が $E$ の部分集合でかつ $M$ のどの $2$ 辺も共通の端点をもたないとき, $M$ を $G$ の <b>マッチング</b> といい, 辺の本数が最大であるマッチングを <b>最大マッチング</b> という.</p>
+	<p>ここでは, 二部グラフの最大マッチングを最大流のアルゴリズムを利用して求める。</p>
 
 	<h4>計算量</h4>
 	<p>$O(VE)$</p>
 
 	<h4>実装例</h4>
+        <p>何かと便利なので, 生存しているとき true を入れる alive 配列を追加してある.</p>
+
 	<pre><code class="cpp">struct Bipartite_Matching
 {
   vector&lt; vector&lt; int &gt; &gt; graph;
-  vector&lt; int &gt; match;
-  vector&lt; bool &gt; used;
-
+  vector&lt; int &gt; match, alive, used;
+  int timestamp;
+ 
   Bipartite_Matching(int n)
   {
+    timestamp = 0;
     graph.resize(n);
+    alive.assign(n, 1);
+    used.assign(n, 0);
+    match.assign(n, -1);
   }
-
+ 
   void add_edge(int u, int v)
   {
     graph[u].push_back(v);
     graph[v].push_back(u);
   }
-
+ 
   bool dfs(int v)
   {
-    used[v] = true;
+    used[v] = timestamp;
     for(int i = 0; i &lt; graph[v].size(); i++) {
       int u = graph[v][i], w = match[u];
-      if(w == -1 || (!used[w] &amp;&amp; dfs(w))) {
+      if(alive[u] == 0) continue;
+      if(w == -1 || (used[w] != timestamp &amp;&amp; dfs(w))) {
         match[v] = u;
         match[u] = v;
         return (true);
@@ -67,21 +76,86 @@ MathJax.Hub.Config({
     }
     return (false);
   }
-
+ 
   int bipartite_matching()
   {
     int ret = 0;
-    match.assign(graph.size(), -1);
     for(int i = 0; i &lt; graph.size(); i++) {
+      if(alive[i] == 0) continue;
       if(match[i] == -1) {
-        used.assign(graph.size(), false);
+        ++timestamp;
         ret += dfs(i);
       }
     }
     return (ret);
+  } 
+};</code></pre>
+        <h4>応用 1: 最小頂点被覆 = 最大マッチング</h4>
+        <p>グラフ $G = (V, E)$ において, 各辺 $e$ について端点のいずれか少なくとも一方が $V'$ に含まれるような $V$ の部分集合 $V'$ のうち, $V'$ の頂点数が最小であるものを <b>最小頂点被覆</b> という.</p>
+        <p>Königの定理(最大マッチング最小被覆定理) では, 二部グラフについて最大マッチングの本数と最小被覆の頂点数は等しいことを示している.</p>
+        <h4>応用 2: DAGの最小パス被覆 = V - 最大マッチング</h4>
+        <p>グラフ $G = (V, E)$ において, そのグラフの全ての頂点が $1$ つ以上のパスに含まれるようなパスの集合をを <b>パス被覆</b> という.</p>
+        <p>特に, パス被覆の中でパスの数が最小のものを <b>最小パス被覆</b> という.</p>
+        <p>DAGの最小パス被覆は二部グラフの最大マッチング問題に帰着でき, 容易に解くことができる. 具体的には頂点を倍長して, 始点を左側に, 終点を右側に配置したグラフを考える. まず $V$ 本のパスがあれば被覆できることは自明. このグラフのマッチング一組に対して必要なパスを $1$ つ減らすことができるため, $V - $ (二部グラフの最大マッチング) が最小パス被覆となる.</p>
+        <p>参考: <a href="http://d.hatena.ne.jp/anta1/20120816/1345046832">DAGのパス被覆の問題 - antaの競技プログラミング練習日記</a></p>
+        <h4>応用 3: 辞書順最小</h4>
+        <p>ある最大マッチングの状態から, 貪欲に上の頂点から順にフローを押し戻してより番号が小さいものが使えないか試していくことで辞書順最小の最大マッチングを求めることができる. (事前に辺について辞書順にソートしておく必要がある.)</p>
+        <pre><code class="cpp">struct Lexicographically_Matching : Bipartite_Matching
+{
+  Lexicographically_Matching(int n) : Bipartite_Matching(n) {}
+
+  int back(int k)   // 押し戻す
+  {
+    match[match[k]] = -1;
+    match[k] = -1;
+    ++timestamp;
+    dfs(k);
+    return (match[k]);
+  }
+
+  void decide(int k) // 決める
+  {
+    alive[match[k]] = 0;
+    alive[k] = 0;
+  }
+};</code></pre>
+        
+        <h4>応用 4: 押し戻す, 加える</h4>
+        <p>二部グラフが変化するときについて, 変化が微妙なときは現在のマッチングの状態をもとに, それを押し戻したり新たに加えたりして少ない計算量で修正することが出来る.</p>
+        <p>以下では頂点追加と削除を実装している.</p>
+
+        <pre><code class="cpp">struct Fix_Matching : Bipartite_Matching
+{
+  Fix_Matching(int sz) : Bipartite_Matching(sz) {}
+
+  int add(int k) // 加える
+  {
+    alive[k] = 1;
+    ++timestamp;
+    return (dfs(k));
+  }
+
+  int kill(int k) // 消す
+  {
+    alive[k] = 0;
+    if(match[k] == -1) return (0);
+    match[match[k]] = -1;
+    ++timestamp;
+    int ret = dfs(match[k]);
+    match[k] = -1;
+    return (ret - 1);
   }
 };</code></pre>
 	<h4>問題例</h4>
+        <ul>
+          <li><span class="verified">検証済</span><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_7_A&lang=jp">AOJ GRL_7_A 2部マッチング</a></li>
+          <li>
+            <a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=2251">AOJ2251 Merry Christmas</a> (応用 2)
+          </li>
+          <li>
+            <a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=0334">AOJ0334 Amidakuji</a> (応用 3)
+          </li>
+        </ul>
       </section>
     </main>
     <hr>
