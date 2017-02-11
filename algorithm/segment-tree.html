@@ -170,6 +170,76 @@ MathJax.Hub.Config({
         <p>遅延評価というテクがある。遅延評価を使うと, 区間に対する演算操作の幅が大きく広がる。
         </p>
 
+        <h4>応用 3</h4>
+        <p>セグメント木のノードにセグメント木をのせた 2Dセグメント木も可能. 以下の実装ではノードをBITにもたせて区間のXORをしているが適当に直せば良い. またフラクショナルカスケーディングを使用することで log を1個落とせるらしい.</p>
+        <pre><code class="cpp">truct SegmentTree2D
+{
+  vector&lt; BinaryIndexedTree &gt; add;
+  vector&lt; vector&lt; int &gt; &gt; vs;
+  int sz;
+
+  SegmentTree2D(int n)
+  {
+    sz = 1;
+    while(sz &lt; n) sz &lt;&lt;= 1;
+    vs.resize(2 * sz - 1);
+  }
+
+  void set(int k, int height)
+  {
+    vs[k + sz - 1].push_back(height);
+  }
+
+  void build()
+  {
+    for(int k = sz - 1; k &lt; vs.size(); k++) {
+      sort(begin(vs[k]), end(vs[k]));
+    }
+    for(int k = sz - 2; k &gt;= 0; k--) {
+      vs[k].resize(vs[2 * k + 1].size() + vs[2 * k + 2].size());
+      merge(begin(vs[2 * k + 1]), end(vs[2 * k + 1]),
+            begin(vs[2 * k + 2]), end(vs[2 * k + 2]),
+            begin(vs[k]));
+    }
+    for(int k = 0; k &lt; vs.size(); k++) {
+      add.emplace_back(BinaryIndexedTree(vs[k].size() + 1));
+    }
+  }
+
+  inline int lb(int k, int height)
+  {
+    return (lower_bound(begin(vs[k]), end(vs[k]), height) - begin(vs[k]));
+  }
+
+  void update(int a, int b, int Low, int High, int x, int k, int l, int r)
+  {
+    if(a &gt;= r || b &lt;= l) {
+      return;
+    } else if(a &lt;= l &amp;&amp; r &lt;= b) {
+      add[k].add(lb(k, Low), x);
+      add[k].add(lb(k, High), x);
+    } else {
+      update(a, b, Low, High, x, 2 * k + 1, l, (l + r) &gt;&gt; 1);
+      update(a, b, Low, High, x, 2 * k + 2, (l + r) &gt;&gt; 1, r);
+    }
+  }
+
+  void update(int a, int b, int Low, int High, int x)
+  {
+    update(a, b, Low, High, x, 0, 0, sz);
+  }
+
+  int get(int k, int height)
+  {
+    k += sz - 1;
+    int ret = add[k].sum(lb(k, height));
+    while(k &gt; 0) {
+      k = (k - 1) &gt;&gt; 1;
+      ret ^= add[k].sum(lb(k, height));
+    }
+    return (ret);
+  }
+};</code></pre>
 	<h4>参考資料</h4>
 	<ul>
 	  <li><a href="http://www.slideshare.net/iwiwi/ss-3578491">プログラミングコンテストでのデータ構造 - iwi</a></li>
