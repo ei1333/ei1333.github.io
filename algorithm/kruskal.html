@@ -42,7 +42,15 @@ MathJax.Hub.Config({
         <p>$V$: 頂点数, $E$: 辺数</p>
 
 	<h4>実装例</h4>
-	<pre><code class="cpp">template&lt; class T = int &gt;
+	<pre><code class="cpp">struct edge
+{
+  int u, v, cost;
+  bool operator&lt;(const edge&amp; e) const
+  {
+    return(cost &lt; e.cost);
+  };
+};
+template&lt; class T = int &gt;
 T kruskal(vector&lt; edge &gt; &amp;edges, int V)
 {
   sort(edges.begin(), edges.end());

@@ -65,12 +65,8 @@ struct BinaryIndexedTree
     for(++k; k &lt; data.size(); k += k &amp; -k) data[k] += x;
   }
 };</code></pre>
-        <h4>問題例</h4>
-        <ul>
-          <li><span class="verified">検証済</span><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=DSL_2_B&lang=jp">AOJ DSL_2_B Range SUM Query (RSQ)</a></li>
-        </ul>
 
-        <h4>応用</h4>
+        <h4>応用: BIT上の二分探索</h4>
         <p>
           $\sum_{i=0}^{k} a_k \ge w$ となる最小の $k$ を求めたい(std::lower_bound()のイメージ)とき, BIT上を二分探索することで $O(\log N)$ 時間で行うことができる。
         </p>
@@ -99,6 +95,11 @@ struct AdditionalBIT : BinaryIndexedTree&lt; T &gt;
     return (i);
   }
 };</code></pre>
+
+        <h4>問題例</h4>
+        <ul>
+          <li><span class="verified">検証済</span><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=DSL_2_B&lang=jp">AOJ DSL_2_B Range SUM Query (RSQ)</a></li>
+        </ul>
 
         <h4>参考資料</h4>
         <ul>

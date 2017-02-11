@@ -74,13 +74,7 @@ MathJax.Hub.Config({
     return(-data[find(k)]);
   }
 };</code></pre>
-	<h4>問題例</h4>
-        <ul>
-          <li><span class="verified">検証済</span><a href="http://atc001.contest.atcoder.jp/tasks/unionfind_a">ATC 001_B Union Find</a></li>
-          <li><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=DSL_1_A&lang=jp">AOJ DSL_1_A 互いに素な集合</a></li>
-        </ul>
-
-        <h4>応用 1</h4>
+        <h4>応用 1: 2部グラフの頂点彩色</h4>
         <p>Union-Find を用いると $2$ 部グラフ判定が可能。頂点を倍長して偶奇に分ける。副作用として彩色もできる。</p>
         <pre><code class="cpp">struct Bipartite_Graph : UnionFind
 {
@@ -90,15 +84,15 @@ MathJax.Hub.Config({
 
   void add_edge(int u, int v)
   {
-    UnionFind::unite(u, v + color.size());
-    UnionFind::unite(u + color.size(), v);
+    unite(u, v + color.size());
+    unite(u + color.size(), v);
   }
 
   bool bipartite_graph_coloring()
   {
     for(int i = 0; i &lt; color.size(); i++) {
-      int a = UnionFind::find(i);
-      int b = UnionFind::find(i + color.size());
+      int a = find(i);
+      int b = find(i + color.size());
       if(a == b) return (false);
       int c = color[a];
       if(c &lt; 0) color[a] = 0, color[b] = 1, c = 0;
@@ -113,9 +107,15 @@ MathJax.Hub.Config({
   }
 };</code></pre>
 
-        <h4>応用 2</h4>
+        <h4>応用 2: データ構造をマージする一般的なテク</h4>
 
         <p>データ構造をマージする一般的なテク(Weighted-Union-Heuristic) は, Union-Find の unite 操作で常に大きい木の根が全体の根になるよう連結する(union-by-rank) の考え方と同様。</p>
+
+        <h4>問題例</h4>
+        <ul>
+          <li><span class="verified">検証済</span><a href="http://atc001.contest.atcoder.jp/tasks/unionfind_a">ATC 001_B Union Find</a></li>
+          <li><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=DSL_1_A&lang=jp">AOJ DSL_1_A 互いに素な集合</a></li>
+        </ul>
 
         <h4>参考資料</h4>
         <ul>

@@ -46,9 +46,25 @@ MathJax.Hub.Config({
 	<p>$O(V^3)$</p>
         <p>$V$: 頂点数</p>
 	<h4>実装例</h4>
-	<pre><code class="cpp">void Warshall(vector&lt; vector&lt; int &gt; &gt; &amp;g)
+	<pre><code class="cpp">templete&lt; typename T = int &gt;
+void Warshall(vector&lt; vector&lt; T &gt; &gt; &amp;g)
 {
   for(int k = 0; k &lt; g.size(); k++) {
+    for(int i = 0; i &lt; g.size(); i++) {
+      for(int j = 0; j &lt; g.size(); j++) {
+        g[i][j] = min(g[i][j], g[i][k] + g[k][j]);
+      }
+    }
+  }
+}</code></pre>
+
+        <h4>応用 1: 辺の追加</h4>
+        <p>現在のグラフに辺を追加する場合に限り, 更新を$O(N^3)$ ではなく $O(N^2)$ で行える. 追加した辺に影響する範囲のみを更新するようにする.</p>
+        <pre><code class="cpp">template&lt; typename T = int &gt;
+void AddEdge(vector&lt; vector&lt; T &gt; &gt; &amp;g, int s, int t, T cost)
+{
+  g[s][t] = g[t][s] = min(g[s][t], cost);
+  for(int k : {s, t}) {
     for(int i = 0; i &lt; g.size(); i++) {
       for(int j = 0; j &lt; g.size(); j++) {
         g[i][j] = min(g[i][j], g[i][k] + g[k][j]);
@@ -59,6 +75,13 @@ MathJax.Hub.Config({
         <h4>問題例</h4>
         <ul>
           <li><span class="verified">検証済</span><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_1_C&lang=jp">AOJ GPL_1_C 全点対間最短経路</a></li>
+          <li><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=0117">AOJ0117 大工の褒美</a></li>
+          <li><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=0200">AOJ0200 青春の片道切符</a></li>
+          <li><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=0189">AOJ0189 便利な町</a></li>
+          <li><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=2005">AOJ2005 Water Pipe Construction</a></li>
+          <li><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=2200">AOJ2200 Mr. Rito Post Office</a></li>
+          <li><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=1182&lang=jp">AOJ1182 鉄道乗り継ぎ</a></li>
+          <li><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=0526">AOJ0526 船旅</a> (応用1)</li>
         </ul>
 
         <h4>参考資料</h4>
