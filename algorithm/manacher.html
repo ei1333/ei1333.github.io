@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+    <title>ei1333's page</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://use.edgefonts.net/source-code-pro.js"></script>
+    <link rel="stylesheet" href="../css/static.css">
+    <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+    </script>
+    <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/styles/github.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </head>
+  <body>
+    <header>
+      <h1>ei1333's page</h1>
+      <div class="path">
+	<a href="../index.html">ホーム</a> &gt;
+	<a href="index.html">Wiki</a>
+      </div>
+    </header>
+    <main>
+      <section>
+	<h2>Manacher</h2>
+	
+	<h4>説明</h4>
+        <p>ある文字列 $S$ が与えられているとする。Manacher では, それぞれの $i$ について文字 $i$ を中心とする最長回文の半径を記録した配列を線形時間で構築するアルゴリズムである。
+        </p>
+        <p>具体例を以下に示す。例えば $i = 6$ を中心とする最長回文は "aba" つまり $2$ である。</p>
+        <pre><code>abaaababa
+121412321</code></pre>
+
+	<h4>計算量</h4>
+	<p>$O(|S|)$</p>
+
+	<h4>実装例</h4>
+        <p>Manacharよりも Manachan の方が可愛いので Manachan にしてあります(?)</p>
+
+	<pre><code class="cpp">struct Manachan
+{
+  vector&lt; int &gt; radius;
+
+  void build(const string &amp;s)
+  {
+    radius.resize(s.size());
+
+    int i = 0, j = 0;
+    while(i &lt; s.size()) {
+      while(i - j &gt;= 0 &amp;&amp; i + j &lt; s.size() &amp;&amp; s[i - j] == s[i + j]) {
+        ++j;
+      }
+      radius[i] = j;
+      int k = 1;
+      while(i - k &gt;= 0 &amp;&amp; i + k &lt; s.size() &amp;&amp; k + radius[i - k] &lt; j) {
+        radius[i + k] = radius[i - k];
+        ++k;
+      }
+      i += k;
+      j -= k;
+    }
+  }
+
+  int operator[](const int k) const
+  {
+    return (radius[k]);
+  }
+
+  size_t size()
+  {
+    return (radius.size());
+  }
+};</code></pre>
+	<h4>問題例</h4>
+        <h4>参考資料</h4>
+        <ul>
+          <li><a href="http://snuke.hatenablog.com/entry/2014/12/02/235837">文字列の頭良い感じの線形アルゴリズムたち２  - snuke</a></li>
+        </ul>
+      </section>
+    </main>
+    <hr>
+    <footer>
+      <small>Copyright&copy; ei1333's page All Rights Reserved.</small>
+    </footer>
+
+  </body>
+</html>
