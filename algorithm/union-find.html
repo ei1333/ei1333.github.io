@@ -42,6 +42,7 @@ MathJax.Hub.Config({
 
 	<h4>計算量</h4>
 	<p>$O(\alpha(n))$</p>
+        <p>$\alpha$ はアッカーマンの逆関数</p>
 
 	<h4>実装例</h4>
 	<pre><code class="cpp">struct UnionFind
@@ -111,6 +112,9 @@ MathJax.Hub.Config({
 
         <p>データ構造をマージする一般的なテク(Weighted-Union-Heuristic) は, Union-Find の unite 操作で常に大きい木の根が全体の根になるよう連結する(union-by-rank) の考え方と同様。</p>
 
+        <h4>補足: 経路圧縮, ランクによる統合の計算量</h4>
+        <p>経路圧縮, ランクによる統合の $2$ つの工夫をすると計算量は $1$ クエリあたり $O(\alpha(n))$ となるが, 経路圧縮あるいはランクによる統合片方だけ行うと $O(\log n)$ となる。[証明: アルゴリズムとデータ構造 p268-270]</p>
+ 
         <h4>問題例</h4>
         <ul>
           <li><span class="verified">検証済</span><a href="http://atc001.contest.atcoder.jp/tasks/unionfind_a">ATC 001_B Union Find</a></li>
