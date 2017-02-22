@@ -39,16 +39,23 @@ MathJax.Hub.Config({
         <p>$M$: パターンの文字列の長さの合計</p>
 
 	<h4>実装例</h4>
+        <p>パターンごとのマッチングの個数が不要な場合はset_union() を消したほうがよさそうです(重そうなので)。</p>
 	<pre><code class="cpp">struct Aho_Corasick : Trie
 {
   static const int FAIL = 26;
+  vector&lt; int &gt; correct;
 
   Aho_Corasick() : Trie() {}
 
   void build()
   {
+    correct.resize(nodes.size());
+    for(int i = 0; i &lt; nodes.size(); i++) {
+      correct[i] = (int) nodes[i].accept.size();
+    }
+
     queue&lt; int &gt; que;
-    for(int i = 0; i &lt; 26; i++) {
+    for(int i = 0; i &lt; 27; i++) {
       if(~nodes[0].nxt[i]) {
         nodes[nodes[0].nxt[i]].nxt[FAIL] = 0;
         que.emplace(nodes[0].nxt[i]);
@@ -58,6 +65,7 @@ MathJax.Hub.Config({
     }
     while(!que.empty()) {
       TrieNode &amp;now = nodes[que.front()];
+      correct[que.front()] += correct[now.nxt[FAIL]];
       que.pop();
       for(int i = 0; i &lt; 26; i++) {
         if(now.nxt[i] == -1) continue;
@@ -67,13 +75,14 @@ MathJax.Hub.Config({
         }
         nodes[now.nxt[i]].nxt[FAIL] = nodes[fail].nxt[i];
 
-        auto&amp; u = nodes[now.nxt[i]].accept;
-        auto&amp; v = nodes[nodes[fail].nxt[i]].accept;
+        auto &amp;u = nodes[now.nxt[i]].accept;
+        auto &amp;v = nodes[nodes[fail].nxt[i]].accept;
         vector&lt; int &gt; accept;
         set_union(begin(u), end(u), begin(v), end(v), back_inserter(accept));
-        now.accept = accept;
+        u = accept;
         que.emplace(now.nxt[i]);
       }
+
     }
   }
 
@@ -84,7 +93,10 @@ MathJax.Hub.Config({
     for(auto &amp;c : str) {
       while(nodes[now].nxt[c - &#039;a&#039;] == -1) now = nodes[now].nxt[FAIL];
       now = nodes[now].nxt[c - &#039;a&#039;];
-      for(auto &amp;v : nodes[now].accept) ++result[v], ++count;
+      count += correct[now];
+      for(auto &amp;v : nodes[now].accept) {
+        ++result[v];
+      }
     }
     return (count);
   }

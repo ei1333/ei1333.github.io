@@ -62,20 +62,26 @@ struct Trie
     nodes.push_back(TrieNode());
   }
 
-  void update_direct(TrieNode &amp;node, int id)
+  virtual void direct_action(int node, int id) {}
+
+  virtual void child_action(int node, int child, int id) {}
+
+  void update_direct(int node, int id)
   {
-    node.accept.push_back(id);
+    nodes[node].accept.push_back(id);
+    direct_action(node, id);
   }
 
-  void update_child(TrieNode &amp;node, TrieNode &amp;child, int id)
+  void update_child(int node, int child, int id)
   {
-    ++node.exist;
+    ++nodes[node].exist;
+    child_action(node, child, id);
   }
 
   void add(const string &amp;str, int str_index, int node_index, int id)
   {
     if(str_index == str.size()) {
-      update_direct(nodes[node_index], id);
+      update_direct(node_index, id);
     } else {
       const int c = str[str_index] - &#039;a&#039;;
       if(nodes[node_index].nxt[c] == -1) {
@@ -83,7 +89,7 @@ struct Trie
         nodes.push_back(TrieNode());
       }
       add(str, str_index + 1, nodes[node_index].nxt[c], id);
-      update_child(nodes[node_index], nodes[nodes[node_index].nxt[c]], id);
+      update_child(node_index, nodes[node_index].nxt[c], id);
     }
   }
 
