@@ -107,6 +107,11 @@ struct Trie
   {
     return (nodes[0].exist);
   }
+
+  int nodesize()
+  {
+    return ((int) nodes.size());
+  }
 };</code></pre>
 	<h4>応用: パトリシア木</h4>
         <p>特に,  トライ木で子ノードが $1$ つしかないノードを子ノードとマージして縮約した木をパトリシア木(または基数木) と呼ぶ。無駄な探索を減らすことが出来る。</p>
