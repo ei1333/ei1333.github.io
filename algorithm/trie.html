@@ -38,19 +38,19 @@ MathJax.Hub.Config({
         <p>$m$: 追加する文字列</p>
 
 	<h4>実装例</h4>
+        <p>Aho-corasick に継承させたいので, そういう実装になってます。</p>
 	<pre><code class="cpp">struct TrieNode
 {
-  int nxt[26];
+  int nxt[27];
 
   int exist; // 子ども以下に存在する文字列の数の合計
-  int num;   // その文字列の個数
+  vector&lt; int &gt; accept; // その文字列id
 
-  TrieNode() : num(0), exist(0)
+  TrieNode() : exist(0)
   {
     memset(nxt, -1, sizeof(nxt));
   }
 };
-
 
 struct Trie
 {
@@ -62,34 +62,44 @@ struct Trie
     nodes.push_back(TrieNode());
   }
 
-  void update_direct(TrieNode &amp;node)
+  void update_direct(TrieNode &amp;node, int id)
   {
-    ++node.num;
+    node.accept.push_back(id);
   }
 
-  void update_child(TrieNode &amp;node, TrieNode &amp;child)
+  void update_child(TrieNode &amp;node, TrieNode &amp;child, int id)
   {
     ++node.exist;
   }
 
-  void add(const string &amp;str, int str_index, int node_index)
+  void add(const string &amp;str, int str_index, int node_index, int id)
   {
     if(str_index == str.size()) {
-      update_direct(nodes[node_index]);
+      update_direct(nodes[node_index], id);
     } else {
       const int c = str[str_index] - &#039;a&#039;;
       if(nodes[node_index].nxt[c] == -1) {
         nodes[node_index].nxt[c] = (int) nodes.size();
         nodes.push_back(TrieNode());
       }
-      add(str, str_index + 1, nodes[node_index].nxt[c]);
-      update_child(nodes[node_index], nodes[nodes[node_index].nxt[c]]);
+      add(str, str_index + 1, nodes[node_index].nxt[c], id);
+      update_child(nodes[node_index], nodes[nodes[node_index].nxt[c]], id);
     }
+  }
+
+  void add(const string &amp;str, int id)
+  {
+    add(str, 0, 0, id);
   }
 
   void add(const string &amp;str)
   {
-    add(str, 0, 0);
+    add(str, nodes[0].exist);
+  }
+
+  int size()
+  {
+    return (nodes[0].exist);
   }
 };</code></pre>
 	<h4>応用: パトリシア木</h4>
