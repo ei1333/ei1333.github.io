@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+    <title>ei1333's page</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://use.edgefonts.net/source-code-pro.js"></script>
+    <link rel="stylesheet" href="../css/static.css">
+    <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+    </script>
+    <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/styles/github.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </head>
+  <body>
+    <header>
+      <h1>ei1333's page</h1>
+      <div class="path">
+	<a href="../index.html">ホーム</a> &gt;
+	<a href="index.html">Wiki</a>
+      </div>
+    </header>
+    <main>
+      <section>
+	<h2>分解可能問題</h2>
+	
+	<h4>説明</h4>
+        <p>クエリ問題が分解可能であるとは</p>
+        <ul>
+          <li>要素 $1$ つだけのデータ $[e]$ に対するクエリを $q([e])$ と表すとき, 要素列に対するクエリは $q([e_1, e_2, \dotsc, e_n]) = q([e_1]) \star q([e_2]) \star \dotsb \star q([e_n])$ となる演算子 $\star$ (結合法則を満たす) によって表すことができる</li>
+        </ul>
+        <p>ものをいう。ここでは分解可能問題に対する静的なデータ構造を与えられた時にインクリメンタルなデータ構造にしている。</p>
+
+	<h4>計算量</h4>
+	<p>$n$ 要素の静的データ構造が $T(n)$ で構築できるとき, $n$ 回の追加にかかる計算量 $O(T(n)\log n)$</p>
+        <p>$n$ 要素の静的データ構造に対するクエリと $\star$ が $U(n)$ で応答できるとき, $n$ 回のクエリにかかる計算量 $O(U(n)\log n)$</p>
+
+	<h4>実装例</h4>
+        <p>静的なデータ構造 $T_1$ と $T_2$  を結合する $T_1 + T_2$ オペレータを定義する必要がある。また, クエリに応答する際には, 添字演算子[] を使いデータ構造を取り出す。</p>
+	<pre><code class="cpp">template&lt; class T &gt;
+struct DecomposableSearchingStructure
+{
+  struct DecomposableSearchingProblem
+  {
+    T structure;
+    int length;
+
+    DecomposableSearchingProblem(T t, int l) : structure(t), length(l) {}
+
+    DecomposableSearchingProblem operator+(const DecomposableSearchingProblem &amp;p)
+    {
+      return (DecomposableSearchingProblem(structure + p.structure, length + p.length));
+    }
+  };
+
+  vector&lt; DecomposableSearchingProblem &gt; vs;
+
+  DecomposableSearchingStructure() {}
+
+  void add(const T &amp;st)
+  {
+    vs.emplace_back(DecomposableSearchingProblem(st, 1));
+    while(vs.size() &gt; 1 &amp;&amp; vs[vs.size() - 2].length == vs[vs.size() - 1].length) {
+      DecomposableSearchingProblem renew(vs[vs.size() - 2] + vs[vs.size() - 1]);
+      vs.pop_back(), vs.pop_back();
+      vs.push_back(renew);
+    }
+  }
+
+  size_t size()
+  {
+    return (vs.size());
+  }
+
+  T &amp;operator[](int k)
+  {
+    return (vs[k].structure);
+  }
+};</code></pre>
+	<h4>問題例</h4>
+        <ul>
+          <li><span class="verified">検証済</span><a href="http://codeforces.com/contest/710/problem/F">ECR 16 F. String Set Queries</a> (Submittion: <a href="http://codeforces.com/contest/710/submission/24912583">#24912583</a>)</li>
+        </ul>
+        <h4>参考資料</h4>
+        <ul>
+          <li><a href="http://yukicoder.me/wiki/decomposable_searching_problem">Decomposable searching problem - yukicoder</a></li>
+        </ul>
+      </section>
+    </main>
+    <hr>
+    <footer>
+      <small>Copyright&copy; ei1333's page All Rights Reserved.</small>
+    </footer>
+
+  </body>
+</html>
