@@ -37,47 +37,59 @@ MathJax.Hub.Config({
 	<p>$O(V + E)$</p>
 
 	<h4>実装例</h4>
-	<pre><code class="cpp">typedef vector&lt; vector&lt; int &gt; &gt; Graph;
-
-inline void dfs(int idx, const Graph &amp;graph, vector&lt; bool &gt; &amp;used, vector&lt; int &gt; &amp;order)
+	<pre><code class="cpp">struct StronglyConnectedComponents
 {
-  if(used[idx]) return;
-  used[idx] = true;
-  for(int i = 0; i &lt; graph[idx].size(); i++) {
-    dfs(graph[idx][i], graph, used, order);
+  vector&lt; vector&lt; int &gt; &gt; gg, rg;
+  vector&lt; pair&lt; int, int &gt; &gt; edges;
+  vector&lt; int &gt; comp, order, used;
+
+  StronglyConnectedComponents(size_t v) : gg(v), rg(v), comp(v, -1), used(v, 0) {}
+
+  void add_edge(int x, int y)
+  {
+    gg[x].push_back(y);
+    rg[y].push_back(x);
+    edges.emplace_back(x, y);
   }
-  order.push_back(idx);
-}
 
-inline void rdfs(int idx, const Graph &amp;rgraph, vector&lt; int &gt; &amp;cmp, const int &amp;cnt)
-{
-  cmp[idx] = cnt;
-  for(int i = 0; i &lt; rgraph[idx].size(); i++) {
-    if(cmp[rgraph[idx][i]] == -1) rdfs(rgraph[idx][i], rgraph, cmp, cnt);
+  int operator[](int k)
+  {
+    return (comp[k]);
   }
-}
 
-size_t StronglyConnectedComponents(const Graph &amp;graph, vector&lt; int &gt; &amp;cmp)
-{
-  size_t cnt = 0;
-  Graph rgraph(graph.size());
-  for(int i = 0; i &lt; graph.size(); i++) {
-    for(int j = 0; j &lt; graph[i].size(); j++) {
-      rgraph[graph[i][j]].push_back(i);
+  void dfs(int idx)
+  {
+    if(used[idx]) return;
+    used[idx] = true;
+    for(int to : gg[idx]) dfs(to);
+    order.push_back(idx);
+  }
+
+  void rdfs(int idx, int cnt)
+  {
+    if(comp[idx] != -1) return;
+    comp[idx] = cnt;
+    for(int to : rg[idx]) rdfs(to, cnt);
+  }
+
+  void build(vector&lt; vector&lt; int &gt; &gt; &amp;t)
+  {
+    for(int i = 0; i &lt; gg.size(); i++) dfs(i);
+    reverse(begin(order), end(order));
+    int ptr = 0;
+    for(int i : order) rdfs(i, ptr), ptr++;
+
+    t.resize(ptr);
+    set&lt; pair&lt; int, int &gt; &gt; connect;
+    for(auto &amp;e : edges) {
+      int x = comp[e.first], y = comp[e.second];
+      if(x == y) continue;
+      if(connect.count({x, y})) continue;
+      t[x].push_back(y);
+      connect.emplace(x, y);
     }
   }
-  cmp.assign(graph.size(), -1);
-  vector&lt; bool &gt; used(graph.size(), false);
-  vector&lt; int &gt; order;
-  for(int i = 0; i &lt; graph.size(); i++) {
-    dfs(i, graph, used, order);
-  }
-  reverse(order.begin(), order.end());
-  for(int i = 0; i &lt; order.size(); i++) {
-    if(cmp[order[i]] == -1) rdfs(order[i], rgraph, cmp, cnt), cnt++;
-  }
-  return cnt;
-}</code></pre>
+};</code></pre>
 	<h4>問題例</h4>
       </section>
     </main>
