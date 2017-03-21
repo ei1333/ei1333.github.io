@@ -167,80 +167,55 @@ MathJax.Hub.Config({
         </p>
 
         <h4>応用 3: 2Dセグメント木</h4>
-        <p>セグメント木のノードにセグメント木をのせた 2Dセグメント木も可能. 以下の実装ではノードをBITにもたせて区間のXORをしているが適当に直せば良い. またフラクショナルカスケーディングを使用することで log を1個落とせるらしい.</p>
-        <pre><code class="cpp">truct SegmentTree2D
+        <p>セグメント木のノードに平衡二分探索木をのせた 2Dセグメント木も可能(但し定数倍がかなり重い)。 以下の実装では長方形内の点の個数を求めるクエリと, 点の追加削除のクエリをサポートしている。</p>
+        <pre><code class="cpp">#include &lt;ext/pb_ds/assoc_container.hpp&gt;
+using namespace __gnu_pbds;	
+struct SegmentTree
 {
-  vector&lt; BinaryIndexedTree &gt; add;
-  vector&lt; vector&lt; int &gt; &gt; vs;
   int sz;
+  vector&lt; tree&lt; int, null_type, less&lt; int &gt;, rb_tree_tag, tree_order_statistics_node_update &gt; &gt; seg;
 
-  SegmentTree2D(int n)
+  SegmentTree(int n)
   {
     sz = 1;
     while(sz &lt; n) sz &lt;&lt;= 1;
-    vs.resize(2 * sz - 1);
+    seg.resize(2 * sz - 1);
   }
 
-  void set(int k, int height)
-  {
-    vs[k + sz - 1].push_back(height);
-  }
-
-  void build()
-  {
-    for(int k = sz - 1; k &lt; vs.size(); k++) {
-      sort(begin(vs[k]), end(vs[k]));
-    }
-    for(int k = sz - 2; k &gt;= 0; k--) {
-      vs[k].resize(vs[2 * k + 1].size() + vs[2 * k + 2].size());
-      merge(begin(vs[2 * k + 1]), end(vs[2 * k + 1]),
-            begin(vs[2 * k + 2]), end(vs[2 * k + 2]),
-            begin(vs[k]));
-    }
-    for(int k = 0; k &lt; vs.size(); k++) {
-      add.emplace_back(BinaryIndexedTree(vs[k].size() + 1));
-    }
-  }
-
-  inline int lb(int k, int height)
-  {
-    return (lower_bound(begin(vs[k]), end(vs[k]), height) - begin(vs[k]));
-  }
-
-  void update(int a, int b, int Low, int High, int x, int k, int l, int r)
+  int query(int a, int b, int lower, int upper, int k, int l, int r)
   {
     if(a &gt;= r || b &lt;= l) {
-      return;
+      return (0);
     } else if(a &lt;= l &amp;&amp; r &lt;= b) {
-      add[k].add(lb(k, Low), x);
-      add[k].add(lb(k, High), x);
+      return (seg[k].order_of_key(upper) - seg[k].order_of_key(lower));
     } else {
-      update(a, b, Low, High, x, 2 * k + 1, l, (l + r) &gt;&gt; 1);
-      update(a, b, Low, High, x, 2 * k + 2, (l + r) &gt;&gt; 1, r);
+      return (query(a, b, lower, upper, 2 * k + 1, l, (l + r) &gt;&gt; 1) + query(a, b, lower, upper, 2 * k + 2, (l + r) &gt;&gt; 1, r));
     }
   }
 
-  void update(int a, int b, int Low, int High, int x)
+  int query(int a, int b, int l, int r)
   {
-    update(a, b, Low, High, x, 0, 0, sz);
+    return (query(a, b, l, r, 0, 0, sz));
   }
 
-  int get(int k, int height)
+  void update(int k, int x, bool type)
   {
     k += sz - 1;
-    int ret = add[k].sum(lb(k, height));
+    if(type) seg[k].insert(x);
+    else seg[k].erase(x);
     while(k &gt; 0) {
       k = (k - 1) &gt;&gt; 1;
-      ret ^= add[k].sum(lb(k, height));
+      if(type) seg[k].insert(x);
+      else seg[k].erase(x);
     }
-    return (ret);
   }
 };</code></pre>
 
         <h4>問題例</h4>
         <ul>
-          <li><span class="verified">検証済</span><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=DSL_2_A&lang=jp">AOJ DSL_2_A Range Minimum Query (RMQ)</a></li>
-        </ul>
+	  <li><span class="verified">検証済</span><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=DSL_2_A&lang=jp">AOJ DSL_2_A Range Minimum Query (RMQ)</a></li>
+          <li><span class="verified">検証済(応用3)</span><a href="http://codeforces.com/contest/785/problem/E">CF #404 E. Anton and Permutation</a>(Submittion: <a href="http://codeforces.com/contest/785/submission/25528699">#25528699</a>)
+	</ul>
 
 	<h4>参考資料</h4>
 	<ul>
