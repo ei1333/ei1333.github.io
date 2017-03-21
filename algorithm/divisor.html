@@ -31,29 +31,29 @@ MathJax.Hub.Config({
 	      <h2>素因数分解</h2>
 	
 	      <h4>説明</h4>
-	      <p>素因数分解する。</p>
+	      <p>約数を列挙する。</p>
 
         <h4>計算量</h4>
         <p>$O(\sqrt N)$</p>
 
 	      <h4>実装例</h4>
         <pre><code class="cpp">typedef long long int64;
-map&lt; int64, int &gt; prime_factor(int64 n)
+
+vector&lt; int64 &gt; Divisor(int64 n)
 {
-  map&lt; int64, int &gt; ret;
-  for(int64 i = 2; i * i &lt;= n; i++){
-    while(n % i == 0) {
-      ret[i]++;
-      n /= i;
+  vector&lt; int64 &gt; ret;
+  for(int64 i = 1; i * i &lt;= n; i++) {
+    if(n % i == 0) {
+      ret.push_back(i);
+      if(i * i != n) ret.push_back(n / i);
     }
   }
-  if(n != 1) ret[n] = 1;
+  sort(begin(ret), end(ret));
   return(ret);
 }</code></pre>
-        <h4>応用: 約数の個数</h4>
-        <p>ある自然数 $n$ を素因数分解して $n = \prod_{i=1}^r {p_i}^{a_i}$ ($p_i$ は素数) の形で表せたとする。</p>
-        <p>自然数 $n$ の約数の個数 $d(n)$ は $d(n) = \prod_{i=1}^r (a_i + 1)$ と等しいことが示せる。</p>
-
+        <h4>応用: 高度合成数</h4>
+        <p>高度合成数とは, 自然数でそれ未満のどの自然数よりも約数の個数が多いものをいう。</p>
+        <p>高度合成数の表より, $10^9$ 以下の高度合成数の最大値は $735134400$  の $1344$ 個である。</p>
 	      <h4>問題例</h4>
       </section>
     </main>
