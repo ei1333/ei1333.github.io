@@ -36,8 +36,16 @@ var colors = {
 
 $(function()
 {
-  var url = "http://codeforces.com/api/user.rating?handle=ei1333";
-  var xpath = '/html/body/pre';
+  var handle = undefined;
+  var match = location.search.match(/handle=(.*?)(&|$)/);
+  if(match) {
+    handle = decodeURIComponent(match[1]);
+    $('#handle').val(handle);
+  }
+  if(handle === undefined) return;
+
+
+  var url = "http://codeforces.com/api/user.rating?handle=" + handle;
   var query = "select * from json where url = '" + url + "'";
   var yql   = "https://query.yahooapis.com/v1/public/yql?format=json&q=" + encodeURIComponent(query);
 
@@ -48,30 +56,41 @@ $(function()
     dataType : 'json',
     timeout  : 10000,
     cache    : false,
-    success  : function(data)
-               {
-                 data = data['query']['results']['json']['result'];
-                 setRatingHtml('codeforces', "#now_cf", data[data.length-1 - 1]['newRating']);
-                  console.log(data);
-               },
+  }).done(function(data)
+  {
+    var rating = undefined;
+console.log(data);
+    if(data['query']['results']['json']['status'] == "OK") {
+      data = data['query']['results']['json']['result'];
+      if(data != undefined) {
+        if(data.length != undefined) rating = data[data.length - 1]['newRating'];
+        else rating = data['newRating'];
+      }
+    }
+    setRatingHtml('codeforces', "#now_cf", rating);
+  }).fail(function(data)
+  {
+    setRatingHtml('codeforces', "#now_cf", undefined);
   });
 
   $.ajax(
   {
     type     : 'GET',
-    url      : "https://api.topcoder.com/v2/users/ei1333/statistics/data/srm",
+    url      : "https://api.topcoder.com/v2/users/" + handle + "/statistics/data/srm",
     dataType : 'json',
     timeout  : 10000,
     cache    : false,
-    success  : function(data)
-               {
-                  console.log(data);
-                  setRatingHtml('topcoder', '#now_tc', data['rating']);
-               },
+  }).done(function(data)
+  {
+    console.log(data);
+    setRatingHtml('topcoder', '#now_tc', data['rating'] > 0 ? data['rating'] : undefined);
+  }).fail(function(data)
+  {
+    setRatingHtml('topcoder', '#now_tc', undefined);
   });
 
 
-  var url = "https://atcoder.jp/user/ei1333";
+  var url = "https://atcoder.jp/user/" + handle;
   var xpath = '//*[@id="main-div"]/div/div/div[2]/script[2]';
   var query = "select * from html where url = '" + url + "' and xpath = '" + xpath + "'";
   var yql   = "https://query.yahooapis.com/v1/public/yql?format=json&q=" + encodeURIComponent(query);
@@ -83,13 +102,21 @@ $(function()
     dataType : 'json',
     timeout  : 10000,
     cache    : false,
-    success  : function(data)
-               {
-                  data = JSON.parse(ConvertAtCoder(data['query']['results']['script']));
-                  setRatingHtml("atcoder", "#now_ac", data[0][1]);
-                  console.log(data);
-               },
+  }).done(function(data)
+  {
+    var rating = undefined;
+console.log(data);
+    if(data['query']['count'] != 0) {
+      data = JSON.parse(ConvertAtCoder(data['query']['results']['script']));
+      rating = data[0][1];
+      console.log(data);
+    }
+    setRatingHtml("atcoder", "#now_ac", rating);
+  }).fail(function(data)
+  {
+    setRatingHtml("atcoder", "#now_ac", undefined);
   });
+
 });
 
 
@@ -118,6 +145,11 @@ function getRatingLine(site, rating)
 // 要素名 component に値 rating をセットする
 function setRatingHtml(site, component, rating)
 {
+  if(rating == undefined) {
+    $(component).text("?");
+    return;
+  }
+
   var line = getRatingLine(site, rating);
   $(component).css('color', line.color);
   $(component).text(rating + " (" + line.title + ")"); 
