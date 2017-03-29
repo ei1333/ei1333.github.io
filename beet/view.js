@@ -83,7 +83,7 @@ console.log(data);
   }).done(function(data)
   {
     console.log(data);
-    setRatingHtml('topcoder', '#now_tc', data['rating'] > 0 ? data['rating'] : undefined);
+    setRatingHtml('topcoder', '#now_tc', data['rating']);
   }).fail(function(data)
   {
     setRatingHtml('topcoder', '#now_tc', undefined);
