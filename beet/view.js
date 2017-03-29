@@ -190,7 +190,9 @@ function createGraph(component, stocked)
     type: 'line',
     data: {
       datasets: [{
-        data: stocked
+        data: stocked,
+        lineTension : 0,
+
       }]
     },
     options: {
