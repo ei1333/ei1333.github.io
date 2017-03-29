@@ -193,14 +193,15 @@ function createGraph(site, component, stocked)
     each_point_color.push(line.color);
   }
 
-  var myLineChart = Chart.Line(ctx, {
+  var myLine = Chart.Line(ctx, {
     type: 'line',
     data: {
       datasets: [{
         data: stocked,
         lineTension : 0,
         pointBackgroundColor: each_point_color,
-        pointRadius: 4
+        pointRadius: 4,
+        fill: false,
       }]
     },
     options: {
@@ -239,7 +240,7 @@ function createGraph(site, component, stocked)
           }
         }]
       }
-    }
+    },
   });
 
 }
