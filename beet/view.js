@@ -73,7 +73,7 @@ console.log(data);
 
       var stocked = [];
       for(var i = 0; i < data.length; i++) {
-        stocked.push({x: moment(new Date(data[i]['ratingUpdateTimeSeconds'] * 1000)), y: data[i]['newRating']});
+        stocked.push({x: moment(new Date(data[i]['ratingUpdateTimeSeconds'] * 1000)), y: data[i]['newRating'], label: data[i]['contestName']});
       }
       createGraph("codeforces", "#canvas2", stocked);
 
@@ -97,7 +97,7 @@ console.log(data);
 
     var stocked = [];
     for(var i = 0; i < data['History'].length; i++) {
-      stocked.push({x: moment(data['History'][i]['date'].replace(/\./g, '-')), y: data['History'][i]['rating']});
+      stocked.push({x: moment(data['History'][i]['date'].replace(/\./g, '-')), y: data['History'][i]['rating'], label: data['History'][i]['challengeName']});
     }
     stocked.sort(function(a,b) {
       return (a['x'] < b['x'] ? 1 : -1);
@@ -134,7 +134,7 @@ console.log(data);
       var stocked = [];
       for(var i = 0; i < data.length; i++) {
         var update = new Date(data[i][0] * 1000);
-        stocked.push({x: moment(update), y: data[i][1]});
+        stocked.push({x: moment(update), y: data[i][1], label: data[i][3]});
       }
       createGraph("atcoder", "#canvas3", stocked);
     }
@@ -199,12 +199,25 @@ function createGraph(site, component, stocked)
       datasets: [{
         data: stocked,
         lineTension : 0,
-        pointBackgroundColor: each_point_color
+        pointBackgroundColor: each_point_color,
+        pointRadius: 4
       }]
     },
     options: {
       legend: {
         display: false
+      },
+      title: {
+        display: true,
+        text: site
+      },
+      tooltips: {
+        mode: 'label',
+        callbacks: {
+          title: function(tooltipItems, data) {
+            return(stocked[tooltipItems[0].index].label);
+          }
+        }
       },
       scales: {
         xAxes: [{
