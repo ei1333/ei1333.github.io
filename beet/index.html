@@ -8,6 +8,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://use.edgefonts.net/source-code-pro.js"></script>
     <link rel="stylesheet" href="../css/static.css">
+    <script src="moment.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.bundle.min.js"></script>
     <script src="view.js"></script>
   </head>
   <body>
@@ -34,6 +36,22 @@
           <li>Atcoder: <span id="now_ac">Loading...</span>
         </ul>
 
+        <h4>履歴</h4>
+        <div class="container" style="width: 500px">
+           <p>Topcoder</p>
+           <canvas id="canvas1" style="padding-left: 1.5em;"></canvas>
+        </div>
+        <div class="container" style="width: 500px">
+           <p>Codeforces</p>
+           <canvas id="canvas2" style="padding-left: 1.5em;"></canvas>
+        </div>
+
+        <div class="container" style="width: 500px">
+           <p>Atcoder</p>
+           <canvas id="canvas3" style="padding-left: 1.5em;"></canvas>
+        </div>
+
+ 
       </section>
     </main>
     <hr>

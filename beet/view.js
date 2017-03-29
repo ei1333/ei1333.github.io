@@ -7,7 +7,7 @@ var colors = {
     {color:'#0000FF', min:1600, max:1999, title:'Blue' },
     {color:'#C0C000', min:2000, max:2399, title:'Yellow' },
     {color:'#FF8000', min:2400, max:2799, title:'Orange' },
-    {color:'#FF0000', min:2800, max:9999, ttile:'Red' }
+    {color:'#FF0000', min:2800, max:9999, title:'Red' }
   ],
 
   'codeforces':[
@@ -63,9 +63,20 @@ console.log(data);
     if(data['query']['results']['json']['status'] == "OK") {
       data = data['query']['results']['json']['result'];
       if(data != undefined) {
-        if(data.length != undefined) rating = data[data.length - 1]['newRating'];
-        else rating = data['newRating'];
+        if(data.length == undefined) {
+          var buff = data;
+          data = [];
+          data.push(buff);
+        }
+        rating = data[data.length - 1]['newRating'];
       }
+
+      var stocked = [];
+      for(var i = 0; i < data.length; i++) {
+        stocked.push({x: moment(new Date(data[i]['ratingUpdateTimeSeconds'] * 1000)), y: data[i]['newRating']});
+      }
+      createGraph("#canvas2", stocked);
+
     }
     setRatingHtml('codeforces', "#now_cf", rating);
   }).fail(function(data)
@@ -83,6 +94,16 @@ console.log(data);
   }).done(function(data)
   {
     console.log(data);
+
+    var stocked = [];
+    for(var i = 0; i < data['History'].length; i++) {
+      stocked.push({x: moment(data['History'][i]['date'].replace(/\./g, '-')), y: data['History'][i]['rating']});
+    }
+    stocked.sort(function(a,b) {
+      return (a['x'] < b['x'] ? 1 : -1);
+    });
+    createGraph("#canvas1", stocked);
+
     setRatingHtml('topcoder', '#now_tc', data['rating']);
   }).fail(function(data)
   {
@@ -105,18 +126,23 @@ console.log(data);
   }).done(function(data)
   {
     var rating = undefined;
-console.log(data);
     if(data['query']['count'] != 0) {
       data = JSON.parse(ConvertAtCoder(data['query']['results']['script']));
       rating = data[0][1];
       console.log(data);
+
+      var stocked = [];
+      for(var i = 0; i < data.length; i++) {
+        var update = new Date(data[i][0] * 1000);
+        stocked.push({x: moment(update), y: data[i][1]});
+      }
+      createGraph("#canvas3", stocked);
     }
     setRatingHtml("atcoder", "#now_ac", rating);
   }).fail(function(data)
   {
     setRatingHtml("atcoder", "#now_ac", undefined);
   });
-
 });
 
 
@@ -155,3 +181,42 @@ function setRatingHtml(site, component, rating)
   $(component).text(rating + " (" + line.title + ")"); 
 }
 
+
+// いい感じにグラフを描画する
+function createGraph(component, stocked)
+{
+  var ctx  = $(component);
+  var myLineChart = Chart.Line(ctx, {
+    type: 'line',
+    data: {
+      datasets: [{
+        data: stocked
+      }]
+    },
+    options: {
+      legend: {
+        display: false
+      },
+      scales: {
+        xAxes: [{
+          type: 'time',
+          position: 'bottom',
+          unit: 'month',
+          time: {
+            displayFormats: {
+              'millisecond': 'YY-MM',
+              'second': 'YY-MM',
+              'minute': 'YY-MM',
+              'hour': 'YY-MM',
+              'day': 'YY-MM',
+              'week': 'YY-MM',
+              'month': 'YY-MM',
+              'quarter': 'YY-MM',
+              'year': 'YY-MM',
+            }
+          }
+        }]
+      }
+    }
+  });
+}
