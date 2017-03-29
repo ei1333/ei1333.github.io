@@ -75,7 +75,7 @@ console.log(data);
       for(var i = 0; i < data.length; i++) {
         stocked.push({x: moment(new Date(data[i]['ratingUpdateTimeSeconds'] * 1000)), y: data[i]['newRating']});
       }
-      createGraph("#canvas2", stocked);
+      createGraph("codeforces", "#canvas2", stocked);
 
     }
     setRatingHtml('codeforces', "#now_cf", rating);
@@ -102,7 +102,7 @@ console.log(data);
     stocked.sort(function(a,b) {
       return (a['x'] < b['x'] ? 1 : -1);
     });
-    createGraph("#canvas1", stocked);
+    createGraph("topcoder", "#canvas1", stocked);
 
     setRatingHtml('topcoder', '#now_tc', data['rating']);
   }).fail(function(data)
@@ -136,7 +136,7 @@ console.log(data);
         var update = new Date(data[i][0] * 1000);
         stocked.push({x: moment(update), y: data[i][1]});
       }
-      createGraph("#canvas3", stocked);
+      createGraph("atcoder", "#canvas3", stocked);
     }
     setRatingHtml("atcoder", "#now_ac", rating);
   }).fail(function(data)
@@ -183,16 +183,23 @@ function setRatingHtml(site, component, rating)
 
 
 // いい感じにグラフを描画する
-function createGraph(component, stocked)
+function createGraph(site, component, stocked)
 {
   var ctx  = $(component);
+
+  var each_point_color = [];
+  for(var i = 0; i < stocked.length; i++) {
+    var line = getRatingLine(site, stocked[i]['y']);
+    each_point_color.push(line.color);
+  }
+
   var myLineChart = Chart.Line(ctx, {
     type: 'line',
     data: {
       datasets: [{
         data: stocked,
         lineTension : 0,
-
+        pointBackgroundColor: each_point_color
       }]
     },
     options: {
@@ -221,4 +228,5 @@ function createGraph(component, stocked)
       }
     }
   });
+
 }
