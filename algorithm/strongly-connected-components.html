@@ -77,7 +77,7 @@ MathJax.Hub.Config({
     for(int i = 0; i &lt; gg.size(); i++) dfs(i);
     reverse(begin(order), end(order));
     int ptr = 0;
-    for(int i : order) rdfs(i, ptr), ptr++;
+    for(int i : order) if(comp[i] == -1) rdfs(i, ptr), ptr++;
 
     t.resize(ptr);
     set&lt; pair&lt; int, int &gt; &gt; connect;
