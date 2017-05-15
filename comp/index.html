@@ -1,0 +1,489 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD
+HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html lang="ja">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta http-equiv="Content-Style-Type" content="text/css">
+    <title>競技プログラミング</title>
+    <link rel="stylesheet" type="text/css" href="./style.css">
+  </head>
+  <body>
+    <h1 id="TITLE">競技プログラミングについて</h1>
+    <p>
+    このページでは私の趣味の 1 つである競技プログラミングのルールや魅力について説明していきます.
+    </p>
+    <ul class="menu">
+      <li><a href="#TOP">競技プログラミング</a>
+      <li><a href="#CONTEST">プログラミングコンテスト</a>
+      <li><a href="#ONLINE">オンラインプログラミングコンテストの参加</a>
+      <li><a href="#PROBLEM">出題されるいろいろな問題</a>
+      <li><a href="#LAST">最後に</a>
+    </ul>
+    <hr>
+    
+    <h2 id="TOP">競技プログラミング</h2>
+		<h3>競技プログラミングとは</h3>
+    <p>
+    競技プログラミングとは、「費用を最小化せよ」「価値を最大化せよ」といった問題が与えられ、
+    その問題を解くため手順(アルゴリズム)を考えて、それをプログラムによって実装する力を競う競技です.<br>
+    問題には様々な難易度があり難しい問題となれば、より効率的なアルゴリズムを考えることが求められてきます.
+    </p>
+
+		<h3>競技プログラミングの魅力</h3>
+		<h4>楽しい</h4>
+		<p>
+			アルゴリズム(問題の解法)を考えることが楽しいというのが、一般的に競技プログラマーが感じていることだと思います. アルゴリズム設計に必要なものとして, 基本的なアルゴリズムの知識(queueなどのデータ構造, グラフ, 幾何学など)を, 設計技法(動的計画法, 貪欲法, 二分探索) と組み合わせる能力, 今までの経験や自分の発想力・思考力を用いることが必要となってきます.
+		</p>
+		<p>
+			アルゴリズムの設計がなぜ楽しいのはやってみればわかります(個人差があるみたいです.
+		</p>
+		<h4>実装力の向上</h4>
+		<p>
+			プログラミング言語を用いるので, やっているとそのうちその言語に慣れてきて, 短時間で実装できるようになります. また, 実装の回数を重ねるうちにバグに気付きやすくなったり, プログラムにバグを埋め込まなくなってきます(たぶん.
+		</p>
+		<h4>英語力や数学力の向上</h4>
+		<p>
+			問題文は英語の場合が多いので, 問題を解くには英語を読む必要があります.
+			また, 行列演算や方程式, 空間幾何の問題は数学的な知識が必須です.
+			知らなくて解けないと悲しくなるので, ちょっとずつ覚えて知識を磨くことができます.
+		</p>
+		<h4>世界中の人々とリアルタイム対戦</h4>
+		<p>
+			時間に制限がある中でプログラムを書くというゲーム的なものがあります. リアルタイムにソースコードが採点されて, 順位が逐次更新されます. 日本中, あるいは世界中の人々とオンラインで競い合うことができます.
+		</p>
+		<h4>SNS で情報共有</h4>
+		<p>
+			Twitter には競技プログラマーの上級者から初心者まで多くの人が群がっています. 特にコンテスト終了後に盛んです. その時間帯に何かつぶやくことで, その人たちと知り合って仲良くなることができます(たぶん. 技術の向上には競い合える仲間の存在が不可欠な気がします.
+		</p>
+
+		
+    <h2 id="CONTEST">プログラミングコンテスト</h2>
+    <p>
+    例年, ある年代 または全世代を対象とした競技プログラミングコンテストが毎年定期的に開催されています.
+    </p>
+    <h3>主なプログラミングコンテスト一覧</h3>
+    <h4>情報オリンピック(JOI)</h4>
+    <ul>
+      <li>リンク: <a href="https://www.ioi-jp.org/">https://www.ioi-jp.org/</a>
+    </ul>
+    <p>
+      高校生以下の年代のためのコンテスト. 個人戦. 日本代表は 4 人.
+      また選考合宿参加者にはアジア太平洋情報オリンピック(APIO)の参加権も与えられる.
+    </p>
+    
+    <table>
+      <tr>
+        <th class="thleft">段階</th>
+        <td>予選</td>
+        <td>本選</td>
+        <td>日本代表選考合宿</td>
+        <td>国際大会</td>
+      </tr>
+      <tr>
+        <th class="thleft">参加者数</th>
+        <td>約1000名</td>
+        <td>80名</td>
+        <td>20名</td>
+        <td>約300名</td>
+      </tr>
+    </table>
+    
+    <h4>ACM-ICPC 国際大学対抗プログラミングコンテスト(ICPC)</h4>
+    <ul>
+      <li>リンク: <a href="http://icpc.iisf.or.jp/">http://icpc.iisf.or.jp/</a>
+    </ul>
+    <p>
+      大学生を対象としたコンテスト. 3人のチーム戦. 大学別にチームを組む.
+    </p>
+    <table>
+      <tr>
+        <th class="thleft">段階</th>
+        <td>国内予選</td>
+        <td>アジア地区予選</td>
+        <td>国際大会</td>
+      </tr>
+      <tr>
+        <th class="thleft">参加チーム数</th>
+        <td>約300チーム</td>
+        <td>約40チーム</td>
+        <td>約125チーム</td>
+			</tr>
+    </table>
+    
+    <h4>Google Code Jam (GCJ)</h4>
+    <ul>
+      <li>リンク: <a href="https://code.google.com/codejam">https://code.google.com/codejam</a>
+    </ul>
+    <p>
+      18歳以上を対象とした Google が開催しているコンテスト. Round 3 まではオンラインで実施されていて, Round 2 で上位 1000 人には T シャツが配布される.
+    </p>
+    <table>
+      <tr>
+        <th class="thleft">段階</th>
+        <td>Qualification</td>
+        <td>Round 1</td>
+        <td>Round 2</td>
+        <td>Round 3</td>
+        <td>World Finals</td>
+      </tr>
+      <tr>
+        <th class="thleft">参加者数</th>
+        <td>約27000人</td>
+        <td>約22000人</td>
+        <td>3000人</td>
+        <td>500人</td>
+        <td>25人</td>
+			</tr>
+    </table>
+    
+    <h4>Facebook Hacker Cup (FHC)</h4>
+    <ul>
+      <li>リンク: <a href="https://www.facebook.com/hackercup/">https://www.facebook.com/hackercup/</a>
+    </ul>
+    <p>
+      18歳以上を対象とした Facebook が開催しているコンテスト. Round 3 まではオンラインで実施されていて, Round 2 で上位 500 人には T シャツが配布される.
+    </p>
+    <table>
+      <tr>
+        <th class="thleft">段階</th>
+        <td>Qualification</td>
+        <td>Round 1</td>
+        <td>Round 2</td>
+        <td>Round 3</td>
+        <td>World Finals</td>
+      </tr>
+      <tr>
+        <th class="thleft">参加者数</th>
+        <td>約6500人</td>
+        <td>約3500人</td>
+        <td>約1700人</td>
+        <td>200人</td>
+        <td>25人</td>
+			</tr>
+    </table>
+    
+    
+    <h2 id="ONLINE">オンラインプログラミングコンテストの参加</h2>
+    <p>
+    プログラミングコンテストはオンラインでも開催されていて誰でも簡単に参加できます.
+    </p>
+    
+    <h3>オンラインのコンテスト一覧</h3>
+    <p>
+    主なオンラインコンテスト一覧です. 日本語の問題で出されることは少なくて英語が多いです.
+    </p>
+    <table>
+      <tr>
+        <th>コンテスト</th>
+        <th>言語</th>
+        <th>開催時間帯</th>
+        <th>問題数</th>
+      </tr>
+      <tr>
+        <td><a href="http://atcoder.jp/">ABC(AtCoder Biginer Contest)</a></td>
+        <td>日本語</td>
+        <td>隔週土曜 21:00-23:00</td>
+        <td>4 問</td>
+      </tr>
+      <tr>
+        <td><a href="http://atcoder.jp/">ARC(AtCoder Regular Contest)</a></td>
+        <td>日本語</td>
+        <td>隔週土曜 21:00-22:30</td>
+        <td>4 問</td>
+      </tr>
+      <tr>
+        <td><a href="http://yukicoder.me/">yukicoder</a></td>
+        <td>日本語</td>
+        <td>不定期 22:20-0:00頃</td>
+        <td>3～5 問</td>
+      </tr>
+      <tr>
+        <td><a href="http://codeforces.com/">Codeforces</a></td>
+        <td>英語<br>ロシア語</td>
+        <td>不定期 1:35-3:35が多い</td>
+        <td>5～7 問</td>
+      </tr>
+      <tr>
+        <td><a href="http://jp.topcoder.com/">TopCoder</a></td>
+        <td>英語</td>
+        <td>不定期 時間もばらばら</td>
+        <td>3 問</td>
+      </tr>
+    </table>
+   
+    <h3>レーティングシステム</h3>
+    <p>
+    CodeforcesやTopCoderはレーティングシステムという面白いものがあって, コンテスト結果によってレートが逐次変動します.<br>
+    レートの値によって色付けされていて, 一番上の位の人々は赤色であることから通称 RedCoder と呼ばれています(上位0.1%, 日本で30人程度).
+		(余談: 面白いのだけど欧米の時間帯に合わせて開催されるので, 日本時間で見るとかなりつらい時間になるので翌朝の寝不足は避けられない...)
+    </p>
+    
+    <h3>準備するもの</h3>
+    <p>
+    ここでは AtCoder が定期的に開催している ABC(AtCoder Biginer Contest) を例にとります. 他のコンテストでも概ね同じです.
+    ABC は初級者・中級者向けのコンテストで問題は日本語で出されます.
+    </p>
+    <ul>
+      <li>
+      パソコン(要: ネット環境)<br>
+      <img src="img1.JPG" style="max-width: 300px;" alt="ノートパソコン"><br>
+      一般的にはパソコンが必要です. コンテストはオンラインで開かれるので, インターネットに接続できる環境が必要です.
+      
+      <li>
+      自由な時間<br>
+      コンテストの開催時間はコンテストの種類によっていろいろです. ABC は隔週土曜日の 21:00-23:00 で開催されます.
+      
+      <li>
+      プログラミング言語の知識<br>
+      多くの場合プログラムのソースコードの提出が求められるので, 解答はプログラミング言語で記述する必要があります. 標準入出力や条件分岐,繰り返しなど基本的な構文が書ければ満足な場合が多いです.<br>
+      一般に, 実行速度が早い, ライブラリが充実しているなどの観点から C++ 言語を用いる場合が多いですが, C, Java, C#, Python などの言語を使用することも可能です.
+      
+      <li>
+      プログラミング環境
+      <br>
+      プログラミングするために最低限パソコンに入れておきたいものを以下に挙げます.
+      
+      <ul>
+        <li>
+        テキストエディタ<br>
+        ソースコードを記述するためのエディタが必要です. 有名なものに emacs, vi などがあります. 以下は例として emacs を挙げています.<br>
+        <img src="img3.png" style="max-width: 300px" alt="emacsエディタの画面">
+        
+        
+        <li>
+        コンパイラ<br>
+        ソースコードをコンパイルする(プログラムにする)ためのコンパイラが必要です.
+        
+      </ul>
+      
+      <li>
+      (軽食)<br>
+      頭をつかうのでのどが渇いたりお腹がすいたりするかもしれません. スポーツドリンクなどの飲み物や甘い食べ物などを用意しておく人が多いようです.
+      
+      <li>
+      (本)<br>
+      競技プログラミングの対策となる本が多く出版されています. コンテスト中に役立つこともしばしばです.<br>
+      <img src="img2.jpg" style="max-width: 300px" alt="4冊の競プロの本"><br>
+      一番下の蟻のマークが書かれた本(通称蟻本: <a href="http://www.amazon.co.jp/%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0%E3%82%B3%E3%83%B3%E3%83%86%E3%82%B9%E3%83%88%E3%83%81%E3%83%A3%E3%83%AC%E3%83%B3%E3%82%B8%E3%83%96%E3%83%83%E3%82%AF-%E7%AC%AC2%E7%89%88-%EF%BD%9E%E5%95%8F%E9%A1%8C%E8%A7%A3%E6%B1%BA%E3%81%AE%E3%82%A2%E3%83%AB%E3%82%B4%E3%83%AA%E3%82%BA%E3%83%A0%E6%B4%BB%E7%94%A8%E5%8A%9B%E3%81%A8%E3%82%B3%E3%83%BC%E3%83%87%E3%82%A3%E3%83%B3%E3%82%B0%E3%83%86%E3%82%AF%E3%83%8B%E3%83%83%E3%82%AF%E3%82%92%E9%8D%9B%E3%81%88%E3%82%8B%EF%BD%9E-%E7%A7%8B%E8%91%89%E6%8B%93%E5%93%89/dp/4839941068">Amazon</a>) がおすすめです.
+      
+    </ul>
+    
+    <h3>コンテストの流れ</h3>
+    <p>
+    以下はあくまで一例です.
+    </p>
+    <h4>1. 参加登録</h4>
+    <p>
+    コンテストが始まる前までに, 参加登録が必要です. 参加しましょう.
+    </p>
+    <h4>2. 開始</h4>
+    <p>
+    時間になると, 問題が見れます. 基本的に, A, B, C, Dの順に難易度順に並んでいます.
+    各問題には実行時間制限(TL)とメモリ制限(ML)があり, 例えば計算に時間にかかるプログラムを書くとTLに引っかかってしまいます.<br>
+    <img src="img4.png" style="max-width: 640px" alt="問題一覧画面">
+    </p>
+    <h4>3. 問題を読む</h4>
+    <p>
+    A 問題から読んでみます.<br>
+    </p>
+    <div style="margin: 1em; padding: 0.25em; border: 1px solid #ccc;">
+      <h3>A - 饅頭</h3>
+      <p>時間制限 : 2sec / スタック制限 : 256MB / メモリ制限 : 256MB</p>
+      <h4>問題文</h4>
+      <p>
+      あなたは饅頭の店に来ています。ここでは白と緑の 2 種類の饅頭が売られていて、それぞれの種類は何個でも買うことができます。 白色の饅頭は 1 個 <var>A</var> 円で、緑色の饅頭は 1 個 <var>B</var> 円です。
+      </p>
+      <p>
+      あなたは <var>C</var> 円持っています。あなたはとにかく沢山の個数を食べたいので、種類は気にせず、なるべく多くの個数の饅頭を買おうと思っています。 2 種類で買う個数が違ったり、片方の種類しか買わなかったりしてもかまいません。
+      </p>
+      <p>
+      最大で何個の饅頭が買えるでしょうか。
+      </p>
+      <h4>制約</h4>
+      <ul>
+        <li>1 &le; <var>A</var>, <var>B</var> &le; 1,000
+        <li>1 &le; <var>C</var> &le; 1,000,000
+      </ul>
+      <h4>入力</h4>
+      <p>
+      入力は以下の形式で標準入力から与えられる。
+      </p>
+      <pre><var>A</var> <var>B</var> <var>C</var></pre>
+      <h4>出力</h4>
+      <p>
+      あなたが買える饅頭の個数の最大値を出力せよ。
+      </p>
+      <hr>
+      <h4>入力例 1</h4>
+      <pre>3 5 6</pre>
+      <h4>出力例 1</h4>
+      <pre>2</pre>
+      <hr>
+      <h4>入力例 2</h4>
+      <pre>8 6 20</pre>
+      <h4>出力例 2</h4>
+      <pre>3</pre>
+    </div>
+    
+    <h4>4. 解法を考える</h4>
+    <p>
+    問題を解くための手順を考えます.
+    </p>
+    <p>
+    この問題は, 安い色の饅頭を買えば良いので, C / min(A, B) 以下の最大の整数 とすれば良さそうです. A 問題なので簡単ですね.
+    </p>
+    <p>
+    B 問題になると繰り返し(for)構文が必要となったり, C や D 問題では, 普通に解くと時間制限に引っかかるのでアルゴリズム的な考察が必要となったりします.
+    </p>
+    
+    <h4>5. 実装する</h4>
+    <p>
+    手順を考えたら, それをソースコードを記述することによって実装します. 以下は C++ での実装例です.
+    </p>
+		<pre>#include&lt;bits/stdc++.h&gt;
+using namespace std;
+ 
+int main()
+{
+  int A, B, C;
+  cin &gt;&gt; A &gt;&gt; B &gt;&gt; C;
+  cout &lt;&lt; C / min(A, B) &lt;&lt; endl;
+}</pre>
+    <h4>6. ソースコードを提出する</h4>
+    <p>
+    書き終わったらソースコードを提出画面より提出します.
+    </p>
+    <h4>7. 結果を見る</h4>
+    <p>
+    提出してしばらくすると, 自分のプログラムが正解かどうか, サーバーから結果がかえってきます.
+    不正解なら 4. からやり直し, 正解なら 新しい問題を読みます.<br>
+    <img src="img6.png" style="max-width: 640px;" alt="提出結果画面"><br>
+    AC は Acceptの略で正解という意味です.
+    </p>
+    <h4>8. 順位表</h4>
+    <p>
+    リアルタイムで順位表が見れます. 他の人がどれくらい解いているのか確認することが出来ます.<br>
+    <img src="img7.png" style="max-width: 640px" alt="順位表"><br>
+    解いた問題数, 解いた時間の順で順位付けされるのでなるべく早く解く必要があります.
+    自分より順位が上の人や下の人のプロフィールも見ることが出来て, 「この人〇〇大学の人だ」「○○くんに負けた」のように比較することが出来ます. 
+    </p>
+    
+    <h4>9. 練習</h4>
+    <p>
+    コンテスト時間外では, 過去に出題された問題を同じように解いて練習することが出来ます. 結果もリアルタイムでわかります.
+    </p>
+    
+    <h2 id="PROBLEM">出題されるいろいろな問題</h2>
+    <p>
+    前に例示した問題はただ最小値で割り算するだけでしたが, 一般にそういう問題はほとんどありません. ここでは, その中でも典型的な問題を一部だけ取り出して紹介します.
+    </p>
+    
+    <h3>最短経路問題</h3>
+    <p>
+    最短経路問題とは,「重み付きグラフの与えられた2つのノード間を結ぶ経路の中で、重みが最小の経路を求める最適化問題(<a href="https://ja.wikipedia.org/wiki/%E6%9C%80%E7%9F%AD%E7%B5%8C%E8%B7%AF%E5%95%8F%E9%A1%8C">wikipedia</a>より引用)」です.
+    鉄道の乗り換え案内などに応用されています. 駅をノードとし重みを駅と駅との所要時間や必要料金とします.
+    </p>
+    <p>
+    Dijkstra 法と呼ばれるアルゴリズムを用いることによって, 100万頂点くらいまでなら簡単に解くことができます.
+    おおまかにいうとスタートの頂点から近い頂点より順にコストを決定していく方法です. 
+    時間計算量を見積もると O(頂点数 log<sub>2</sub> 辺数) となります. 一般に O(10億)以下くらいなら計算することができます.
+    <br>
+    <img src="img10.gif" style="max-width: 283px;" alt="Dijkstra法の動作シミュレーション"><br>
+    Dijkstra法の動作シミュレーション(<a href="https://ja.wikipedia.org/wiki/%E3%83%80%E3%82%A4%E3%82%AF%E3%82%B9%E3%83%88%E3%83%A9%E6%B3%95">Wikipedia</a> より)
+    </p>
+   
+    <p>
+    以下はC++での実装例です(一部抜粋).
+    </p>
+    <pre>typedef pair&lt; int, int &gt; Pi;
+struct edge { int to, cost; };
+typedef vector&lt; vector&lt; edge &gt; &gt; Graph;
+const int INF = 1 &lt;&lt; 30;
+
+int Dijkstra(Graph&amp; graph, int s, int g) /* s: 始点, g: 終点 */
+{  
+  vector&lt; int &gt; min_cost(graph.size(), INF);
+  priority_queue&lt; Pi, vector&lt; Pi &gt;, greater&lt; Pi &gt; &gt; que;
+  que.push(Pi(0, s));
+  min_cost[s] = 0;
+  while(!que.empty()) {
+    int now  = que.top().second;
+    int cost = que.top().first;
+    que.pop();
+    if(now == g) return(cost);
+    if(cost &gt; min_cost[now]) continue; /* 終点についた */
+    for(int i = 0; i &lt; graph[cost].size(); i++) {
+      edge e = graph[now][i];
+      if(cost + e.cost &lt; min_cost[e.to]) {
+        min_cost[e.to] = cost + e.cost;
+        que.push(Pi(min_cost[e.to], e.to));
+      }
+    }
+  }
+  return(-1); /* 辿りつけなかった */
+}</pre>
+    
+    <h3>0-1 ナップザック問題</h3>
+    <p>
+    <var>N</var> 個の品物(価値 <var>v</var><var><sub>i</sub></var>, 容積 <var>w</var><var><sub>i</sub></var>) が与えられたとき、
+    容量 <var>W</var> のナップザックに入れる品物の価値の和を最大化する問題です.
+    </p>    
+    <p>動的計画法(Dynamic Programing) の考え方を用いて効率的に解くことが出来ます.</p>
+    
+    <p>以下は C++ での実装例です.</p>
+    
+    <pre>#include&lt;bits/stdc++.h&gt;
+using namespace std;
+int main(){
+  int N, W, v[100], w[100], dp[10001]; // N: 品物数, W: 容量, v: 価値, w: 重さ
+  fill_n( dp, 10001, -1);
+ 
+  cin &gt;&gt; N &gt;&gt; W;
+  for(int i = 0; i &lt; N; i++){
+    cin &gt;&gt; v[i] &gt;&gt; w[i];
+  }
+  dp[0] = 0;
+  for(int i = 0; i &lt; N; i++){
+    for(int j = W; j &gt;= w[i]; j--){
+      dp[j] = max(dp[j], dp[j - w[i]] + v[i]);
+    }
+  }
+  cout &lt;&lt; *max_element(dp, dp + W + 1) &lt;&lt; endl;
+}</pre>
+    
+    <h3>Range Minimm Query(RMQ)</h3>
+    <p>
+    数列 <var>A</var> = {<var>a</var><sub>0</sub>, <var>a</var><sub>1</sub>, ..., <var>a</var><sub><var>n</var>-1</sub>} に対し次の 2 つの操作を行う問題です.
+    </p>
+    <ul>
+      <li>rmq(<var>l</var>, <var>r</var>): <var>a</var><sub><var>l</var></sub>, <var>a</var><sub><var>l</var>+1</sub>, ..., <var>a</var><sub><var>r</var></sub> の最小値を求める.
+      <li>update(<var>i</var>, <var>x</var>): <var>a</var><sub><var>i</var></sub> を <var>x</var> に変更する.
+    </ul>
+    <p>
+    この問題は数列の長さが長くなるほど計算に時間がかかって処理しきれなくなります.
+    そこで, Segment Tree と呼ばれる二分木のようなデータ構造を用いることによって 両方の操作を O(log<sub>2</sub> n) で処理することができます.<br>
+    
+    <img src="img8.jpg" alt="セグメント木の区間の最小値イメージ" style="max-width: 400px;"><br>
+    <img src="img9.jpg" alt="セグメント木の更新イメージ" style="max-width: 400px;"><br>
+    (<a href="http://www.slideshare.net/iwiwi/ss-3578491">プログラミングコンテストでのデータ構造 - SlideShare</a> より)
+    </p>
+    
+    
+    <h2 id="LAST">最後に</h2>
+    <h3>まとめ</h3>
+    <p>
+    競技プログラミングは頭脳的で奥の深い競技です. 問題解決力やプログラムの実装力を磨くためのものとして, 興味を持っていただけたら幸いです.
+    </p>
+    
+    <h3>使用素材</h3>
+    <p>
+    このページの写真及びキャプチャ画像は自分で撮影しています. キャプチャ画像の一部は atcoder(<a href="http://abc037.contest.atcoder.jp/">ABC037</a>)を使用しています.
+    </p>
+    <hr>
+    
+    <ul class="menu" style="position: fixed; right: 0.3em; bottom: 0em;">
+      <li><a href="#TITLE" style="background: white;">↑このページの TOP へ</a></li>
+    </ul>
+  </body>
+</html>
