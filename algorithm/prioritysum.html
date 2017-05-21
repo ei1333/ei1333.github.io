@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+    <title>ei1333's page</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://use.edgefonts.net/source-code-pro.js"></script>
+    <link rel="stylesheet" href="../css/static.css">
+    <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+    </script>
+    <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/styles/github.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </head>
+  <body>
+    <header>
+      <h1>ei1333's page</h1>
+      <div class="path">
+	<a href="../index.html">ホーム</a> &gt;
+	<a href="index.html">Wiki</a>
+      </div>
+    </header>
+    <main>
+      <section>
+	<h2>スライド区間の昇順 $k$ 個の和</h2>
+	
+	<h4>説明</h4>
+	<p>スライドする区間の昇順(降順) $k$ 個の総和を効率良く求めるデータ構造. </p>
+
+	<h4>計算量</h4>
+	<p>$O(log n)$</p>
+  <p>但しsetを$4$ 個持っていて定数倍が重いので注意. </p>
+	<h4>実装例</h4>
+	<pre><code class="cpp">template&lt; typename T &gt;
+struct PrioritySumStructure
+{
+  static const bool INCREASE = false;
+  static const bool DECREASE = true;
+
+  bool order;
+  int k, sz;
+  T sum;
+  set&lt; pair&lt; T, int &gt; &gt; add, pend;
+  map&lt; int, T &gt; adding, pending;
+
+  PrioritySumStructure(int k, bool order = INCREASE) : k(k), sum(0), sz(0), order(order) {}
+
+  void Sweep()
+  {
+    while(sz &lt; k &amp;&amp; !pend.empty()) {
+      auto p = order ? --pend.end() : pend.begin();
+      sum += p-&gt;first;
+      ++sz;
+      add.emplace(*p);
+      adding.emplace(p-&gt;second, p-&gt;first);
+      pending.erase(p-&gt;second);
+      pend.erase(p);
+    }
+    while(sz &gt; k) {
+      auto p = order ? add.begin() : --add.end();
+      sum -= p-&gt;first;
+      --sz;
+      pend.emplace(*p);
+      pending.emplace(p-&gt;second, p-&gt;first);
+      adding.erase(p-&gt;second);
+      add.erase(p);
+    }
+  }
+
+  T getSum()
+  {
+    if(sz &lt; k) throw (&quot;get Sum Exception&quot;);
+    return (sum);
+  }
+
+  void addElement(int k, T x)
+  {
+    if(adding.count(k) || pending.count(k)) {
+      throw (&quot;Add Element Exception&quot;);
+    }
+    ++sz;
+    add.emplace(x, k);
+    adding[k] = x;
+    sum += x;
+    Sweep();
+  }
+
+  void deleteElement(int k)
+  {
+    if(pending.count(k)) {
+      pend.erase({pending[k], k});
+      pending.erase(k);
+    } else if(adding.count(k)) {
+      --sz;
+      sum -= adding[k];
+      add.erase({adding[k], k});
+      adding.erase(k);
+      Sweep();
+    } else {
+      throw (&quot;delete Element Exception&quot;);
+    }
+  }
+
+  void incrementSize()
+  {
+    ++k;
+    Sweep();
+  }
+
+  void decrementSize()
+  {
+    if(k == 0) throw (&quot;decrement Size Exception&quot;);
+    --k;
+    Sweep();
+  }
+};</code></pre>
+      </section>
+    </main>
+    <hr>
+    <footer>
+      <small>Copyright&copy; ei1333's page All Rights Reserved.</small>
+    </footer>
+
+  </body>
+</html>
