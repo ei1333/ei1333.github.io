@@ -19,10 +19,6 @@ $(function()
         ctx.drawImage(base, 0, 0, canvas.width(), canvas.height());
         ctx.drawImage(img, 200, 140, 165, 165);
         updateId();
-        var img_png_src = $("#row")[0].toDataURL("image/png");
-        
-console.log(img_png_src);
-         $("#output").attr("src", img_png_src);
       };
     };
 
@@ -43,5 +39,7 @@ console.log(img_png_src);
     ctx.fillStyle="#000000";
     ctx.font = "20px _sans";
     ctx.fillText("("+str+")", 380, 300);
+    var img_png_src = $("#row")[0].toDataURL("image/png");
+    $("#output").attr("src", img_png_src);
   };
 });
