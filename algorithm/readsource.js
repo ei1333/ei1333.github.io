@@ -31,7 +31,10 @@ $(function()
   $('pre code').each(function(i, block)
   {
     if(typeof $(this).attr('src') !== "undefined") {
-     $(this).load(escapeHtml($(this).attr('src')));
+      $.get($(this).attr('src'), function(data)
+      {
+        $(this).text(data);
+      });
     }
   });
   hljs.initHighlightingOnLoad();  
