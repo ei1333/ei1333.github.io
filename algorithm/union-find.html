@@ -16,89 +16,39 @@ MathJax.Hub.Config({
     <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/styles/github.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="readsource.js"></script>
   </head>
   <body>
     <header>
       <h1>ei1333's page</h1>
       <div class="path">
-	<a href="../index.html">ホーム</a> &gt;
-	<a href="index.html">Wiki</a>
+	      <a href="../index.html">ホーム</a> &gt;
+	      <a href="index.html">Wiki</a>
       </div>
     </header>
     <main>
       <section>
-	<h2>素集合データ構造(Union-Find)</h2>
+	      <h2>素集合データ構造(Union-Find)</h2>
 	
-	<h4>説明</h4>
-	<p>集合を高速に扱うためのデータ構造。集合を合併する操作(unite), ある要素がどの集合に属しているか(find)を問い合わせる操作を行うことが出来る。</p>
+	      <h4>説明</h4>
+	     <p>集合を高速に扱うためのデータ構造。集合を合併する操作(unite), ある要素がどの集合に属しているか(find)を問い合わせる操作を行うことが出来る。</p>
 
         <h4>使い方</h4>
         <ul>
-          <li>unite(x, y): 集合 $x$ と $y$ を併合する. 併合済のとき $false$, 未併合のとき $true$ が返される</li>
-          <li>find(k): 要素 $k$ が属する集合を求める</li>
-          <li>size(k): 要素 $k$ が属する集合の要素の数を求める</li>
+          <li>$\mathrm{unite}(x, y)$: 集合 $x$ と $y$ を併合する. 併合済のとき $\mathrm{false}$, 未併合のとき $\mathrm{true}$ が返される</li>
+          <li>$\mathrm{find(k)}$: 要素 $k$ が属する集合を求める</li>
+          <li>$\mathrm{size(k)}$: 要素 $k$ が属する集合の要素の数を求める</li>
         </ul>
 
-	<h4>計算量</h4>
-	<p>$O(\alpha(n))$</p>
+	      <h4>計算量</h4>
+	      <p>$O(\alpha(n))$</p>
         <p>$\alpha$ はアッカーマンの逆関数</p>
 
-	<h4>実装例</h4>
-	<pre><code class="cpp">struct UnionFind
-{
-  vector&lt; int &gt; data;
-
-  UnionFind(int sz)
-  {
-    data.assign(sz, -1);
-  }
-
-  bool unite(int x, int y)
-  {
-    x = find(x), y = find(y);
-    if(x == y) return(false);
-    if(data[x] &gt; data[y]) swap(x, y);
-    data[x] += data[y];
-    data[y] = x;
-    return(true);
-  }
-
-  int find(int k)
-  {
-    if(data[k] &lt; 0) return(k);
-    return(data[k] = find(data[k]));
-  }
-
-  int size(int k)
-  {
-    return(-data[find(k)]);
-  }
-};</code></pre>
+        <h4>実装例</h4>
+	      <pre><code class="cpp" src="source/union-find.cpp"></code></pre>
         <h4>応用 1: 2部グラフの頂点彩色</h4>
-        <p>Union-Find を用いると $2$ 部グラフ判定とその副作用として彩色が可能。頂点を倍長して偶奇に分ける。隣接頂点を同じ色にするときは, unite(u, v) と unite(u+N, v+N), 異なる色にするときは unite(u+N,v) と unite(u, v+N) をする。</p>
-        <pre><code class="cpp">struct Bipartite_Graph : UnionFind
-{
-  vector&lt; int &gt; color;
-
-  Bipartite_Graph(int v) : color(v + v, -1), UnionFind(v + v) {}
-
-  bool bipartite_graph_coloring()
-  {
-    for(int i = 0; i &lt; color.size() / 2; i++) {
-      int a = find(i);
-      int b = find(i + (int) color.size() / 2);
-      if(a == b) return (false);
-      if(color[a] &lt; 0) color[a] = 0, color[b] = 1;
-    }
-    return (true);
-  }
-
-  bool operator[](int k)
-  {
-    return (bool(color[find(k)]));
-  }
-};</code></pre>
+        <p>Union-Find を用いると $2$ 部グラフ判定とその副作用として彩色が可能。頂点を倍長して偶奇に分ける。隣接頂点を同じ色にするときは, $\mathrm{unite}(u, v)$ と $\mathrm{unite}(u+N, v+N)$, 異なる色にするときは $\mathrm{unite}(u+N, v)$ と $\mathrm{unite}(u, v+N)$ をする。</p>
+        <pre><code class="cpp" src="source/union-find-bigraph.cpp"></code></pre>
 
         <h4>応用 2: データ構造をマージする一般的なテク</h4>
 

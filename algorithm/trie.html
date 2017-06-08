@@ -28,97 +28,30 @@ MathJax.Hub.Config({
     </header>
     <main>
       <section>
-	<h2>トライ木(Trie)</h2>
+	      <h2>トライ木(Trie)</h2>
 	
-	<h4>説明</h4>
-	<p>プレフィックス木とも呼ばれる。あるノードの配下の全てのノードには自身に対応する文字列に共通するプレフィックスがあり, ルートには空の文字列が対応している。</p>
+	      <h4>説明</h4>
+	      <p>プレフィックス木とも呼ばれる。あるノードの配下の全てのノードには自身に対応する文字列に共通するプレフィックスがあり, ルートには空の文字列が対応している。</p>
 
-	<h4>計算量</h4>
-	<p>追加 $O(|m|)$</p>
+        <h4>使い方</h4>
+        <ul>
+          <li>$\mathrm{add}(str, id)$: 添字が $id$ の文字列 $str$ をTrieに追加する。</li>
+        </ul>
+
+	      <h4>計算量</h4>
+	      <p>追加 $O(|m|)$</p>
         <p>$m$: 追加する文字列</p>
 
-	<h4>実装例</h4>
+        <h4>実装例</h4>
         <p>Aho-corasick に継承させたいので, そういう実装になってます。</p>
-	<pre><code class="cpp">struct TrieNode
-{
-  int nxt[27];
-
-  int exist; // 子ども以下に存在する文字列の数の合計
-  vector&lt; int &gt; accept; // その文字列id
-
-  TrieNode() : exist(0)
-  {
-    memset(nxt, -1, sizeof(nxt));
-  }
-};
-
-struct Trie
-{
-  vector&lt; TrieNode &gt; nodes;
-  int root;
-
-  Trie() : root(0)
-  {
-    nodes.push_back(TrieNode());
-  }
-
-  virtual void direct_action(int node, int id) {}
-
-  virtual void child_action(int node, int child, int id) {}
-
-  void update_direct(int node, int id)
-  {
-    nodes[node].accept.push_back(id);
-    direct_action(node, id);
-  }
-
-  void update_child(int node, int child, int id)
-  {
-    ++nodes[node].exist;
-    child_action(node, child, id);
-  }
-
-  void add(const string &amp;str, int str_index, int node_index, int id)
-  {
-    if(str_index == str.size()) {
-      update_direct(node_index, id);
-    } else {
-      const int c = str[str_index] - &#039;a&#039;;
-      if(nodes[node_index].nxt[c] == -1) {
-        nodes[node_index].nxt[c] = (int) nodes.size();
-        nodes.push_back(TrieNode());
-      }
-      add(str, str_index + 1, nodes[node_index].nxt[c], id);
-      update_child(node_index, nodes[node_index].nxt[c], id);
-    }
-  }
-
-  void add(const string &amp;str, int id)
-  {
-    add(str, 0, 0, id);
-  }
-
-  void add(const string &amp;str)
-  {
-    add(str, nodes[0].exist);
-  }
-
-  int size()
-  {
-    return (nodes[0].exist);
-  }
-
-  int nodesize()
-  {
-    return ((int) nodes.size());
-  }
-};</code></pre>
-	<h4>応用: パトリシア木</h4>
+	      <pre><code class="cpp" src="source/trie.cpp"></code></pre>
+        
+        <h4>応用: パトリシア木</h4>
         <p>特に,  トライ木で子ノードが $1$ つしかないノードを子ノードとマージして縮約した木をパトリシア木(または基数木) と呼ぶ。無駄な探索を減らすことが出来る。</p>
 
         <h4>参考資料</h4>
         <ul>
-          <li><a href="https://ja.wikipedia.org/wiki/トライ木">トライ木</a></li>
+          <li><a href="https://ja.wikipedia.org/wiki/トライ木">トライ木 - Wikipedia</a></li>
         </ul>
       </section>
     </main>
