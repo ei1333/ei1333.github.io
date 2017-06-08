@@ -14,9 +14,9 @@ MathJax.Hub.Config({
 });
     </script>
     <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/styles/github.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <script src="readsource.js"></script>
   </head>
   <body>
     <header>
@@ -28,17 +28,18 @@ MathJax.Hub.Config({
     </header>
     <main>
       <section>
-	<h2>セグメント木(Segment-Tree)</h2>
+        <h2>セグメント木(Segment-Tree)</h2>
 	
-	<h4>説明</h4>
-	<p>完全2分木である。区間に対する様々な演算が$O(\log N)$で実現できるが, ここでは一般的な操作であるRMQを実装している。</p>
+	      <h4>説明</h4>
+	     <p>完全2分木である。区間に対する様々な演算が$O(\log N)$で実現できるが, ここでは一般的な操作であるRMQを実装している。</p>
 
-        <p>実装では木を配列で実現している。ノード $k$ について, 親ノードは $(k - 1) / 2$, 子ノードは $2k+1, 2k+2$ である。</p>
+        <p>実装では木を配列で実現している。ノード $k$ について, 親ノードは $\frac {k - 1} {2}$, 子ノードは $2k+1, 2k+2$ である。</p>
 
         <h4>使い方</h4>
         <ul>
+          <li>SegmentTree(n, ismax = false): サイズ $n$ のセグ木の初期化</li>
           <li>set(k, x): $k$ 番目の要素に値 $x$ をセットする</li>
-	  <li>build(): 構築する</li>
+	        <li>build(): 構築する</li>
         </ul>
         
         <ul>
@@ -46,61 +47,14 @@ MathJax.Hub.Config({
           <li>update(k, x): $k$ 番目の要素を値 $x$ に変更する</li> 
         </ul>
 
-	<h4>計算量</h4>
-	<ul>
-         <li>build: $O(N)$</li>
-         <li>rmq, update: $O(\log N)$</li>
+	      <h4>計算量</h4>
+	      <ul>
+          <li>build: $O(N)$</li>
+          <li>rmq, update: $O(\log N)$</li>
         </ul>
        
-	<h4>実装例</h4>
-	<pre><code class="cpp">struct SegmentTree
-{
-  vector&lt; int &gt; seg;
-  int sz;
- 
-  SegmentTree(int n)
-  {
-    sz = 1;
-    while(sz &lt; n) sz &lt;&lt;= 1;
-    seg.assign(2 * sz - 1, INF);
-  }
-
-  void set(int k, int x)
-  {
-    seg[k + sz - 1] = x;
-  }
-
-  void build()
-  {
-    for(int k = sz - 2; k &gt;= 0; k--) {
-      seg[k] = min(seg[2 * k + 1], seg[2 * k + 2]);
-    }  
-  }
-
-  int rmq(int a, int b, int k, int l, int r)
-  {
-    if(a &gt;= r || b &lt;= l) return(INF);
-    if(a &lt;= l &amp;&amp; r &lt;= b) return(seg[k]);
-    return(min(rmq(a, b, 2 * k + 1, l, (l + r) &gt;&gt; 1),
-               rmq(a, b, 2 * k + 2, (l + r) &gt;&gt; 1, r)));
-  }
-
-  int rmq(int a, int b)
-  {
-    return(rmq(a, b, 0, 0, sz));
-  }
-
-  void update(int k, int x)
-  {
-    k += sz - 1;
-    seg[k] = x;
-    while(k &gt; 0) {
-      k = (k - 1) &gt;&gt; 1;
-      seg[k] = min(seg[2 * k + 1], seg[2 * k + 2]);
-    }
-  }
-
-};</code></pre>
+	      <h4>実装例</h4>
+	      <pre><code class="cpp" src="source_code/segment-tree.cpp"></code></pre>
 
         <h4>応用 1: 区間加算</h4>
         <p>Starry-Sky-Tree と呼ばれる有名なセグメント木がある。このセグメント木では以下の $2$ つのクエリをサポートする。</p>
