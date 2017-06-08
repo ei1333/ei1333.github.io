@@ -3,10 +3,10 @@ $(function()
   $('pre code').each(function(i, block)
   {
     if(typeof $(this).attr('src') !== "undefined") {
+      var poyo = $(this);
       $.get($(this).attr('src'), function(data)
       {
-console.log(data);
-        $(this).val(data);
+        poyo.text(data);
       });
     }
   });
