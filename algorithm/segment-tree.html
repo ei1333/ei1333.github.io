@@ -54,7 +54,7 @@ MathJax.Hub.Config({
         </ul>
        
 	      <h4>実装例</h4>
-	      <pre><code class="cpp" src="segment-tree.cpp"></code></pre>
+	      <pre><code class="cpp" src="source/segment-tree.cpp"></code></pre>
 
         <h4>応用 1: 区間加算</h4>
         <p>Starry-Sky-Tree と呼ばれる有名なセグメント木がある。このセグメント木では以下の $2$ つのクエリをサポートする。</p>
@@ -64,7 +64,7 @@ MathJax.Hub.Config({
         </ul>
         <p>ここではその区間に一様に加算される値を持つ add 配列と, 区間の最小値を持つ small 配列を持つことによって実現している。</p>
 
-        <pre><code class="cpp" src="segment-tree-rangeadd.cpp"></pre></code>
+        <pre><code class="cpp" src="source/segment-tree-rangeadd.cpp"></pre></code>
 
         <h4>応用 2: 遅延評価</h4>
         <p>遅延評価というテクがある。遅延評価を使うと, 区間に対する演算操作の幅が大きく広がる。
@@ -72,7 +72,7 @@ MathJax.Hub.Config({
 
         <h4>応用 3: 2Dセグメント木</h4>
         <p>セグメント木のノードに平衡二分探索木をのせた 2Dセグメント木も可能(但し定数倍がかなり重い)。 以下の実装では長方形内の点の個数を求めるクエリと, 点の追加削除のクエリをサポートしている。</p>
-        <pre><code class="cpp" src="segment-tree-2d.cpp"></code></pre>
+        <pre><code class="cpp" src="source/segment-tree-2d.cpp"></code></pre>
 
         <h4>問題例</h4>
         <ul>
