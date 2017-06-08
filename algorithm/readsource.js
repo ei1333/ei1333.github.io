@@ -5,6 +5,6 @@ $(function()
     if(typeof $(this).attr('src') !== "undefined") {
      $(this).load($(this).attr('src'));
     }
-  }
+  });
   hljs.initHighlightingOnLoad();  
 });
