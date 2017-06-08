@@ -33,6 +33,18 @@ MathJax.Hub.Config({
 	      <h4>説明</h4>
 	      <p>スライドする区間の昇順(降順) $k$ 個の総和を効率良く求めるデータ構造。 </p>
 
+        <h4>使い方</h4>
+        <ul>
+          <li>$\mathrm{PrioritySumStructure}(k, order = \mathrm{INCREASE}$: 昇順(降順) $k$ 個に指定。</li>
+        </ul>
+        <ul>
+          <li>$\mathrm{addElement}(k, x)$: $k$ 番目の要素 $x$ を追加する。</li>
+          <li>$\mathrm{deleteElement}(k)$: $k$ 番目の要素を削除する。</li>
+          <li>$\mathrm{getSum}()$: 昇順 $k$ 個の和を返す。</li>
+          <li>$\mathrm{incrementSize}()$: $k$ を $1$ 増やす。</li>
+          <li>$\mathrm{decrementSize}()$: $k$ を $1$ 減らす。</li>
+        </ul>
+
 	      <h4>計算量</h4>
 	      <p>$O(\log n)$</p>
         <p>但しsetを $4$ 個持っていて定数倍が重いので注意。 </p>
