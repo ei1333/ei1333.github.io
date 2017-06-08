@@ -7,10 +7,8 @@ $(function()
       $.get($(this).attr('src'), function(data)
       {
         poyo.text(data);
+        hljs.highlightBlock(block);
       });
     }
-  });
-  $('pre code').each(function(i, block) {
-    hljs.highlightBlock(block);
   });
 });
