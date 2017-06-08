@@ -6,7 +6,7 @@ $(function()
       $.get($(this).attr('src'), function(data)
       {
 console.log(data);
-        $(this).text(data);
+        $(this).val(data);
       });
     }
   });
