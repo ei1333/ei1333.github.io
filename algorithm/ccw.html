@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+    <title>ei1333's page</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://use.edgefonts.net/source-code-pro.js"></script>
+    <link rel="stylesheet" href="../css/static.css">
+    <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+    </script>
+    <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/styles/github.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </head>
+  <body>
+    <header>
+      <h1>ei1333's page</h1>
+      <div class="path">
+        <a href="../index.html">ホーム</a> &gt;
+	      <a href="index.html">Wiki</a>
+      </div>
+    </header>
+    <main>
+      <section>
+        <h2>点の進行方向</h2>
+	
+        <h4>説明</h4>
+        <p>与えられた $3$ 点の位置関係は以下の $5$ つに分類できる。</p>
+        <ul>
+          <li>$a \to b$ 反時計回りの方向に $c$
+          <li>$a \to b$ 時計回りの方向に $c$
+          <li>$c \to a \to b$ の順に並ぶ
+          <li>$a \to b \to c$ の順に並ぶ
+          <li>$a \to c \to b$ の順に並ぶ
+        </ul>
+
+        <center>
+        <img src="image/ccw.png" width="100%" style="max-width: 400px;">
+        </center>
+
+        <p>判定アルゴリズムは以下の通り。$a$ から $b$ へ向かうベクトルを $\vec b$, $a$ から $c$ へ向かうベクトルを $\vec c$ とする。</p>
+        <ol>
+          <li>$\vec b \times \vec c \gt 0$ のとき, $\vec c$ は $\vec b$ から反時計回りの位置にあると判定できる。(外積は右ねじの方向を向く)
+          <li>$\vec b \times \vec c \lt 0$ のとき, $\vec c$ は $\vec b
+$ から時計回りの位置にあると判定できる。
+          <li>$\vec b \times \vec c = 0$ のとき $3$ 点が直線状に並ぶ。$\vec b \cdot \vec c \lt 0$ のとき, $c \to a \to b$ の順に並ぶと判定できる。($\cos \theta$ は $|\theta| \gt \frac \pi 2$ のとき負)
+          <li>$|\vec b| \lt |\vec c|$ のとき, $a \to b \to c$ の順に並ぶと判定できる。
+          <li>それ以外のとき, $a \to c \to b$ の順に並ぶと判定できる。
+        </ol>
+
+	      <h4>実装例</h4>
+	      <pre><code class="cpp">int ccw(const Point &amp;a, Point b, Point c)
+{
+  b = b - a, c = c - a;
+  if(cross(b, c) &gt; EPS) return +1;
+  if(cross(b, c) &lt; -EPS) return -1;
+  if(dot(b, c) &lt; 0) return +2;
+  if(b.norm() &lt; c.norm()) return -2;
+  return 0;
+}</code></pre>
+      </section>
+    </main>
+    <hr>
+    <footer>
+      <small>Copyright&copy; ei1333's page All Rights Reserved.</small>
+    </footer>
+
+  </body>
+</html>

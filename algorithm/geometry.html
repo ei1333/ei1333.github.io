@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+    <title>ei1333's page</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://use.edgefonts.net/source-code-pro.js"></script>
+    <link rel="stylesheet" href="../css/static.css">
+    <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+    </script>
+    <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/styles/github.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </head>
+  <body>
+    <header>
+      <h1>ei1333's page</h1>
+      <div class="path">
+        <a href="../index.html">ホーム</a> &gt;
+	      <a href="index.html">Wiki</a>
+      </div>
+    </header>
+    <main>
+      <section>
+        <h2>平面幾何の基本要素</h2>
+	
+        <h4>点(Point)</h4>
+        <p>点同士の加減乗算, スカラー倍などは operator で定義している。</p>
+
+	      <p>その他のメンバ関数の意味は以下の通り。</p>
+        <ul>
+          <li>$\mathrm{norm}() := x^2 + y^2$ (大きさの $2$ 乗)
+          <li>$\mathrm{abs}() := \sqrt {x^2 + y^2}$ (大きさ) 
+          <li>$\mathrm{arg}() := \tan^{-1} \frac y x$ (逆正接, $[-\pi, \pi]$ の範囲で返す)
+          <li>$\mathrm{rotate}(\theta) := (x\cos\theta-y\sin\theta, x\sin\theta+y\cos\theta)$ (反時計周りに $\theta$ 回転)
+          <li>$\mathrm{rotate90}() := (x\cos \frac \pi 2 -y\sin \frac \pi 2,x \sin \frac \pi 2 +y \cos \frac \pi 2) = (-y, x)$ (反時計周りに $\frac \pi 2$ 回転)
+        </ul>
+
+        <center>
+        <img src="image/geometry1.png" width="100%" style="max-width: 300px;">
+        </center>
+
+        <p>また, 点同士の演算に以下の関数も定義している。$a = (x_1, y_1), b = (x_2, y_2)$ とする。</p>
+        <ul>
+          <li>$\mathrm{cross}(a, b) := a \times b = x_1 y_2 + x_2 y_1 = |a||b|\sin\theta$ (外積)</li>
+          <li>$\mathrm{dot}(a, b) := a \cdot b = x_1 x_2 + y_1 y_2 = |a||b|\cos\theta$ (内積)</li>
+        </ul>
+
+        <center>
+        <img src="image/geometry2.png" width="100%" style="max-width: 300px;">
+        </center>
+
+        <h4>直線(Line)</h4>
+        <p>直線は, それが通る $2$ 点 $a, b$ を用いて表現している。</p>
+
+        <h4>線分(Segment)</h4>
+        <p>線分は, 端点 $a, b$ を用いて表現している。</p>
+
+        <h4>円(Circle)</h4>
+        <p>円は, 中心の座標 $p$ と半径 $r$ で表現している。</p>
+
+        <h4>その他</h4>
+        <ul>
+          <li>多角形(Polygon)</li>
+          <li>線分集合(Segments)</li>
+          <li>直線集合(Lines)</li>
+          <li>円集合(Circles)</li>
+          <li>$2$ 点(PointPoint)</li>
+        </ul>
+
+	      <h4>実装例</h4>
+	      <pre><code class="cpp">const double EPS = 1e-8, PI = acos(-1);
+
+inline bool eq(double a, double b) { return fabs(b - a) &lt; EPS; }
+
+struct Point
+{
+  double x, y;
+
+  Point() {}
+
+  Point(double x, double y) : x(x), y(y) {}
+
+  Point operator+(const Point &amp;b) const { return Point(x + b.x, y + b.y); }
+
+  Point operator-(const Point &amp;b) const { return Point(x - b.x, y - b.y); }
+
+  Point operator*(const double b) const { return Point(x * b, y * b); }
+
+  Point operator*(const Point &amp;b) const { return Point(x * b.x - y * b.y, x * b.y + y * b.x); }
+
+  Point operator/(const double b) const { return Point(x / b, y / b); }
+
+  bool operator&lt;(const Point &amp;b) const { return x != b.x ? x &lt; b.x : y &lt; b.y; }
+
+  bool operator==(const Point &amp;b) const { return eq(x, b.x) &amp;&amp; eq(y, b.y); }
+
+  double norm() { return x * x + y * y; }
+
+  double arg() { return atan2(x, y); }
+
+  double abs() { return sqrt(norm()); }
+
+  Point rotate(double theta) { return Point(cos(theta) * x - sin(theta) * y, sin(theta) * x + cos(theta) * y); }
+
+  Point rotate90() { return Point(-y, x); }
+
+  friend ostream &amp;operator&lt;&lt;(ostream &amp;os, Point &amp;p) { return os &lt;&lt; &quot;(&quot; &lt;&lt; p.x &lt;&lt; &quot;,&quot; &lt;&lt; p.y &lt;&lt; &quot;)&quot;; }
+
+  friend istream &amp;operator&gt;&gt;(istream &amp;is, Point &amp;a) { return is &gt;&gt; a.x &gt;&gt; a.y; }
+};
+
+double cross(const Point&amp; a,const Point&amp; b){
+  return a.x * b.y - a.y * b.x;
+}
+double dot(const Point&amp; a,const Point&amp; b){
+  return a.x * b.x + a.y * b.y;
+}
+
+struct Line
+{
+  Point a, b;
+
+  Line() {};
+
+  Line(Point a, Point b) : a(a), b(b) {};
+
+  friend ostream &amp;operator&lt;&lt;(ostream &amp;os, Line &amp;p) { return os &lt;&lt; &quot;(&quot; &lt;&lt; p.a.x &lt;&lt; &quot;,&quot; &lt;&lt; p.a.y &lt;&lt; &quot;) to (&quot; &lt;&lt; p.b.x &lt;&lt; &quot;,&quot; &lt;&lt; p.b.y &lt;&lt; &quot;)&quot;; }
+
+  friend istream &amp;operator&gt;&gt;(istream &amp;is, Line &amp;a) { return is &gt;&gt; a.a.x &gt;&gt; a.a.y &gt;&gt; a.b.x &gt;&gt; a.b.y; }
+};
+
+struct Segment
+{
+  Point a, b;
+
+  Segment() {};
+
+  Segment(Point a, Point b) : a(a), b(b) {};
+
+  friend ostream &amp;operator&lt;&lt;(ostream &amp;os, Segment &amp;p) { return os &lt;&lt; &quot;(&quot; &lt;&lt; p.a.x &lt;&lt; &quot;,&quot; &lt;&lt; p.a.y &lt;&lt; &quot;) to (&quot; &lt;&lt; p.b.x &lt;&lt; &quot;,&quot; &lt;&lt; p.b.y &lt;&lt; &quot;)&quot;; }
+
+  friend istream &amp;operator&gt;&gt;(istream &amp;is, Segment &amp;a) { return is &gt;&gt; a.a.x &gt;&gt; a.a.y &gt;&gt; a.b.x &gt;&gt; a.b.y; }
+};
+
+struct Circle
+{
+  Point p;
+  double r;
+
+  Circle() {};
+
+  Circle(Point p, double r) : p(p), r(r) {};
+};
+
+typedef vector&lt; Point &gt; Polygon;
+typedef vector&lt; Segment &gt; Segments;
+typedef vector&lt; Line &gt; Lines;
+typedef vector&lt; Circle &gt; Circles;
+typedef pair&lt; Point, Point &gt; PointPoint;</code></pre>
+      </section>
+    </main>
+    <hr>
+    <footer>
+      <small>Copyright&copy; ei1333's page All Rights Reserved.</small>
+    </footer>
+
+  </body>
+</html>

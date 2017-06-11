@@ -12,7 +12,6 @@ var colors = {
 };
 
 
-
 $(function()
 {
   var rank = 1;
@@ -20,9 +19,10 @@ $(function()
   
   var call =  function(x) {
     var url = "https://atcoder.jp/ranking?p=" + x;
-    var xpath = '//*[@id="main-div"]/div/div/div/div[1]/table/tbody/tr';
-    var query = "select * from html where url = '" + url + "' and xpath = '" + xpath + "'";
-    var yql   = "https://query.yahooapis.com/v1/public/yql?format=json&q=" + encodeURIComponent(query);
+//*[@id="main-div"]/div/div/div/div[1]/table
+    var xpath = '//*[@id="main-div"]/div/div/div/div[1]/table/tbody';
+    var query = "select * from htmlstring where url = '" + url + "' and xpath = '" + xpath + "'";
+    var yql   = "https://query.yahooapis.com/v1/public/yql?format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&q=" + encodeURIComponent(query);
   $.ajax(
   {
     type     : 'GET',
@@ -32,6 +32,9 @@ $(function()
     cache    : false,
   }).done(function(data)
   {
+    var str = $.parseXML(data.query.results.result).documentElement;
+    var $xml = $(str);
+    console.log($xml.find("tbody"));
     data.query.results.tr.forEach(function(tr)
     {
       if(rank > 500) return;
