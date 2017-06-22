@@ -28,30 +28,20 @@ MathJax.Hub.Config({
     </header>
     <main>
       <section>
-        <h2>射影・反射</h2>
+        <h2>凸多角形判定</h2>
+        <h4>説明</h4>
+        <p>与えられた多角形が凸多角形かどうか判定する。点を順番に見ていき隣接 $3$ 点について点の進行方向が逆向きのものがないか確かめれば良い。</p>
 
-        <h4>射影</h4>
-        <p>$\mathrm{Projection}(l, p):=$ 点 $p$ の直線 $l$ に対する射影を求める</p>
-        <p>点 $p$ から直線 $l = \vec {ab}$ に垂線をおろしたときの交点 $x$ を点 $p$ の射影と呼ぶ。</p>
+        <h4>計算量</h4>
+        <p>$O(N)$</p>
 
-        <h4>反射</h4>
-        <p>$\mathrm{Reflection}(l, p):=$ 点 $p$ の直線 $l$ に対する反射を求める</p>
-        <p>直線 $l = \vec {ab}$ を対称軸として点 $p$ と線対称の位置にある点 $x$ を $p$ の反射と呼ぶ。</p>
-
-        <center>
-        <img src="image/projection.png" width="100%" style="max-width: 200px;">
-        </center> 
         <h4>実装例</h4>
-	      <pre><code class="cpp">Point Projection(const Line&amp; l, const Point&amp; p){
-  double t = dot(p - l.a, l.a - l.b) / (l.a - l.b).norm();
-  return l.a + (l.a - l.b) * t;
-}
-Point Projection(const Segment&amp; l, const Point&amp; p){
-  double t = dot(p - l.a, l.a - l.b) / (l.a - l.b).norm();
-  return l.a + (l.a - l.b) * t;
-}
-Point Reflection(const Line&amp; l, const Point&amp; p){
-  return p + (Projection(l, p) - p) * 2.0;
+	      <pre><code class="cpp">bool IsConvex(const Polygon&amp; p){
+  int n = p.size();
+  for(int i = 0; i &lt; n; i++){
+    if(ccw(p[(i + n - 1) % n], p[i], p[(i + 1) % n]) == -1) return false;
+  }
+  return true;
 }</code></pre>
       </section>
     </main>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+    <title>ei1333's page</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://use.edgefonts.net/source-code-pro.js"></script>
+    <link rel="stylesheet" href="../css/static.css">
+    <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+    </script>
+    <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/styles/github.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </head>
+  <body>
+    <header>
+      <h1>ei1333's page</h1>
+      <div class="path">
+        <a href="../index.html">ホーム</a> &gt;
+	      <a href="index.html">Wiki</a>
+      </div>
+    </header>
+    <main>
+      <section>
+        <h2>距離</h2>
+
+        <h4>点(Point)と点(Point)の距離</h4>
+        <p>点 $a$ と点 $b$ の距離は $|\overrightarrow {a- b}|$ である。</p>
+
+        <h4>直線(Line)と点(Point)の距離</h4>
+        <p>直線 $l$ と点 $p$ の距離は, 点 $p$ と点 $p$ の直線 $l$ に対する射影との距離である。</p>
+
+        <h4>直線(Line)と直線(Line)の距離</h4>
+        <p>直線 $l$ と直線 $m$ の距離は, $l, m$ が交差しているとき $0$, 交差していない時は直線 $l$ 上の適当な点 $l.a$ と点 $l.a$ の直線 $m$ に対する射影との距離である。</p>
+
+        <h4>線分(Segment)と点(Point)の距離</h4>
+        <p>点 $p$ の線分 $l$ に対する射影 $r$ を求める。</p>
+        <p>点 $r$ が線分 $l$ 上にあればそれと点 $p$ との距離, なければ線分 $l$ の両端の点 $l.a, l.b$ と点 $r$ との距離の min となる。</p>
+
+        <h4>線分(Segment)と線分(Segment)の距離</h4>
+        <p>線分 $a$ と線分 $b$ との距離を求める。</p>
+        <p>$a$ と $b$ が交差している場合は $0$, 交差していない場合は線分と点との距離に帰着させる。$a, b$ の両端の点と線分との距離の min をとればよい。</p>
+
+        <h4>直線(Line)と線分(Segment)の距離</h4>
+        <p>直線 $l$ と線分 $s$ の距離は, 交差している場合は $0$, 交差していない場合は $l$ と線分 $s$ の端点 $s.a, s.b$ との距離の min となる。</p>
+ 
+        <h4>実装例</h4>
+	      <pre><code class="cpp">double Distance(const Point&amp; a,const Point&amp; b){
+  return (a - b).abs();
+}
+
+double Distance(const Line&amp; l,const Point&amp; p) {
+  return (p - Projection(l, p)).abs();
+}
+
+double Distance(const Line&amp; l,const Line&amp; m) {
+  return Intersect(l, m) ? 0 : Distance(l, m.a);
+}
+
+double Distance(const Segment&amp; s,const Point&amp; p){
+  Point r = Projection(s, p);
+  if (Intersect(s, r)) return (r - p).abs();
+  return min((s.a - p).abs(), (s.b - p).abs());
+}
+
+double Distance(const Segment&amp; a,const Segment&amp; b){
+  if(Intersect(a, b)) return 0;
+  return min(min(Distance(a, b.a), Distance(a, b.b)), min(Distance(b, a.a), Distance(b, a.b)));
+}
+
+double Distance(const Line&amp; l,const Segment&amp; s) {
+  if (Intersect(l, s)) return 0;
+  return min(Distance(l, s.a), Distance(l, s.b));
+}</code></pre>
+      </section>
+    </main>
+    <hr>
+    <footer>
+      <small>Copyright&copy; ei1333's page All Rights Reserved.</small>
+    </footer>
+
+  </body>
+</html>

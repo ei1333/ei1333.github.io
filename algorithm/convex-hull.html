@@ -28,30 +28,39 @@ MathJax.Hub.Config({
     </header>
     <main>
       <section>
-        <h2>射影・反射</h2>
+        <h2>凸包</h2>
+        <h4>説明</h4>
+        <p>凸包を Andrew's Monotone Chain によって求める。</p>
+        <p>アルゴリズムの概要は以下の通り。</p>
 
-        <h4>射影</h4>
-        <p>$\mathrm{Projection}(l, p):=$ 点 $p$ の直線 $l$ に対する射影を求める</p>
-        <p>点 $p$ から直線 $l = \vec {ab}$ に垂線をおろしたときの交点 $x$ を点 $p$ の射影と呼ぶ。</p>
+        <ol>
+          <li>点を x 座標の昇順でソートする。 x が同じ場合は y 座標の昇順で比較する。</li>
+          <li>上側凸包を求める。</li>
+          <ul>
+            <li>凸包の点をスタックで管理することとし, x 座標の昇順にスタックに点を $1$ つずつ追加していく。点を含めると凸でなくなる場合(点の進行方向 ccw を用いて判定) は凸になるまでスタックから点を取り除く。
+          </ul>
+          <li>下側凸包を求める。</li>
+        </ol>
+        <h4>計算量</h4>
+        <p>$O(N \log N)$</p>
 
-        <h4>反射</h4>
-        <p>$\mathrm{Reflection}(l, p):=$ 点 $p$ の直線 $l$ に対する反射を求める</p>
-        <p>直線 $l = \vec {ab}$ を対称軸として点 $p$ と線対称の位置にある点 $x$ を $p$ の反射と呼ぶ。</p>
-
-        <center>
-        <img src="image/projection.png" width="100%" style="max-width: 200px;">
-        </center> 
         <h4>実装例</h4>
-	      <pre><code class="cpp">Point Projection(const Line&amp; l, const Point&amp; p){
-  double t = dot(p - l.a, l.a - l.b) / (l.a - l.b).norm();
-  return l.a + (l.a - l.b) * t;
-}
-Point Projection(const Segment&amp; l, const Point&amp; p){
-  double t = dot(p - l.a, l.a - l.b) / (l.a - l.b).norm();
-  return l.a + (l.a - l.b) * t;
-}
-Point Reflection(const Line&amp; l, const Point&amp; p){
-  return p + (Projection(l, p) - p) * 2.0;
+	      <pre><code class="cpp">Polygon Convex_Hull(Polygon&amp; p){
+  int n = p.size(), k = 0;
+  if(n &gt;= 3){
+    sort(p.begin(), p.end());
+    vector&lt; Point &gt; ch(2 * n);
+    for(int i = 0; i &lt; n; ch[k++] = p[i++]){
+      while(k &gt;= 2 &amp;&amp; cross(ch[k - 1] - ch[k - 2], p[i] - ch[k - 1]) &lt; 0) --k;
+    }
+    for(int i = n - 2, t = k + 1; i &gt;= 0; ch[k++] = p[i--]){
+      while(k &gt;= t &amp;&amp; cross(ch[k - 1] - ch[k - 2], p[i] - ch[k - 1]) &lt; 0) --k;
+    }
+    ch.resize(k - 1);
+    return ch;
+  } else {
+    return p;
+  }
 }</code></pre>
       </section>
     </main>

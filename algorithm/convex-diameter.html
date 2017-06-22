@@ -28,30 +28,39 @@ MathJax.Hub.Config({
     </header>
     <main>
       <section>
-        <h2>射影・反射</h2>
+        <h2>凸多角形の直径</h2>
+        <h4>説明</h4>
+        <p>凸多角形の直径を求める。ここで凸多角形の直径とは最も遠い頂点間の距離である。</p>
+        <p>最遠点対は凸包上の $2$ 点のいずれかなので, ある点集合が与えられたとするとその凸包をとって直径を求めることで最遠点対を求めることができる。</p>
 
-        <h4>射影</h4>
-        <p>$\mathrm{Projection}(l, p):=$ 点 $p$ の直線 $l$ に対する射影を求める</p>
-        <p>点 $p$ から直線 $l = \vec {ab}$ に垂線をおろしたときの交点 $x$ を点 $p$ の射影と呼ぶ。</p>
+        <h4>計算量</h4>
+        <p>$O(N)$</p>
 
-        <h4>反射</h4>
-        <p>$\mathrm{Reflection}(l, p):=$ 点 $p$ の直線 $l$ に対する反射を求める</p>
-        <p>直線 $l = \vec {ab}$ を対称軸として点 $p$ と線対称の位置にある点 $x$ を $p$ の反射と呼ぶ。</p>
-
-        <center>
-        <img src="image/projection.png" width="100%" style="max-width: 200px;">
-        </center> 
         <h4>実装例</h4>
-	      <pre><code class="cpp">Point Projection(const Line&amp; l, const Point&amp; p){
-  double t = dot(p - l.a, l.a - l.b) / (l.a - l.b).norm();
-  return l.a + (l.a - l.b) * t;
-}
-Point Projection(const Segment&amp; l, const Point&amp; p){
-  double t = dot(p - l.a, l.a - l.b) / (l.a - l.b).norm();
-  return l.a + (l.a - l.b) * t;
-}
-Point Reflection(const Line&amp; l, const Point&amp; p){
-  return p + (Projection(l, p) - p) * 2.0;
+	      <pre><code class="cpp">double Convex_Diameter(Polygon&amp; p){
+  int n = p.size();
+  int is = 0, js = 0;
+  for(int i = 1; i &lt; n; i++){
+    if(p[i].y &gt; p[is].y) is = i;
+    if(p[i].y &lt; p[js].y) js = i;
+  }
+  double maxdis = (p[is] - p[js]).norm();
+  
+  int maxi, maxj, i, j;
+  i = maxi = is;
+  j = maxj = js;
+  do {
+    if(cross(p[(i + 1) % n] - p[i], p[(j + 1) % n] - p[j]) &gt;= 0){
+      j = (j + 1) % n;
+    } else {
+      i = (i + 1) % n;
+    }
+    if((p[i] - p[j]).norm() &gt; maxdis){
+      maxdis = (p[i] - p[j]).norm();
+      maxi = i; maxj = j;
+    }
+  }  while (i != is || j != js);
+  return maxdis;
 }</code></pre>
       </section>
     </main>
