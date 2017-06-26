@@ -48,7 +48,7 @@ $(function()
         $(now).append("<td><a href='https://atcoder.jp/user/" + $(value[i]).find("span")[0].innerHTML + "' target='_blank'>"+$(value[i]).find("span")[0].innerHTML+"</td>");
         $(now).children().last().children("a").css("color", getRatingLine("atcoder",value[i+1].innerHTML).color).css("font-weight", "bold");
         $(now).append("<td style='text-align: center'>" + value[i+1].innerHTML + "</td>");
-        $(now).append("<td style='text-align: center'>"+ value[+2].innerHTML + "</td>");
+        $(now).append("<td style='text-align: center'>"+ value[i+2].innerHTML + "</td>");
 
         rank += 1;
       }
