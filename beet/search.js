@@ -44,7 +44,7 @@ $(function()
       if((""+S).includes("JP")) {
         $("#ranking").append("<tr id='rank" + rank + "'>");
         var now = "#rank" + rank;
-        $(now).append("<td style='text-align: right;'>"+rank+"</td>");
+        $(now).append("<td style='text-align: right;'>"+rank + "(" + value[i-1].innerHTML + ")</td>");
         $(now).append("<td><a href='https://atcoder.jp/user/" + $(value[i]).find("span")[0].innerHTML + "' target='_blank'>"+$(value[i]).find("span")[0].innerHTML+"</td>");
         $(now).children().last().children("a").css("color", getRatingLine("atcoder",value[i+1].innerHTML).color).css("font-weight", "bold");
         $(now).append("<td style='text-align: center'>" + value[i+1].innerHTML + "</td>");
