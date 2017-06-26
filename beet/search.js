@@ -34,24 +34,25 @@ $(function()
   {
     var str = $.parseXML(data.query.results.result).documentElement;
     var $xml = $(str);
-    console.log($xml.find("tbody"));
-    data.query.results.tr.forEach(function(tr)
+    var value = $xml.find("td");
+
+    for(var i = 1; i < value.length; i +=6)
     {
+      
       if(rank > 500) return;
-      var S = tr.td[1].img.src;
-      if(S===undefined) S = tr.td[1].img[0].src;
+      var S =  value[i].innerHTML;
       if((""+S).includes("JP")) {
         $("#ranking").append("<tr id='rank" + rank + "'>");
         var now = "#rank" + rank;
         $(now).append("<td style='text-align: right;'>"+rank+"</td>");
-        $(now).append("<td><a href='https://atcoder.jp" + tr.td[1].a.href + "' target='_blank'>"+tr.td[1].a.span.content+"</td>");
-        $(now).children().last().children("a").css("color", getRatingLine("atcoder",tr.td[2]).color).css("font-weight", "bold");
-        $(now).append("<td style='text-align: center'>" + tr.td[2] + "</td>");
-        $(now).append("<td style='text-align: center'>"+ tr.td[3] + "</td>");
+        $(now).append("<td><a href='https://atcoder.jp/" + $(value[i]).find("span")[0].innerHTML + "' target='_blank'>"+$(value[i]).find("span")[0].innerHTML+"</td>");
+        $(now).children().last().children("a").css("color", getRatingLine("atcoder",value[i+1].innerHTML).color).css("font-weight", "bold");
+        $(now).append("<td style='text-align: center'>" + value[i+1].innerHTML + "</td>");
+        $(now).append("<td style='text-align: center'>"+ value[+2].innerHTML + "</td>");
 
         rank += 1;
       }
-   });
+   }
    if(rank > 500) return;
    call(x + 1);
   }).fail(function(data)
