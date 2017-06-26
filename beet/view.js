@@ -112,9 +112,9 @@ console.log(data);
 
 
   var url = "https://atcoder.jp/user/" + handle;
-  var xpath = '//*[@id="main-div"]/div/div/div[2]/script[2]';
-  var query = "select * from html where url = '" + url + "' and xpath = '" + xpath + "'";
-  var yql   = "https://query.yahooapis.com/v1/public/yql?format=json&q=" + encodeURIComponent(query);
+  var xpath = '//*[@id="main-div"]/div/div/div/script';
+  var query = "select * from htmlstring where url = '" + url + "' and xpath = '" + xpath + "'";
+  var yql   = "https://query.yahooapis.com/v1/public/yql?format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&q=" + encodeURIComponent(query);
 
   $.ajax(
   {
@@ -125,19 +125,19 @@ console.log(data);
     cache    : false,
   }).done(function(data)
   {
+console.log(data);
     var rating = undefined;
-    if(data['query']['count'] != 0) {
-      data = JSON.parse(ConvertAtCoder(data['query']['results']['script']));
-      rating = data[0][1];
-      console.log(data);
+    data = JSON.parse(getAtcoderJSON(data.query.results.result));
+    rating = data[0][1];
+    console.log(data);
 
-      var stocked = [];
-      for(var i = 0; i < data.length; i++) {
-        var update = new Date(data[i][0] * 1000);
-        stocked.push({x: moment(update), y: data[i][1], label: data[i][3]});
-      }
-      createGraph("atcoder", "#canvas3", stocked);
+    var stocked = [];
+    for(var i = 0; i < data.length; i++) {
+      var update = new Date(data[i][0] * 1000);
+      stocked.push({x: moment(update), y: data[i][1], label: data[i][3]});
     }
+    createGraph("atcoder", "#canvas3", stocked);
+    
     setRatingHtml("atcoder", "#now_ac", rating);
   }).fail(function(data)
   {
@@ -146,16 +146,14 @@ console.log(data);
 });
 
 
-
-// いい感じに parse してえいってする
-function ConvertAtCoder(str)
-{
-  var first = str.indexOf('JSON.parse("');
-  var last = str.indexOf('");', first);
-  if(first != -1 && last != -1) {
-	  return(str.slice(first + 12, last).replace(/\\/g, ""));
-  }
-  return(null);
+function getAtcoderJSON(src) {
+    //alert(src);
+    var idxf = src.indexOf('JSON.parse("');
+    var idxe = src.indexOf('");]]>', idxf);
+    if (idxf != -1 && idxe != -1) {
+	return src.slice(idxf + 12, idxe).replace(/\\/g, "");
+    }
+    return null;
 }
 
 // よくわからない
