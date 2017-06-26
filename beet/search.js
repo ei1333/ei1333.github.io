@@ -39,7 +39,7 @@ $(function()
     for(var i = 1; i < value.length; i +=6)
     {
       
-      if(rank > 500) return;
+      if(rank > 1000) return;
       var S =  value[i].innerHTML;
       if((""+S).includes("JP")) {
         $("#ranking").append("<tr id='rank" + rank + "'>");
@@ -53,7 +53,7 @@ $(function()
         rank += 1;
       }
    }
-   if(rank > 500) return;
+   if(rank > 1000) return;
    call(x + 1);
   }).fail(function(data)
   {
