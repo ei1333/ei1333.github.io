@@ -16,7 +16,7 @@ MathJax.Hub.Config({
     <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/styles/github.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="readsource.js"></script>
   </head>
   <body>
     <header>
@@ -28,22 +28,26 @@ MathJax.Hub.Config({
     </header>
     <main>
       <section>
-	<h2>二重辺連結成分分解(Biconnected-Components)</h2>
+	<h2>Low-Link</h2>
 	
 	<h4>説明</h4>
-	<p>二重辺連結成分分解する。副作用として橋を返す。</p>
+        <p>橋や関節点を効率よく求める際に有効なアルゴリズム。</p>
+        <p>グラフをDFSして, $\mathrm{ord}[idx] := $ DFS で頂点に訪れた順番, $\mathrm{low}[idx] := $ 頂点 $idx$ からDFS木の葉方向の辺を $0$ 回以上, 後対辺を $1$ 回以下通って行ける頂点の $ord$ の最小値 を各頂点について求める。</li>
 
-  <p>辺 $(u, v)$ は $\mathrm{ord}[u] \lt \mathrm{low}[v]$ のとき橋となる。</p>
-
-  <h4>使い方</h4>
-        <p><a href="low-link.html">Low-Link</a> が必要</p>
+        <h4>使い方</h4>
+        <p><a href="union-find.html">Union-Find</a> が必要</p>
 
 	<h4>計算量</h4>
-	<p>$O(V + E)$</p>
+	<p>$O(E + V)$</p>
+        <p>$V$: 頂点数, $E$: 辺数</p>
 
 	<h4>実装例</h4>
-	<pre><code class="cpp" src="source/biconnected-components.cpp"></code></pre>
+	<pre><code class="cpp" src="source/low-link.cpp"></code></pre>
 	<h4>問題例</h4>
+
+        <ul>
+          <li><span class="verified">検証済</span><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_2_B&lang=jp">AOJ GRL_2_B Minimum-Cost Arborescence</a></li>
+        </ul>
       </section>
     </main>
     <hr>

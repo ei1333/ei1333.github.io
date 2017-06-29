@@ -16,7 +16,7 @@ MathJax.Hub.Config({
     <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/styles/github.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="readsource.js"></script>
   </head>
   <body>
     <header>
@@ -28,22 +28,26 @@ MathJax.Hub.Config({
     </header>
     <main>
       <section>
-	<h2>二重辺連結成分分解(Biconnected-Components)</h2>
+	<h2>関節点(Articulation-Points)</h2>
 	
 	<h4>説明</h4>
-	<p>二重辺連結成分分解する。副作用として橋を返す。</p>
+        <p>low-link の結果を用いて関節点を効率よく求める。</p>
+        <p>DFS木の木の根については, 子が $2$ つ以上なら関節点, それ以外の頂点 $v$ については, $\mathrm{ord}[u] \le \mathrm{low}[v]$ となる $v$ の子 $u$ が存在するとき関節点となる。</li>
 
-  <p>辺 $(u, v)$ は $\mathrm{ord}[u] \lt \mathrm{low}[v]$ のとき橋となる。</p>
-
-  <h4>使い方</h4>
+        <h4>使い方</h4>
         <p><a href="low-link.html">Low-Link</a> が必要</p>
 
 	<h4>計算量</h4>
 	<p>$O(V + E)$</p>
+        <p>$V$: 頂点数, $E$: 辺数</p>
 
 	<h4>実装例</h4>
-	<pre><code class="cpp" src="source/biconnected-components.cpp"></code></pre>
+	<pre><code class="cpp" src="source/articulation-points.cpp"></code></pre>
 	<h4>問題例</h4>
+
+        <ul>
+          <li><span class="verified">検証済</span><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_3_A&lang=jp">AOJ GRL_3_A Articulation Points</a></li>
+        </ul>
       </section>
     </main>
     <hr>
