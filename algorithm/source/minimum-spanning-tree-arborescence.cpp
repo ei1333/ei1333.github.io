@@ -59,4 +59,3 @@ struct MinimumSpanningTree_Arborescence
     return (get);
   }
 };
-
