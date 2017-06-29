@@ -36,7 +36,7 @@ var colors = {
 
 $(function()
 {
-  var handle = undefined;
+  var handle = undefined, enemy = undefined;
   var match = location.search.match(/handle=(.*?)(&|$)/);
   if(match) {
     handle = decodeURIComponent(match[1]);
@@ -44,45 +44,65 @@ $(function()
   }
   if(handle === undefined) return;
 
+  match = location.search.match(/handle2=(.*?)(&|$)/);
+  if(match) {
+    enemy = decodeURIComponent(match[1]);
+    $('#handle2').val(enemy);
+  }
 
-  var url = "http://codeforces.com/api/user.rating?handle=" + handle;
-  var query = "select * from json where url = '" + url + "'";
-  var yql   = "https://query.yahooapis.com/v1/public/yql?format=json&q=" + encodeURIComponent(query);
 
-  $.ajax(
-  {
-    type     : 'GET',
-    url      : yql,
-    dataType : 'json',
-    timeout  : 10000,
-    cache    : false,
-  }).done(function(data)
-  {
-    var rating = undefined;
-console.log(data);
-    if(data['query']['results']['json']['status'] == "OK") {
-      data = data['query']['results']['json']['result'];
-      if(data != undefined) {
-        if(data.length == undefined) {
-          var buff = data;
-          data = [];
-          data.push(buff);
+  var flag = enemy === undefined;
+  var beet = [];
+  var Codeforces = function(handle) {
+    var url = "http://codeforces.com/api/user.rating?handle=" + handle;
+    var query = "select * from json where url = '" + url + "'";
+    var yql   = "https://query.yahooapis.com/v1/public/yql?format=json&q=" + encodeURIComponent(query);
+
+    $.ajax(
+    {
+      type     : 'GET',
+      url      : yql,
+      dataType : 'json',
+      timeout  : 10000,
+      cache    : false,
+    }).done(function(data)
+    {
+      var rating = undefined;
+      if(data['query']['results']['json']['status'] == "OK") {
+        data = data['query']['results']['json']['result'];
+        if(data != undefined) {
+          if(data.length == undefined) {
+            var buff = data;
+            data = [];
+            data.push(buff);
+          }
+          rating = data[data.length - 1]['newRating'];
         }
-        rating = data[data.length - 1]['newRating'];
-      }
 
-      var stocked = [];
-      for(var i = 0; i < data.length; i++) {
-        stocked.push({x: moment(new Date(data[i]['ratingUpdateTimeSeconds'] * 1000)), y: data[i]['newRating'], label: data[i]['contestName']});
-      }
-      createGraph("codeforces", "#canvas2", stocked);
+        var stocked = [];
+        for(var i = 0; i < data.length; i++) {
+          stocked.push({x: moment(new Date(data[i]['ratingUpdateTimeSeconds'] * 1000)), y: data[i]['newRating'], label: data[i]['contestName']});
+        }
 
-    }
-    setRatingHtml('codeforces', "#now_cf", rating);
-  }).fail(function(data)
-  {
-    setRatingHtml('codeforces', "#now_cf", undefined);
-  });
+        if(!flag) {
+          flag = true;
+          beet = stocked;
+          setRatingHtml('codeforces', "#now_cf", rating);
+          Codeforces(enemy);
+        } else if(enemy === undefined) {
+          createGraph("codeforces", "#canvas2", stocked, []); 
+          setRatingHtml('codeforces', "#now_cf", rating);      
+        } else {
+          createGraph("codeforces", "#canvas2", beet, stocked);
+        }
+      }
+    }).fail(function(data)
+    {
+      setRatingHtml('codeforces', "#now_cf", undefined);
+    });
+  };
+
+  Codeforces(handle);
 
   $.ajax(
   {
@@ -102,7 +122,7 @@ console.log(data);
     stocked.sort(function(a,b) {
       return (a['x'] < b['x'] ? 1 : -1);
     });
-    createGraph("topcoder", "#canvas1", stocked);
+    createGraph("topcoder", "#canvas1", stocked, []);
 
     setRatingHtml('topcoder', '#now_tc', data['rating']);
   }).fail(function(data)
@@ -125,18 +145,15 @@ console.log(data);
     cache    : false,
   }).done(function(data)
   {
-console.log(data);
     var rating = undefined;
     data = JSON.parse(getAtcoderJSON(data.query.results.result));
     rating = data[0][1];
-    console.log(data);
-
     var stocked = [];
     for(var i = 0; i < data.length; i++) {
       var update = new Date(data[i][0] * 1000);
       stocked.push({x: moment(update), y: data[i][1], label: data[i][3]});
     }
-    createGraph("atcoder", "#canvas3", stocked);
+    createGraph("atcoder", "#canvas3", stocked, []);
     
     setRatingHtml("atcoder", "#now_ac", rating);
   }).fail(function(data)
@@ -181,25 +198,39 @@ function setRatingHtml(site, component, rating)
 
 
 // いい感じにグラフを描画する
-function createGraph(site, component, stocked)
+function createGraph(site, component, stocked1, stocked2)
 {
   var ctx  = $(component);
 
-  var each_point_color = [];
-  for(var i = 0; i < stocked.length; i++) {
-    var line = getRatingLine(site, stocked[i]['y']);
-    each_point_color.push(line.color);
+  var each_point_color1 = [], each_point_color2 = [];
+
+  for(var i = 0; i < stocked1.length; i++) {
+    var line = getRatingLine(site, stocked1[i]['y']);
+    each_point_color1.push(line.color);
+  }
+  for(var i = 0; i < stocked2.length; i++) {
+    var line = getRatingLine(site, stocked2[i]['y']);
+    each_point_color2.push(line.color);
   }
 
   var myLine = Chart.Line(ctx, {
-    type: 'line',
     data: {
       datasets: [{
-        data: stocked,
+        tyle: 'line',
+        data: stocked1,
         lineTension : 0,
-        pointBackgroundColor: each_point_color,
+        pointBackgroundColor: each_point_color1,
         pointRadius: 4,
         fill: false,
+      },
+      {
+        tyle: 'line',
+        data: stocked2,
+        lineTension : 0,
+        pointBackgroundColor: each_point_color2,
+        pointRadius: 4,
+        fill: false,
+
       }]
     },
     options: {
@@ -214,7 +245,7 @@ function createGraph(site, component, stocked)
         mode: 'label',
         callbacks: {
           title: function(tooltipItems, data) {
-            return(stocked[tooltipItems[0].index].label);
+            return(stocked1[tooltipItems[0].index].label);
           }
         }
       },
