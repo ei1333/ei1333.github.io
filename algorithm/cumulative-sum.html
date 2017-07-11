@@ -16,7 +16,7 @@ MathJax.Hub.Config({
     <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/styles/github.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="readsource.js"></script>
   </head>
   <body>
     <header>
@@ -50,31 +50,7 @@ MathJax.Hub.Config({
 
 
 	<h4>実装例</h4>
-	<pre><code class="cpp">template&lt; class T &gt;
-struct CumulativeSum
-{
-  vector&lt; T &gt; data;
-
-  CumulativeSum(int sz) : data(sz, 0) {};
-
-  void add(int k, int x)
-  {
-    data[k] += x;
-  }
-
-  void build()
-  {
-    for(int i = 1; i &lt; data.size(); i++) {
-      data[i] += data[i - 1];
-    }
-  }
-
-  T query(int k)
-  {
-    if(k &lt; 0) return (0);
-    return (data[min(k, (int) data.size() - 1)]);
-  }
-};</code></pre>
+	<pre><code class="cpp" src="source/cumulative-sum.cpp"></code></pre>
 	<h4>問題例</h4>
       </section>
     </main>

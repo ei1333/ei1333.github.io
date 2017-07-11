@@ -16,7 +16,7 @@ MathJax.Hub.Config({
     <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/styles/github.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="readsource.js"></script>
   </head>
   <body>
     <header>
@@ -43,34 +43,7 @@ MathJax.Hub.Config({
         <p>$V$: 頂点数, $E$: 辺数</p>
 
 	<h4>実装例</h4>
-	<pre><code class="cpp">struct edge
-{
-  int to, cost;
-};
-typedef vector&lt; vector &lt; edge &gt; &gt; Graph;
-
-template&lt; typename T = int &gt;
-T Dijkstra(Graph &amp;g, int s, int t)
-{
-  typedef pair&lt; T, int &gt; Pi;
-
-  vector&lt; T &gt; min_cost(g.size(), numeric_limits&lt; T &gt;::max());
-  priority_queue&lt; Pi, vector&lt; Pi &gt;, greater&lt; Pi &gt; &gt; que;
-  que.emplace(0, s);
-  min_cost[s] = 0;
-  while(!que.empty()) {
-    auto p = que.top();
-    que.pop();
-    if(p.second == t) return (p.first);
-    if(p.first &gt; min_cost[p.second]) continue;
-    for(auto &amp;e : g[p.second]) {
-      if(p.first + e.cost &gt;= min_cost[e.to]) continue;
-      min_cost[e.to] = p.first + e.cost;
-      que.emplace(min_cost[e.to], e.to);
-    }
-  }
-  return (-1);
-}</code></pre>
+	<pre><code class="cpp" src="source/dijkstra.cpp"></code></pre>
         <h4>問題例</h4>
         <ul>
           <li><span class="verified">検証済</span><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_1_A&lang=jp">AOJ GPL_1_A 単一始点最短経路</a></li>

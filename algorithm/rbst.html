@@ -16,7 +16,7 @@ MathJax.Hub.Config({
     <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/styles/github.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="readsource.js"></script>
   </head>
   <body>
     <header>
@@ -37,117 +37,7 @@ MathJax.Hub.Config({
 	<p>$O(\log N)$</p>
 
 	<h4>実装例</h4>
-	<pre><code class="cpp">int xor128(void) { 
-  static int x = 123456789;
-  static int y = 362436069;
-  static int z = 521288629;
-  static int w = 88675123; 
-  int t;
-   
-  t = x ^ (x &lt;&lt; 11);
-  x = y; y = z; z = w;
-  return w = (w ^ (w &gt;&gt; 19)) ^ (t ^ (t &gt;&gt; 8));
-}
-  
-struct Node {
-  int Value;
-  int SubTreeSize;
-  Node *Lch, *Rch;
-  int RMQ;
-  
-  Node(int V):Value(V), SubTreeSize(1), RMQ(V) {
-    Lch = (Node *)NULL;
-    Rch = (Node *)NULL;
-  };
-};
-inline int Count(Node *t)
-{
-  if(t == (Node *)NULL) return(0);
-  else return(t -&gt; SubTreeSize);
-}
-inline int Sum(Node *t)
-{
-  if(t == (Node *)NULL) return(INF);
-  else return(t -&gt; RMQ);
-}
-  
-inline Node *Update(Node *t)
-{
-  t -&gt; SubTreeSize = Count(t -&gt; Lch) + Count(t -&gt; Rch) + 1;
-  t -&gt; RMQ = min(Sum(t -&gt; Lch), min(Sum(t -&gt; Rch), t -&gt; Value));
-  return(t);
-}
-  
-inline Node *MakeRoot(int value)
-{
-  return(new Node(value));
-}
-  
-Node *Merge(Node *l, Node *r)
-{
-  if(l == (Node *)NULL) return(r);
-  if(r == (Node *)NULL) return(l);
-  int Left  = l -&gt; SubTreeSize;
-  int Right = r -&gt; SubTreeSize;
-  if(xor128() % (Left + Right) &lt; Left) {
-    l -&gt; Rch = Merge(l -&gt; Rch, r);
-    return(Update(l));
-  } else {
-    r -&gt; Lch = Merge(l, r -&gt; Lch);
-    return(Update(r));
-  }
-}
-    
-pair&lt; Node*, Node* &gt; Split(Node *t, int k) // [0, k), [k, n)
-{
-  if(t == (Node *)NULL) return(make_pair((Node *)NULL, (Node *)NULL));
-  if(k &lt;= Count(t -&gt; Lch)) {
-    pair&lt; Node *, Node *&gt; s = Split(t -&gt; Lch, k);
-    t -&gt; Lch = s.second;
-    return(make_pair(s.first, Update(t)));
-  } else {
-    pair&lt; Node *, Node *&gt; s = Split(t -&gt; Rch, k - Count(t -&gt; Lch) - 1);
-    t -&gt; Rch = s.first;
-    return(make_pair(Update(t), s.second));
-  }
-}
-  
-Node *Insert(Node *root, int pos, int value)
-{
-  Node *p = MakeRoot(value);
-  pair&lt; Node *, Node *&gt; s = Split(root, pos);
-  return(Merge(Merge(s.first, p), s.second));
-}
- 
-Node *Erase(Node *root, int pos)
-{
-  pair&lt; Node *, Node *&gt; s = Split(root, pos);
-  pair&lt; Node *, Node *&gt; t = Split(s.second, 1);
-  delete t.first;
-  return(Merge(s.first, t.second));
-}
- 
-int Lower_Bound(Node *root, int Value)
-{
-  if(root == (Node *)NULL) return(0);
-  if(Value &lt; root -&gt; Value) return(Lower_Bound(root -&gt; Lch, Value));
-  return(Lower_Bound(root -&gt; Rch, Value) + Count(root -&gt; Lch) + 1);
-}
-  
-Node *Insert(Node *root, int Value)
-{
-  return(Insert(root, Lower_Bound(root, Value), Value));
-} 
- 
-void Dump(Node *root)
-{
-  if(root == (Node *)NULL) return;
-  cout &lt;&lt; &quot;(&quot;;
-  Dump(root -&gt; Lch);
-  cout &lt;&lt; &quot;&quot; &lt;&lt; root -&gt; Value &lt;&lt; &quot;&quot;;
-  Dump(root -&gt; Rch);
-  cout &lt;&lt; &quot;)&quot;;
-}</code></pre>
+	<pre><code class="cpp" src="source/rbst.cpp"></code></pre>
 	<h4>問題例</h4>
       </section>
     </main>

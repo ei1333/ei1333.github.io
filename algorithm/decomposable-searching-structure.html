@@ -16,7 +16,7 @@ MathJax.Hub.Config({
     <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/styles/github.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="readsource.js"></script>
   </head>
   <body>
     <header>
@@ -43,46 +43,7 @@ MathJax.Hub.Config({
 
 	<h4>実装例</h4>
         <p>静的なデータ構造 $T_1$ と $T_2$  を結合する $T_1 + T_2$ オペレータを定義する必要がある。また, クエリに応答する際には, 添字演算子[] を使いデータ構造を取り出す。</p>
-	<pre><code class="cpp">template&lt; class T &gt;
-struct DecomposableSearchingStructure
-{
-  struct DecomposableSearchingProblem
-  {
-    T structure;
-    int length;
-
-    DecomposableSearchingProblem(T t, int l) : structure(t), length(l) {}
-
-    DecomposableSearchingProblem operator+(const DecomposableSearchingProblem &amp;p)
-    {
-      return (DecomposableSearchingProblem(structure + p.structure, length + p.length));
-    }
-  };
-
-  vector&lt; DecomposableSearchingProblem &gt; vs;
-
-  DecomposableSearchingStructure() {}
-
-  void add(const T &amp;st)
-  {
-    vs.emplace_back(DecomposableSearchingProblem(st, 1));
-    while(vs.size() &gt; 1 &amp;&amp; vs[vs.size() - 2].length == vs[vs.size() - 1].length) {
-      DecomposableSearchingProblem renew(vs[vs.size() - 2] + vs[vs.size() - 1]);
-      vs.pop_back(), vs.pop_back();
-      vs.push_back(renew);
-    }
-  }
-
-  size_t size()
-  {
-    return (vs.size());
-  }
-
-  T &amp;operator[](int k)
-  {
-    return (vs[k].structure);
-  }
-};</code></pre>
+	<pre><code class="cpp" src="source/decomposable-searching-structure.cpp"></code></pre>
 	<h4>問題例</h4>
         <ul>
           <li><span class="verified">検証済</span><a href="http://codeforces.com/contest/710/problem/F">ECR 16 F. String Set Queries</a> (Submittion: <a href="http://codeforces.com/contest/710/submission/24912583">#24912583</a>)</li>

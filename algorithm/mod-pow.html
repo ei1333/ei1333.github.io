@@ -16,7 +16,7 @@ MathJax.Hub.Config({
     <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/styles/github.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="readsource.js"></script>
   </head>
   <body>
     <header>
@@ -37,17 +37,7 @@ MathJax.Hub.Config({
 	<p>$O(\log N)$</p>
 
 	<h4>実装例</h4>
-	<pre><code class="cpp">template&lt; typename T = long long &gt;
-T pow_mod(T x, T n, T mod)
-{
-  T ret = 1;
-  while(n &gt; 0) {
-    if(n &amp; 1) ret = 1LL * ret * x % mod;
-    x = 1LL * x * x % mod;
-    n &gt;&gt;= 1;
-  }
-  return ret;
-}</code></pre>
+	<pre><code class="cpp" src="source/pow-mod.cpp"></code></pre>
 	<h4>問題例</h4>
       </section>
     </main>

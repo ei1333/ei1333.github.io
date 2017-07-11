@@ -16,7 +16,7 @@ MathJax.Hub.Config({
     <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/styles/github.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="readsource.js"></script>
   </head>
   <body>
     <header>
@@ -37,20 +37,7 @@ MathJax.Hub.Config({
 	<p>$O(N \log \log N)$</p>
 
 	<h4>実装例</h4>
-	<pre><code class="cpp">vector&lt; bool &gt; get_prime(int n){
-  vector&lt; bool &gt; prime( n + 1, true);
-  
-  if(n &gt;= 0) prime[0] = false;
-  if(n &gt;= 1) prime[1] = false;
-  
-  for(int i = 2; i * i &lt;= n; i++){
-    if(prime[i]){
-      for(int j = i + i; j &lt;= n; j += i) prime[j] = false;
-    }
-  }
-  
-  return(prime);
-}</code></pre>
+	<pre><code class="cpp" src="source/get-prime.cpp"></code></pre>
 	<h4>問題例</h4>
       </section>
     </main>

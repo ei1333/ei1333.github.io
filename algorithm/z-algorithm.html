@@ -16,7 +16,7 @@ MathJax.Hub.Config({
     <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/styles/github.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="readsource.js"></script>
   </head>
   <body>
     <header>
@@ -41,36 +41,7 @@ MathJax.Hub.Config({
 	<p>$O(|S|)$</p>
 
 	<h4>実装例</h4>
-	<pre><code class="cpp">struct Z_algorithm
-{
-  vector&lt; int &gt; prefix;
-
-  void build(const string &amp;s)
-  {
-    prefix.assign(s.size(), 0);
-    for(int i = 1, j = 0; i &lt; s.size(); i++) {
-      if(i + prefix[i - j] &lt; j + prefix[j]) {
-        prefix[i] = prefix[i - j];
-      } else {
-        int k = max(0, j + prefix[j] - i);
-        while(i + k &lt; s.size() &amp;&amp; s[k] == s[i + k]) ++k;
-        prefix[i] = k;
-        j = i;
-      }
-    }
-    prefix[0] = (int) s.size();
-  }
-
-  int operator[](const int k) const
-  {
-    return (prefix[k]);
-  }
-
-  size_t size()
-  {
-    return(prefix.size());
-  }
-};</code></pre>
+	<pre><code class="cpp" src="source/z-algorithm.cpp"></code></pre>
 	<h4>問題例</h4>
         <h4>参考資料</h4>
         <ul>

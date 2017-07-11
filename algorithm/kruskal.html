@@ -16,7 +16,7 @@ MathJax.Hub.Config({
     <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/styles/github.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="readsource.js"></script>
   </head>
   <body>
     <header>
@@ -42,25 +42,7 @@ MathJax.Hub.Config({
         <p>$V$: 頂点数, $E$: 辺数</p>
 
 	<h4>実装例</h4>
-	<pre><code class="cpp">struct edge
-{
-  int u, v, cost;
-  bool operator&lt;(const edge&amp; e) const
-  {
-    return(cost &lt; e.cost);
-  };
-};
-template&lt; class T = int &gt;
-T kruskal(vector&lt; edge &gt; &amp;edges, int V)
-{
-  sort(edges.begin(), edges.end());
-  UnionFind tree(V);
-  T ret = 0;
-  for(auto&amp; e : edges) {
-    if(tree.unite(e.u, e.v)) ret += e.cost;
-  }
-  return (ret);
-}</code></pre>
+	<pre><code class="cpp" src="source/kruskal.cpp"></code></pre>
 	<h4>問題例</h4>
       </section>
     </main>

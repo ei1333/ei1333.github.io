@@ -16,7 +16,7 @@ MathJax.Hub.Config({
     <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/styles/github.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="readsource.js"></script>
   </head>
   <body>
     <header>
@@ -38,27 +38,7 @@ MathJax.Hub.Config({
         <p>$V$: 頂点数, $E$: 辺数</p>
 
 	<h4>実装例</h4>
-	<pre><code class="cpp">template&lt; class T = int &gt;
-T prim(Graph &amp;g)
-{
-  typedef pair&lt; T, int &gt; Pi;
-
-  T total = 0;
-  vector&lt; bool &gt; used(g.size(), false);
-  priority_queue&lt; Pi, vector&lt; Pi &gt;, greater&lt; Pi &gt; &gt; que;
-  que.emplace(0, 0);
-  while(!que.empty()) {
-    Pi p = que.top();
-    que.pop();
-    if(used[p.second]) continue;
-    used[p.second] = true;
-    total += p.first;
-    for(auto &amp;e : g[p.second]) {
-      que.emplace(e.cost, e.to);
-    }
-  }
-  return (total);
-}</code></pre>
+	<pre><code class="cpp" src="source/prim.cpp"></code></pre>
 	<h4>問題例</h4>
       </section>
     </main>

@@ -16,7 +16,7 @@ MathJax.Hub.Config({
     <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/styles/github.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="readsource.js"></script>
   </head>
   <body>
     <header>
@@ -41,55 +41,7 @@ MathJax.Hub.Config({
 	<h4>実装例</h4>
         <p>何かと便利なので, 生存しているとき true を入れる alive 配列を追加してある.</p>
 
-	<pre><code class="cpp">struct Bipartite_Matching
-{
-  vector&lt; vector&lt; int &gt; &gt; graph;
-  vector&lt; int &gt; match, alive, used;
-  int timestamp;
- 
-  Bipartite_Matching(int n)
-  {
-    timestamp = 0;
-    graph.resize(n);
-    alive.assign(n, 1);
-    used.assign(n, 0);
-    match.assign(n, -1);
-  }
- 
-  void add_edge(int u, int v)
-  {
-    graph[u].push_back(v);
-    graph[v].push_back(u);
-  }
- 
-  bool dfs(int v)
-  {
-    used[v] = timestamp;
-    for(int i = 0; i &lt; graph[v].size(); i++) {
-      int u = graph[v][i], w = match[u];
-      if(alive[u] == 0) continue;
-      if(w == -1 || (used[w] != timestamp &amp;&amp; dfs(w))) {
-        match[v] = u;
-        match[u] = v;
-        return (true);
-      }
-    }
-    return (false);
-  }
- 
-  int bipartite_matching()
-  {
-    int ret = 0;
-    for(int i = 0; i &lt; graph.size(); i++) {
-      if(alive[i] == 0) continue;
-      if(match[i] == -1) {
-        ++timestamp;
-        ret += dfs(i);
-      }
-    }
-    return (ret);
-  } 
-};</code></pre>
+	<pre><code class="cpp" src="source/bipartite-matching.cpp"></code></pre>
         <h4>応用 1: 最小頂点被覆 = 最大マッチング</h4>
         <p>グラフ $G = (V, E)$ において, 各辺 $e$ について端点のいずれか少なくとも一方が $V'$ に含まれるような $V$ の部分集合 $V'$ のうち, $V'$ の頂点数が最小であるものを <b>最小頂点被覆</b> という.</p>
         <p>Königの定理(最大マッチング最小被覆定理) では, 二部グラフについて最大マッチングの本数と最小被覆の頂点数は等しいことを示している.</p>
@@ -100,52 +52,13 @@ MathJax.Hub.Config({
         <p>参考: <a href="http://d.hatena.ne.jp/anta1/20120816/1345046832">DAGのパス被覆の問題 - antaの競技プログラミング練習日記</a></p>
         <h4>応用 3: 辞書順最小</h4>
         <p>ある最大マッチングの状態から, 貪欲に上の頂点から順にフローを押し戻してより番号が小さいものが使えないか試していくことで辞書順最小の最大マッチングを求めることができる. (事前に辺について辞書順にソートしておく必要がある.)</p>
-        <pre><code class="cpp">struct Lexicographically_Matching : Bipartite_Matching
-{
-  Lexicographically_Matching(int n) : Bipartite_Matching(n) {}
-
-  int back(int k)   // 押し戻す
-  {
-    match[match[k]] = -1;
-    match[k] = -1;
-    ++timestamp;
-    dfs(k);
-    return (match[k]);
-  }
-
-  void decide(int k) // 決める
-  {
-    alive[match[k]] = 0;
-    alive[k] = 0;
-  }
-};</code></pre>
+        <pre><code class="cpp" src="source/bipartite-matching-lexicographically.cpp"></code></pre>
         
         <h4>応用 4: 押し戻す, 加える</h4>
         <p>二部グラフが変化するときについて, 変化が微妙なときは現在のマッチングの状態をもとに, それを押し戻したり新たに加えたりして少ない計算量で修正することが出来る.</p>
         <p>以下では頂点追加と削除を実装している.</p>
 
-        <pre><code class="cpp">struct Fix_Matching : Bipartite_Matching
-{
-  Fix_Matching(int sz) : Bipartite_Matching(sz) {}
-
-  int add(int k) // 加える
-  {
-    alive[k] = 1;
-    ++timestamp;
-    return (dfs(k));
-  }
-
-  int kill(int k) // 消す
-  {
-    alive[k] = 0;
-    if(match[k] == -1) return (0);
-    match[match[k]] = -1;
-    ++timestamp;
-    int ret = dfs(match[k]);
-    match[k] = -1;
-    return (ret - 1);
-  }
-};</code></pre>
+        <pre><code class="cpp" src="source/bipartite-matching-fix.cpp"></code></pre>
 	<h4>問題例</h4>
         <ul>
           <li><span class="verified">検証済</span><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_7_A&lang=jp">AOJ GRL_7_A 2部マッチング</a></li>

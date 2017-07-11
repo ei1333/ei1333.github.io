@@ -16,7 +16,7 @@ MathJax.Hub.Config({
     <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/styles/github.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="readsource.js"></script>
   </head>
   <body>
     <header>
@@ -37,125 +37,7 @@ MathJax.Hub.Config({
 	<p>$O(V + E)$</p>
 
 	<h4>実装例</h4>
-	<pre><code class="cpp">struct CentroidPathDecomposition
-{
-  struct Centroid
-  {
-    int ParIndex, ParDepth, Deep;
-    vector&lt; int &gt; node;
-    inline int size()
-    {
-      return(node.size());
-    }
-    inline int &amp;operator[](int k)
-    {
-      return(node[k]);
-    }
-    inline pair&lt; int, int &gt; Up()
-    {
-      return(make_pair(ParIndex, ParDepth));
-    }
-  };
-    
-  vector&lt; int &gt; SubTreeSize, NextPath;
-  vector&lt; int &gt; TreeIndex, TreeDepth;
-  vector&lt; Centroid &gt; Centroids;
-    
-  void BuildSubTreeSize()
-  {
-    stack&lt; pair&lt; int, int &gt; &gt; s;
-    s.push({0, -1});
-    while(!s.empty()) {
-      auto p = s.top(); s.pop();
-      if(~SubTreeSize[p.first]) {
-        NextPath[p.first] = -1;
-        for(auto&amp; to : graph[p.first]) {
-          if(p.second == to) continue;
-          SubTreeSize[p.first] += SubTreeSize[to];
-          if(NextPath[p.first] == -1 || SubTreeSize[NextPath[p.first]] &lt; SubTreeSize[to]) {
-            NextPath[p.first] = to;
-          }
-        }
-      } else {
-        s.push(p);
-        SubTreeSize[p.first] = 1;
-        for(auto&amp; to : graph[p.first]) {
-          if(p.second != to) s.push({to, p.first});
-        }
-      }
-    }
-  }
-  void BuildPath()
-  {
-    stack&lt; pair&lt; int, int &gt; &gt; s;
-    Centroids.push_back((Centroid){-1, -1, 0});
-    s.push({0, -1});
-    TreeIndex[0] = 0;
-    while(!s.empty()) {
-      auto p = s.top(); s.pop();
-      TreeDepth[p.first] = Centroids[TreeIndex[p.first]].size();
-      for(auto&amp; to : graph[p.first]) {
-        if(p.second != to) {
-          if(to == NextPath[p.first]) { // Centroid-Path
-            TreeIndex[to] = TreeIndex[p.first];
-          } else {                  // Not Centroid-Path
-            TreeIndex[to] = Centroids.size();
-            Centroids.push_back((Centroid){TreeIndex[p.first], TreeDepth[p.first], Centroids[TreeIndex[p.first]].Deep + 1});
-          }
-          s.push({to, p.first});
-        }
-      }
-      Centroids[TreeIndex[p.first]].node.push_back(p.first);
-    }
-  }
-  void AddEdge(int x, int y)
-  {
-    graph[x].push_back(y);
-    graph[y].push_back(x);
-  }
-  void Build()
-  {
-    BuildSubTreeSize();
-    BuildPath();
-  }
-    
-  inline int size()
-  {
-    return(Centroids.size());
-  }
-  inline pair&lt; int, int &gt; Information(int idx)
-  {
-    return(make_pair(TreeIndex[idx], TreeDepth[idx]));
-  }
-  inline Centroid &amp;operator[](int k)
-  {
-    return(Centroids[k]);
-  }
-  inline int LCA(int a, int b)
-  {
-    int TreeIdxA, TreeDepthA, TreeIdxB, TreeDepthB;
-    tie(TreeIdxA, TreeDepthA) = Information(a);
-    tie(TreeIdxB, TreeDepthB) = Information(b);
-    while(TreeIdxA != TreeIdxB) {
-      if(Centroids[TreeIdxA].Deep &gt; Centroids[TreeIdxB].Deep) {
-        tie(TreeIdxA, TreeDepthA) = Centroids[TreeIdxA].Up();
-      } else {
-        tie(TreeIdxB, TreeDepthB) = Centroids[TreeIdxB].Up();
-      }
-    }
-    if(TreeDepthA &gt; TreeDepthB) swap(TreeDepthA, TreeDepthB);
-    return(Centroids[TreeIdxA][TreeDepthA]);
-  }
- 
-  CentroidPathDecomposition(int SZ)
-  {
-    graph.resize(SZ);
-    SubTreeSize.assign(SZ, -1);
-    NextPath.resize(SZ);
-    TreeIndex.resize(SZ);
-    TreeDepth.resize(SZ);
-  }
-};</code></pre>
+	<pre><code class="cpp" src="source/centroid-path-decomposition.cpp"></code></pre>
 	<h4>問題例</h4>
       </section>
     </main>

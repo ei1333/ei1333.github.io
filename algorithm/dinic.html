@@ -16,7 +16,7 @@ MathJax.Hub.Config({
     <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/styles/github.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="readsource.js"></script>
   </head>
   <body>
     <header>
@@ -38,79 +38,7 @@ MathJax.Hub.Config({
 	<p>$O(E V^2)$</p>
 
 	<h4>実装例</h4>
-	<pre><code class="cpp">struct Dinic
-{
-  const int INF = 1 &lt;&lt; 30;
-
-  struct edge
-  {
-    int to, cap, rev;
-  };
-
-  vector&lt; vector&lt; edge &gt; &gt; graph;
-  vector&lt; int &gt; min_cost, iter;
-
-  Dinic(int n)
-  {
-    graph.resize(n);
-  }
-
-  void add_edge(int from, int to, int cap)
-  {
-    graph[from].push_back((edge) {to, cap, (int) graph[to].size()});
-    graph[to].push_back((edge) {from, 0, (int) graph[from].size() - 1});
-  }
-
-  bool bfs(int s, int t)
-  {
-    min_cost.assign(graph.size(), -1);
-    queue&lt; int &gt; que;
-    min_cost[s] = 0;
-    que.push(s);
-    while(!que.empty()) {
-      int p = que.front();
-      que.pop();
-      for(int i = 0; i &lt; graph[p].size(); i++) {
-        const edge &amp;e = graph[p][i];
-        if(e.cap &gt; 0 &amp;&amp; min_cost[e.to] == -1) {
-          min_cost[e.to] = min_cost[p] + 1;
-          que.push(e.to);
-        }
-      }
-    }
-    return (min_cost[t] != -1);
-  }
-
-  int dfs(int idx, const int t, int flow)
-  {
-    if(idx == t) return (flow);
-    for(int &amp;i = iter[idx]; i &lt; graph[idx].size(); i++) {
-      edge &amp;e = graph[idx][i];
-      if(e.cap &gt; 0 &amp;&amp; min_cost[idx] &lt; min_cost[e.to]) {
-        int d = dfs(e.to, t, min(flow, e.cap));
-        if(d &gt; 0) {
-          e.cap -= d;
-          graph[e.to][e.rev].cap += d;
-          return (d);
-        }
-      }
-    }
-    return (0);
-  }
-
-  int max_flow(int s, int t)
-  {
-    int flow = 0;
-    while(bfs(s, t)) {
-      iter.assign(graph.size(), 0);
-      int f = 0;
-      while((f = dfs(s, t, INF)) &gt; 0) {
-        flow += f;
-      }
-    }
-    return (flow);
-  }
-};</code></pre>
+	<pre><code class="cpp" src="source/dinic.cpp"></code></pre>
 	<h4>問題例</h4>
       </section>
     </main>

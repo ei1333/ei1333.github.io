@@ -16,7 +16,7 @@ MathJax.Hub.Config({
     <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/styles/github.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="readsource.js"></script>
   </head>
   <body>
     <header>
@@ -43,40 +43,7 @@ MathJax.Hub.Config({
 	<h4>実装例</h4>
         <p>Manacharよりも Manachan の方が可愛いので Manachan にしてあります(?)</p>
 
-	<pre><code class="cpp">struct Manachan
-{
-  vector&lt; int &gt; radius;
-
-  void build(const string &amp;s)
-  {
-    radius.resize(s.size());
-
-    int i = 0, j = 0;
-    while(i &lt; s.size()) {
-      while(i - j &gt;= 0 &amp;&amp; i + j &lt; s.size() &amp;&amp; s[i - j] == s[i + j]) {
-        ++j;
-      }
-      radius[i] = j;
-      int k = 1;
-      while(i - k &gt;= 0 &amp;&amp; i + k &lt; s.size() &amp;&amp; k + radius[i - k] &lt; j) {
-        radius[i + k] = radius[i - k];
-        ++k;
-      }
-      i += k;
-      j -= k;
-    }
-  }
-
-  int operator[](const int k) const
-  {
-    return (radius[k]);
-  }
-
-  size_t size()
-  {
-    return (radius.size());
-  }
-};</code></pre>
+	<pre><code class="cpp" src="source/manacher.cpp"></code></pre>
 	<h4>問題例</h4>
         <h4>参考資料</h4>
         <ul>

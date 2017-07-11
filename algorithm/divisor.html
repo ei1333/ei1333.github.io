@@ -16,7 +16,7 @@ MathJax.Hub.Config({
     <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/styles/github.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="readsource.js"></script>
   </head>
   <body>
     <header>
@@ -37,20 +37,7 @@ MathJax.Hub.Config({
         <p>$O(\sqrt N)$</p>
 
 	      <h4>実装例</h4>
-        <pre><code class="cpp">typedef long long int64;
-
-vector&lt; int64 &gt; Divisor(int64 n)
-{
-  vector&lt; int64 &gt; ret;
-  for(int64 i = 1; i * i &lt;= n; i++) {
-    if(n % i == 0) {
-      ret.push_back(i);
-      if(i * i != n) ret.push_back(n / i);
-    }
-  }
-  sort(begin(ret), end(ret));
-  return(ret);
-}</code></pre>
+        <pre><code class="cpp" src="source/divisor.cpp"></code></pre>
         <h4>応用: 高度合成数</h4>
         <p>高度合成数とは, 自然数でそれ未満のどの自然数よりも約数の個数が多いものをいう。</p>
         <p>高度合成数の表より, $10^9$ 以下の高度合成数の最大値は $735134400$  の $1344$ 個である。</p>

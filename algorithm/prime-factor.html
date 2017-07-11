@@ -16,7 +16,7 @@ MathJax.Hub.Config({
     <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/styles/github.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="readsource.js"></script>
   </head>
   <body>
     <header>
@@ -37,19 +37,7 @@ MathJax.Hub.Config({
         <p>$O(\sqrt N)$</p>
 
 	      <h4>実装例</h4>
-        <pre><code class="cpp">typedef long long int64;
-map&lt; int64, int &gt; prime_factor(int64 n)
-{
-  map&lt; int64, int &gt; ret;
-  for(int64 i = 2; i * i &lt;= n; i++){
-    while(n % i == 0) {
-      ret[i]++;
-      n /= i;
-    }
-  }
-  if(n != 1) ret[n] = 1;
-  return(ret);
-}</code></pre>
+        <pre><code class="cpp" src="source/prime-factor.cpp"></code></pre>
         <h4>応用: 約数の個数</h4>
         <p>ある自然数 $n$ を素因数分解して $n = \prod_{i=1}^r {p_i}^{a_i}$ ($p_i$ は素数) の形で表せたとする。</p>
         <p>自然数 $n$ の約数の個数 $d(n)$ は $d(n) = \prod_{i=1}^r (a_i + 1)$ と等しいことが示せる。</p>

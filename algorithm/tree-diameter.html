@@ -16,7 +16,7 @@ MathJax.Hub.Config({
     <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/styles/github.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="readsource.js"></script>
   </head>
   <body>
     <header>
@@ -37,30 +37,7 @@ MathJax.Hub.Config({
 	<p>$O(E)$</p>
 
 	<h4>実装例</h4>
-	<pre><code class="cpp">struct edge
-{ 
-  int to, cost;
-};
-typedef vector&lt; vector&lt; edge &gt; &gt; Graph;
-
-pair&lt; int, int &gt; dfs(const Graph&amp; graph, int idx, int prev)
-{
-  pair&lt; int, int &gt; ret = make_pair(0, -1);
-  for(int i = 0; i &lt; graph[idx].size(); i++) {
-    if(graph[idx][i].to != prev){
-      pair&lt; int, int &gt; cost = dfs(graph, graph[idx][i].to, idx);
-      cost.first += graph[idx][i].cost;
-      ret = max(ret, cost);
-    }
-  }
-  return(ret);
-}
-int Diameter(Graph&amp; tree)
-{
-  pair&lt; int, int &gt; p = dfs(tree, 0, -1);
-  pair&lt; int, int &gt; q = dfs(tree, p.second, -1);
-  return(q.first);
-}</code></pre>
+	<pre><code class="cpp" src="tree-diameter.cpp"></code></pre>
 	<h4>問題例</h4>
       </section>
     </main>
