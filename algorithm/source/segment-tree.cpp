@@ -1,19 +1,21 @@
 template< typename T >
 struct SegmentTree
 {
-  const function< T(T, T) > merge;
   const T INF;
 
   vector< T > seg;
   int sz;
 
-  SegmentTree(int n, bool ismax = false)
-      : INF(ismax ? numeric_limits< T >::min() : numeric_limits< T >::max()),
-        merge(ismax ? [&](T a, T b) { return (max(a, b)); } : [&](T a, T b) { return (min(a, b)); })
+  SegmentTree(int n) : INF(numeric_limits< T >::max())
   {
     sz = 1;
     while(sz < n) sz <<= 1;
     seg.assign(2 * sz - 1, INF);
+  }
+
+  T merge(T a, T b)
+  {
+    return(max(a, b));
   }
 
   void set(int k, int x)
