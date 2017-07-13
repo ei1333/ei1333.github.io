@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+    <title>ei1333's page</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://use.edgefonts.net/source-code-pro.js"></script>
+    <link rel="stylesheet" href="../css/static.css">
+    <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+    </script>
+    <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/styles/github.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js"></script>
+    <script src="readsource.js"></script>
+    <script>
+    </script>
+  </head>
+  <body>
+    <header>
+      <h1>ei1333's page</h1>
+      <div class="path">
+        <a href="../index.html">ホーム</a> &gt;
+              <a href="index.html">Wiki</a>
+      </div>
+    </header>
+    <main>
+      <section>
+        <h2>セグメント木(Segment-Tree)</h2>
+	
+	      <h4>説明</h4>
+	     <p>完全2分木である。区間に対する様々な演算が$O(\log N)$で実現できるが, ここでは一般的な操作であるRMQを実装している。</p>
+
+        <p>実装では木を配列で実現している。ノード $k$ について, 親ノードは $\frac {k - 1} {2}$, 子ノードは $2k+1, 2k+2$ である。</p>
+
+        <h4>使い方</h4>
+        <ul>
+          <li>$\mathrm{SegmentTree}(n)$: サイズ $n$ のセグ木の初期化</li>
+          <li>$\mathrm{set}(k, x)$: $k$ 番目の要素に値 $x$ をセットする</li>
+	        <li>$\mathrm{build}()$: 構築する</li>
+        </ul>
+        
+        <ul>
+          <li>$\mathrm{rmq}(l, r)$: 区間 $[l, r)$ の最小値を求める</li>
+          <li>$\mathrm{update}(k, x)$: $k$ 番目の要素を値 $x$ に変更する</li> 
+        </ul>
+
+	      <h4>計算量</h4>
+	      <ul>
+          <li>build: $O(N)$</li>
+          <li>rmq, update: $O(\log N)$</li>
+        </ul>
+       
+	      <h4>実装例</h4>
+	      <pre><code class="cpp" src="source/segment-tree.cpp"></code></pre>
+
+        <h4>応用 1: 区間加算</h4>
+        <p>Starry-Sky-Tree と呼ばれる有名なセグメント木がある。このセグメント木では以下の $2$ つのクエリをサポートする。</p>
+        <ul>
+          <li>区間 $[a, b)$ に一様に値 $x$ を加算する</li>
+          <li>区間 $[a, b)$ に最小値を求める</li>
+        </ul>
+        <p>ここではその区間に一様に加算される値を持つ add 配列と, 区間の最小値を持つ small 配列を持つことによって実現している。</p>
+
+        <pre><code class="cpp" src="source/segment-tree-rangeadd.cpp"></pre></code>
+
+        <h4>応用 2: 遅延評価</h4>
+        <p>遅延評価というテクがある。遅延評価を使うと, 区間に対する演算操作の幅が大きく広がる。
+        </p>
+
+        <h4>応用 3: 2Dセグメント木</h4>
+        <p>セグメント木のノードに平衡二分探索木をのせた 2Dセグメント木も可能(但し定数倍がかなり重い)。 以下の実装では長方形内の点の個数を求めるクエリと, 点の追加削除のクエリをサポートしている。</p>
+        <pre><code class="cpp" src="source/segment-tree-2d.cpp"></code></pre>
+
+        <h4>問題例</h4>
+        <ul>
+	  <li><span class="verified">検証済</span><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=DSL_2_A&lang=jp">AOJ DSL_2_A Range Minimum Query (RMQ)</a></li>
+          <li><span class="verified">検証済(応用3)</span><a href="http://codeforces.com/contest/785/problem/E">CF #404 E. Anton and Permutation</a>(Submittion: <a href="http://codeforces.com/contest/785/submission/25528699">#25528699</a>)
+	</ul>
+
+	<h4>参考資料</h4>
+	<ul>
+	  <li><a href="http://www.slideshare.net/iwiwi/ss-3578491">プログラミングコンテストでのデータ構造 - iwi</a></li>
+	</ul>
+</section>
+      <section>
+	      <h2>BIT(Binary-Indexed-Tree)</h2>
+	
+	      <h4>説明</h4>
+	      <p>Fenwick Tree とも呼ばれる。数列に対し, ある要素に値を加える操作と, 区間和を求める操作をそれぞれ対数時間で行うことが出来るデータ構造。セグメント木や平衡二分探索木に比べ実装が非常に単純で, 定数倍も軽い。</p>
+
+        <h4>使い方</h4>
+        <ul>
+          <li>$\mathrm{sum}(k)$: 区間 $[0, k]$ の合計を求める(閉区間なので注意)</li>
+          <li>$\mathrm{add}(k, x)$: 要素 $k$ に値 $x$ を加える</li>
+        </ul>
+
+	      <h4>計算量</h4>
+	      <p>$O(\log N)$</p>
+
+	      <h4>実装例</h4>
+	      <pre><code class="cpp" src="source/binary-indexed-tree.cpp"></code></pre>
+
+        <h4>応用: BIT上の二分探索</h4>
+        <p>
+          $\sum_{i=0}^{k} a_k \ge w$ となる最小の $k$ を求めたい(std::lower_bound() のイメージ)とき, BIT上を二分探索することで $O(\log N)$ 時間で行うことができる。
+        </p>
+      
+        <pre><code class="cpp" src="source/binary-indexed-tree-additional.cpp"></code></pre>
+
+        <h4>問題例</h4>
+        <ul>
+          <li><span class="verified">検証済</span><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=DSL_2_B&lang=jp">AOJ DSL_2_B Range SUM Query (RSQ)</a></li>
+        </ul>
+
+        <h4>参考資料</h4>
+        <ul>
+          <li><a href="http://hos.ac/slides/20140319_bit.pdf">Binary Indexed Tree のはなし - hos.ac</a></li>
+        </ul>
+</section>
+      <section>
+	      <h2>素集合データ構造(Union-Find)</h2>
+	
+	      <h4>説明</h4>
+	     <p>集合を高速に扱うためのデータ構造。集合を合併する操作(unite), ある要素がどの集合に属しているか(find)を問い合わせる操作を行うことが出来る。</p>
+
+        <h4>使い方</h4>
+        <ul>
+          <li>$\mathrm{unite}(x, y)$: 集合 $x$ と $y$ を併合する. 併合済のとき $\mathrm{false}$, 未併合のとき $\mathrm{true}$ が返される</li>
+          <li>$\mathrm{find(k)}$: 要素 $k$ が属する集合を求める</li>
+          <li>$\mathrm{size(k)}$: 要素 $k$ が属する集合の要素の数を求める</li>
+        </ul>
+
+	      <h4>計算量</h4>
+	      <p>$O(\alpha(n))$</p>
+        <p>$\alpha$ はアッカーマンの逆関数</p>
+
+        <h4>実装例</h4>
+	      <pre><code class="cpp" src="source/union-find.cpp"></code></pre>
+        <h4>応用 1: 2部グラフの頂点彩色</h4>
+        <p>Union-Find を用いると $2$ 部グラフ判定とその副作用として彩色が可能。頂点を倍長して偶奇に分ける。隣接頂点を同じ色にするときは, $\mathrm{unite}(u, v)$ と $\mathrm{unite}(u+N, v+N)$, 異なる色にするときは $\mathrm{unite}(u+N, v)$ と $\mathrm{unite}(u, v+N)$ をする。</p>
+        <pre><code class="cpp" src="source/union-find-bigraph.cpp"></code></pre>
+
+        <h4>応用 2: データ構造をマージする一般的なテク</h4>
+
+        <p>データ構造をマージする一般的なテク(Weighted-Union-Heuristic) は, Union-Find の unite 操作で常に大きい木の根が全体の根になるよう連結する(union-by-rank) の考え方と同様。</p>
+
+        <h4>補足: 経路圧縮, ランクによる統合の計算量</h4>
+        <p>経路圧縮, ランクによる統合の $2$ つの工夫をすると計算量は $1$ クエリあたり $O(\alpha(n))$ となるが, 経路圧縮あるいはランクによる統合片方だけ行うと $O(\log n)$ となる。[証明: アルゴリズムとデータ構造 p268-270]</p>
+ 
+        <h4>問題例</h4>
+        <ul>
+          <li><span class="verified">検証済</span><a href="http://atc001.contest.atcoder.jp/tasks/unionfind_a">ATC 001_B Union Find</a></li>
+          <li><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=DSL_1_A&lang=jp">AOJ DSL_1_A 互いに素な集合</a></li>
+          <li><span class="verified">検証済(応用1)</span><a href="http://codeforces.com/contest/741/problem/C">CF #383 C. Arpa’s overnight party and Mehrdad’s silent entering</a>(Submittion: <a href="http://codeforces.com/contest/741/submission/24955808">#24955808</a>)</li>
+          <li><span class="verified">検証済(応用1)</span><a href="http://codeforces.com/contest/776/problem/D">CF #400 D. The Door Problem</a>(Submittion: <a href="http://codeforces.com/contest/776/submission/24955583">#24955583</a>)</li>
+        </ul>
+
+        <h4>参考資料</h4>
+        <ul>
+          <li><a href="https://ja.wikipedia.org/wiki/素集合データ構造">素集合データ構造 - Wikipedia</a></li>
+          <li><a href="http://www.slideshare.net/chokudai/union-find-49066733">Union find(素集合データ構造) - AtCoder</a></li>
+          <li><a href="http://www.slideshare.net/iwiwi/ss-3578491">プログラミングコンテストでのデータ構造 - iwi</a></li>
+        </ul>
+</section>
+      <section>
+	<h2>平衡二分探索木(RBST)</h2>
+	
+	<h4>説明</h4>
+	<p>RBST(Randomized Binary Search Tree)は平衡二分探索木の一種。ランダムなノードを根にして期待値的に木の高さを$O(\log N)$ に抑える。</p>
+
+	<h4>計算量</h4>
+	<p>$O(\log N)$</p>
+
+	<h4>実装例</h4>
+	<pre><code class="cpp" src="source/rbst.cpp"></code></pre>
+	<h4>問題例</h4>
+</section>
+      <section>
+	<h2>ウェーブレット行列(Wavelet-Matrix)</h2>
+	
+	<h4>説明</h4>
+	<p></p>
+
+	<h4>計算量</h4>
+	<p>$O(\log N)$</p>
+
+	<h4>実装例</h4>
+        <p>合ってる可能性は1%くらいです...</p>
+	<pre><code class="cpp" src="source/wavelet-matrix.cpp"></code></pre>
+	<h4>問題例</h4>
+</section>
+      <section>
+	      <h2>トライ木(Trie)</h2>
+	
+	      <h4>説明</h4>
+	      <p>プレフィックス木とも呼ばれる。あるノードの配下の全てのノードには自身に対応する文字列に共通するプレフィックスがあり, ルートには空の文字列が対応している。</p>
+
+        <h4>使い方</h4>
+        <ul>
+          <li>$\mathrm{add}(str, id)$: 添字が $id$ の文字列 $str$ をTrieに追加する。</li>
+        </ul>
+
+	      <h4>計算量</h4>
+	      <p>追加 $O(|m|)$</p>
+        <p>$m$: 追加する文字列</p>
+
+        <h4>実装例</h4>
+        <p>Aho-corasick に継承させたいので, そういう実装になってます。</p>
+	      <pre><code class="cpp" src="source/trie.cpp"></code></pre>
+        
+        <h4>応用: パトリシア木</h4>
+        <p>特に,  トライ木で子ノードが $1$ つしかないノードを子ノードとマージして縮約した木をパトリシア木(または基数木) と呼ぶ。無駄な探索を減らすことが出来る。</p>
+
+        <h4>参考資料</h4>
+        <ul>
+          <li><a href="https://ja.wikipedia.org/wiki/トライ木">トライ木 - Wikipedia</a></li>
+        </ul>
+</section>
+      <section>
+	      <h2>スライド区間の昇順 k 個の和</h2>
+	
+	      <h4>説明</h4>
+	      <p>スライドする区間の昇順(降順) $k$ 個の総和を効率良く求めるデータ構造。 </p>
+
+        <h4>使い方</h4>
+        <ul>
+          <li>$\mathrm{PrioritySumStructure}(k, order = \mathrm{INCREASE})$: 昇順(降順) $k$ 個に指定。</li>
+        </ul>
+        <ul>
+          <li>$\mathrm{addElement}(k, x)$: $k$ 番目の要素 $x$ を追加する。</li>
+          <li>$\mathrm{deleteElement}(k)$: $k$ 番目の要素を削除する。</li>
+          <li>$\mathrm{getSum}()$: 昇順 $k$ 個の和を返す。</li>
+          <li>$\mathrm{incrementSize}()$: $k$ を $1$ 増やす。</li>
+          <li>$\mathrm{decrementSize}()$: $k$ を $1$ 減らす。</li>
+        </ul>
+
+	      <h4>計算量</h4>
+	      <p>$O(\log n)$</p>
+        <p>但しsetを $4$ 個持っていて定数倍が重いので注意。 </p>
+
+	      <h4>実装例</h4>
+        <pre><code class="cpp" src="source/priority-sum.cpp"></code></pre>
+</section>
+      <section>
+	      <h2>長方形の和集合</h2>
+	
+	      <h4>説明</h4>
+	      <p>長方形の和集合を効率よく求めるデータ構造。長方形の右上の点の追加を対数時間でサポートする。第一象限のみなので象限を増やす場合は適切に処理する必要がある。</p>
+
+       
+
+        <h4>使い方</h4>
+        <ul>
+          <li>$\mathrm{addPoint}(x, y)$: 右上の点 $(x, y)$ の長方形を追加する。</li>
+          <li>$\mathrm{getSum}()$: 現在の長方形群の和集合の面積を求める。</li>
+        </ul>
+
+	      <h4>計算量</h4>
+	      <p>$O(\log n)$</p>
+
+	      <h4>実装例</h4>
+        <pre><code class="cpp" src="source/rectangle-sum.cpp"></code></pre>
+</section>
+      <section>
+	<h2>グリッド上の幅優先探索(Grid-BFS)</h2>
+	
+	<h4>説明</h4>
+	<p>二次元格子上の幅優先探索。</p>
+
+	<h4>計算量</h4>
+	<p>$O(WH)$</p>
+
+	<h4>実装例</h4>
+	<pre><code class="cpp">int W, H;
+char mas[500][500];
+int min_cost[500][500];
+ 
+int bfs(int sx, int sy, char c)
+{
+  const int vx[] = {0, 1, 0, -1}, vy[] = {1, 0, -1, 0};
+  memset(min_cost, -1, sizeof(min_cost));
+   
+  queue&lt; pair&lt; int, int &gt; &gt; que;
+  que.emplace(sx, sy);
+  min_cost[sx][sy] = 0;
+ 
+  while(!que.empty()) {
+    auto p = que.front(); que.pop();
+    if(mas[p.second][p.first] == c) return(min_cost[p.first][p.second]);
+    for(int i = 0; i &lt; 4; i++) {
+      int nx = p.first + vx[i], ny = p.second + vy[i];
+      if(nx &lt; 0 || ny &lt; 0 || nx &gt;= W || ny &gt;= H) continue;
+      if(min_cost[nx][ny] != -1) continue;
+      if(mas[ny][nx] == &#039;#&#039;) continue;
+      min_cost[nx][ny] = min_cost[p.first][p.second] + 1;
+      que.emplace(nx, ny);
+    }
+  }
+  return(-1);
+}</code></pre>
+	<h4>問題例</h4>
+</section>
+      <section>
+	<h2>単一始点最短路(Dijkstra)</h2>
+	
+	<h4>説明</h4>
+	<p>負辺のない単一始点全点間最短路を求めるアルゴリズム。負辺が無いと仮定すると、各地点でもっとも近いところから距離が確定していく。距離順でソートされたヒープを用いると、効率よく距離を確定していくことができる。</p>
+
+        <h4>使い方</h4>
+        <ul>
+          <li>Dijkstra(g, s, t): 重み付き有向グラフ $g$ 上で, 頂点 $s$ から $t$ への最短路を求める。ただし非連結の時 $-1$ を返す。</li>
+        </ul>
+
+	<h4>計算量</h4>
+	<p>$O(E \log V)$</p>
+        <p>$V$: 頂点数, $E$: 辺数</p>
+
+	<h4>実装例</h4>
+	<pre><code class="cpp" src="source/dijkstra.cpp"></code></pre>
+        <h4>問題例</h4>
+        <ul>
+          <li><span class="verified">検証済</span><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_1_A&lang=jp">AOJ GPL_1_A 単一始点最短経路</a></li>
+          <li><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=0212">AOJ0212 高速バス</a></li>
+          <li><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=1156&lang=jp">AOJ1156 ちょろちょろロボット</a></li>
+          <li><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=2151">AOJ2151 Brave Princess Revisited</a></li>
+          <li><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=0596">AOJ0596 タクシー</a></li>
+          <li><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=1138&lang=jp">AOJ1138 Traveling by Stagecoach</a></li>
+          <li><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=1150&lang=jp">AOJ1150 崖登り</a></li>
+          <li><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=2021">AOJ2021 お姫様の危機</a></li>
+          <li><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=0155">AOJ0155 スパイダー人</a> (経路復元)</li> 
+          <li><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=0562">AOJ0562 JOI 国の買い物事情</a></li>
+          <li><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=1162&lang=jp">AOJ1162 離散的速度</a></li>
+          <li><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=2672">AOJ2672 郵便局員を救え</a></li>
+          <li><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=0601">AOJ0601 フクロモモンガ</a></li>
+          <li><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=0605">AOJ0605 現代的な屋敷</a></li>
+          <li><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=1183&lang=jp">AOJ1183 鎖中経路</a></li>
+          <li><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=2585">AOJ2585 一日乗車券</a></li>
+        </ul>
+
+
+        <h4>参考資料</h4>
+        <ul>
+          <li><a href="https://ja.wikipedia.org/wiki/ダイクストラ法">ダイクストラ法 - Wikipedia</a></li>
+        </ul>
+</section>
+      <section>
+	<h2>全点対間最短路(Warshall-Floyd)</h2>
+	
+	<h4>説明</h4>
+	<p>隣接行列で表されるグラフの全点間最短路を求めるアルゴリズム。負辺路が存在する場合はそれも検出する(ある頂点 $k$ から $k$ への最短路が負ならば負閉路が存在)。</p>
+
+        <h4>使い方</h4>
+        <ul>
+          <li>Warshall(g): 隣接行列 $g$ 上の全点対間最短路を求める</li>
+        </ul>
+
+        <p>
+          隣接行列 $g$ の各要素は最初に $INF$ で初期化しておく必要がある。ただし $INF \ge 2^{30}$ のときオーバーフローするので注意。
+        </p>
+
+	<h4>計算量</h4>
+	<p>$O(V^3)$</p>
+        <p>$V$: 頂点数</p>
+	<h4>実装例</h4>
+	<pre><code class="cpp" src="source/warshall-floyd.cpp"></code></pre>
+
+        <h4>応用 1: 辺の追加</h4>
+        <p>現在のグラフに辺を追加する場合に限り, 更新を$O(N^3)$ ではなく $O(N^2)$ で行える. 追加した辺に影響する範囲のみを更新するようにする.</p>
+        <pre><code class="cpp" src="source/warshall-floyd-addedge.cpp"></code></pre>
+        <h4>問題例</h4>
+        <ul>
+          <li><span class="verified">検証済</span><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_1_C&lang=jp">AOJ GPL_1_C 全点対間最短経路</a></li>
+          <li><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=0117">AOJ0117 大工の褒美</a></li>
+          <li><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=0200">AOJ0200 青春の片道切符</a></li>
+          <li><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=0189">AOJ0189 便利な町</a></li>
+          <li><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=2005">AOJ2005 Water Pipe Construction</a></li>
+          <li><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=2200">AOJ2200 Mr. Rito Post Office</a></li>
+          <li><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=1182&lang=jp">AOJ1182 鉄道乗り継ぎ</a></li>
+          <li><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=0526">AOJ0526 船旅</a> (応用1)</li>
+        </ul>
+
+        <h4>参考資料</h4>
+        <ul>
+          <li><a href="https://ja.wikipedia.org/wiki/ワーシャル–フロイド法">ワーシャル–フロイド法 - Wikipedia</a></li>
+        </ul>
+</section>
+      <section>
+	<h2>最小全域木(Prim)</h2>
+	
+	<h4>説明</h4>
+	<p>最小全域木(全域木のうち、その辺群の重みの総和が最小になる木)を求めるアルゴリズム。既に到達した頂点集合からまだ到達していない頂点集合への辺のうち、コストが最小のものを選んでいくことによって、最小全域木を構成している。</p>
+
+	<h4>計算量</h4>
+	<p>$O(E \log V)$</p>
+        <p>$V$: 頂点数, $E$: 辺数</p>
+
+	<h4>実装例</h4>
+	<pre><code class="cpp" src="source/prim.cpp"></code></pre>
+	<h4>問題例</h4>
+</section>
+      <section>
+	<h2>最小全域木(Kruskal)</h2>
+	
+	<h4>説明</h4>
+        <p>最小全域木(全域木のうち、その辺群の重みの総和が最小になる木)を求めるアルゴリズム。Union-Findを用いて辺集合にある辺を加えて閉路を作らないか判定しながら、辺を重みが小さい順に走査する。
+        </p>
+
+        <h4>使い方</h4>
+        <p><a href="union-find.html">Union-Find</a> が必要</p>
+
+	<h4>計算量</h4>
+	<p>$O(E \log V)$</p>
+        <p>$V$: 頂点数, $E$: 辺数</p>
+
+	<h4>実装例</h4>
+	<pre><code class="cpp" src="source/kruskal.cpp"></code></pre>
+	<h4>問題例</h4>
+</section>
+      <section>
+	<h2>最小全域有向木(Chu-Liu/Edmond)</h2>
+	
+	<h4>説明</h4>
+        <p>頂点 $r$ を根とする最小全域有向木を求めるアルゴリズム。頂点 $r$ から全ての頂点への経路が存在する木のうち最小コストのものを求める。</p>
+        <p>基本的には各頂点に入る辺のうち最小コストの辺を選ぶ。これらの辺からなるグラフが木ならそれが解。それ以外なら有向閉路が含まれているので閉路を縮約して適切に処理して, 閉路がなくなるまで再帰的に呼び出すことを繰り返す。</p>
+
+        <h4>使い方</h4>
+        <p><a href="strongly-connected-components.html">強連結成分分解</a> が必要</p>
+
+	<h4>計算量</h4>
+	<p>$O(VE)$</p>
+        <p>$V$: 頂点数, $E$: 辺数</p>
+
+	<h4>実装例</h4>
+	<pre><code class="cpp" src="source/minimum-spanning-tree-arborescence.cpp"></code></pre>
+	<h4>問題例</h4>
+
+        <ul>
+          <li><span class="verified">検証済</span><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_2_B&lang=jp">AOJ GRL_2_B Minimum-Cost Arborescence</a></li>
+        </ul>
+</section>
+      <section>
+	<h2>最小費用流(Primal-Dual)</h2>
+	
+	<h4>説明</h4>
+	<p>最小費用流を最短路反復で解くアルゴリズム。始点から終点までの重みの最短路を求め、そこに流せる限り流す。これを流したい分だけ流しきるまで繰り返す。最短路の計算は、ポテンシャル $h$ を用いて負辺がないように変換して Dijkstra法 で求める。</p>
+
+	<h4>計算量</h4>
+	<p>$O(FE \log V)$</p>
+
+	<h4>実装例</h4>
+	<pre><code class="cpp" src="source/primal-dual.cpp"></code></pre>
+	<h4>問題例</h4>
+</section>
+      <section>
+	<h2>最大流(Dinic)</h2>
+	
+	<h4>説明</h4>
+	<p>最大流を求める。最短の増加パスを探して、そこにフローを流していくことを繰り返す。そのような経路がなくなったら残余パスでもう一度それを繰り返す。それでも、流せなくなったら終了する。実際の計算量よりも高速に動作することが知られている。
+</p>
+
+	<h4>計算量</h4>
+	<p>$O(E V^2)$</p>
+
+	<h4>実装例</h4>
+	<pre><code class="cpp" src="source/dinic.cpp"></code></pre>
+	<h4>問題例</h4>
+</section>
+      <section>
+	<h2>二部グラフの最大マッチング(Bipartite-Matching)</h2>
+	
+	<h4>説明</h4>
+	<p>グラフ $G=(V, E)$ において, $V$ が $2$ つの部分集合 $X$ と $Y$ に分割され, $E$ のどの辺も一方の端点は $X$ に, もう一方の端点は $Y$ に属しているとき, $G$ を <b>二部グラフ</b> という.</p>
+        <p>グラフ $G=(V, E)$ において, $M$ が $E$ の部分集合でかつ $M$ のどの $2$ 辺も共通の端点をもたないとき, $M$ を $G$ の <b>マッチング</b> といい, 辺の本数が最大であるマッチングを <b>最大マッチング</b> という.</p>
+	<p>ここでは, 二部グラフの最大マッチングを最大流のアルゴリズムを利用して求める。</p>
+
+	<h4>計算量</h4>
+	<p>$O(VE)$</p>
+
+	<h4>実装例</h4>
+        <p>何かと便利なので, 生存しているとき true を入れる alive 配列を追加してある.</p>
+
+	<pre><code class="cpp" src="source/bipartite-matching.cpp"></code></pre>
+        <h4>応用 1: 最小頂点被覆 = 最大マッチング</h4>
+        <p>グラフ $G = (V, E)$ において, 各辺 $e$ について端点のいずれか少なくとも一方が $V'$ に含まれるような $V$ の部分集合 $V'$ のうち, $V'$ の頂点数が最小であるものを <b>最小頂点被覆</b> という.</p>
+        <p>Königの定理(最大マッチング最小被覆定理) では, 二部グラフについて最大マッチングの本数と最小被覆の頂点数は等しいことを示している.</p>
+        <h4>応用 2: DAGの最小パス被覆 = V - 最大マッチング</h4>
+        <p>グラフ $G = (V, E)$ において, そのグラフの全ての頂点が $1$ つ以上のパスに含まれるようなパスの集合をを <b>パス被覆</b> という.</p>
+        <p>特に, パス被覆の中でパスの数が最小のものを <b>最小パス被覆</b> という.</p>
+        <p>DAGの最小パス被覆は二部グラフの最大マッチング問題に帰着でき, 容易に解くことができる. 具体的には頂点を倍長して, 始点を左側に, 終点を右側に配置したグラフを考える. まず $V$ 本のパスがあれば被覆できることは自明. このグラフのマッチング一組に対して必要なパスを $1$ つ減らすことができるため, $V - $ (二部グラフの最大マッチング) が最小パス被覆となる.</p>
+        <p>参考: <a href="http://d.hatena.ne.jp/anta1/20120816/1345046832">DAGのパス被覆の問題 - antaの競技プログラミング練習日記</a></p>
+        <h4>応用 3: 辞書順最小</h4>
+        <p>ある最大マッチングの状態から, 貪欲に上の頂点から順にフローを押し戻してより番号が小さいものが使えないか試していくことで辞書順最小の最大マッチングを求めることができる. (事前に辺について辞書順にソートしておく必要がある.)</p>
+        <pre><code class="cpp" src="source/bipartite-matching-lexicographically.cpp"></code></pre>
+        
+        <h4>応用 4: 押し戻す, 加える</h4>
+        <p>二部グラフが変化するときについて, 変化が微妙なときは現在のマッチングの状態をもとに, それを押し戻したり新たに加えたりして少ない計算量で修正することが出来る.</p>
+        <p>以下では頂点追加と削除を実装している.</p>
+
+        <pre><code class="cpp" src="source/bipartite-matching-fix.cpp"></code></pre>
+	<h4>問題例</h4>
+        <ul>
+          <li><span class="verified">検証済</span><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_7_A&lang=jp">AOJ GRL_7_A 2部マッチング</a></li>
+          <li>
+            <a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=2251">AOJ2251 Merry Christmas</a> (応用 2)
+          </li>
+          <li>
+            <a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=0334">AOJ0334 Amidakuji</a> (応用 3)
+          </li>
+        </ul>
+</section>
+      <section>
+	<h2>Low-Link</h2>
+	
+	<h4>説明</h4>
+        <p>橋や関節点を効率よく求める際に有効なアルゴリズム。</p>
+        <p>グラフをDFSして, $\mathrm{ord}[idx] := $ DFS で頂点に訪れた順番, $\mathrm{low}[idx] := $ 頂点 $idx$ からDFS木の葉方向の辺を $0$ 回以上, 後対辺を $1$ 回以下通って行ける頂点の $ord$ の最小値 を各頂点について求める。</li>
+
+        <h4>使い方</h4>
+        <p><a href="union-find.html">Union-Find</a> が必要</p>
+
+	<h4>計算量</h4>
+	<p>$O(E + V)$</p>
+        <p>$V$: 頂点数, $E$: 辺数</p>
+
+	<h4>実装例</h4>
+	<pre><code class="cpp" src="source/low-link.cpp"></code></pre>
+</section>
+      <section>
+	<h2>関節点(Articulation-Points)</h2>
+	
+	<h4>説明</h4>
+        <p>low-link の結果を用いて関節点を効率よく求める。</p>
+        <p>DFS木の木の根については, 子が $2$ つ以上なら関節点, それ以外の頂点 $v$ については, $\mathrm{ord}[u] \le \mathrm{low}[v]$ となる $v$ の子 $u$ が存在するとき関節点となる。</li>
+
+        <h4>使い方</h4>
+        <p><a href="low-link.html">Low-Link</a> が必要</p>
+
+	<h4>計算量</h4>
+	<p>$O(V + E)$</p>
+        <p>$V$: 頂点数, $E$: 辺数</p>
+
+	<h4>実装例</h4>
+	<pre><code class="cpp" src="source/articulation-points.cpp"></code></pre>
+	<h4>問題例</h4>
+
+        <ul>
+          <li><span class="verified">検証済</span><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_3_A&lang=jp">AOJ GRL_3_A Articulation Points</a></li>
+        </ul>
+</section>
+      <section>
+	<h2>強連結成分分解(Strongly-Connected-Components)</h2>
+	
+	<h4>説明</h4>
+	<p>強連結成分分解する。</p>
+
+	<h4>計算量</h4>
+	<p>$O(V + E)$</p>
+
+	<h4>実装例</h4>
+	<pre><code class="cpp">struct StronglyConnectedComponents
+{
+  vector&lt; vector&lt; int &gt; &gt; gg, rg;
+  vector&lt; pair&lt; int, int &gt; &gt; edges;
+  vector&lt; int &gt; comp, order, used;
+
+  StronglyConnectedComponents(size_t v) : gg(v), rg(v), comp(v, -1), used(v, 0) {}
+
+  void add_edge(int x, int y)
+  {
+    gg[x].push_back(y);
+    rg[y].push_back(x);
+    edges.emplace_back(x, y);
+  }
+
+  int operator[](int k)
+  {
+    return (comp[k]);
+  }
+
+  void dfs(int idx)
+  {
+    if(used[idx]) return;
+    used[idx] = true;
+    for(int to : gg[idx]) dfs(to);
+    order.push_back(idx);
+  }
+
+  void rdfs(int idx, int cnt)
+  {
+    if(comp[idx] != -1) return;
+    comp[idx] = cnt;
+    for(int to : rg[idx]) rdfs(to, cnt);
+  }
+
+  void build(vector&lt; vector&lt; int &gt; &gt; &amp;t)
+  {
+    for(int i = 0; i &lt; gg.size(); i++) dfs(i);
+    reverse(begin(order), end(order));
+    int ptr = 0;
+    for(int i : order) if(comp[i] == -1) rdfs(i, ptr), ptr++;
+
+    t.resize(ptr);
+    set&lt; pair&lt; int, int &gt; &gt; connect;
+    for(auto &amp;e : edges) {
+      int x = comp[e.first], y = comp[e.second];
+      if(x == y) continue;
+      if(connect.count({x, y})) continue;
+      t[x].push_back(y);
+      connect.emplace(x, y);
+    }
+  }
+};</code></pre>
+	<h4>問題例</h4>
+        <ul>
+          <li><span class="verified">検証済</span><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_3_C&lang=jp">AOJ GRL_3_C Strongly Connected Components</a></li>
+        </ul>
+</section>
+      <section>
+	<h2>二重辺連結成分分解(Biconnected-Components)</h2>
+	
+	<h4>説明</h4>
+	<p>二重辺連結成分分解する。副作用として橋を返す。</p>
+
+  <p>辺 $(u, v)$ は $\mathrm{ord}[u] \lt \mathrm{low}[v]$ のとき橋となる。</p>
+
+  <h4>使い方</h4>
+        <p><a href="low-link.html">Low-Link</a> が必要</p>
+
+	<h4>計算量</h4>
+	<p>$O(V + E)$</p>
+
+	<h4>実装例</h4>
+	<pre><code class="cpp" src="source/biconnected-components.cpp"></code></pre>
+	<h4>問題例</h4>
+        <ul>
+          <li><span class="verified">検証済</span><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_3_B&lang=jp">AOJ GRL_3_B  Bridges</a></li>
+        </ul>
+</section>
+      <section>
+	<h2>HL分解(Centroid-Path-Decomposition)</h2>
+	
+	<h4>説明</h4>
+	<p>木をHL分解する。結構癖のある書き方みたい。</p>
+
+	<h4>計算量</h4>
+	<p>$O(V + E)$</p>
+
+	<h4>実装例</h4>
+	<pre><code class="cpp" src="source/centroid-path-decomposition.cpp"></code></pre>
+	<h4>問題例</h4>
+</section>
+      <section>
+	<h2>木の直径</h2>
+	
+	<h4>説明</h4>
+	<p>非負の重み付き無向木の直径を求める。適当な頂点 $s$ から最も遠い頂点 $u$ を求める。次に $u$ から最も遠い頂点 $v$ を求める。このとき、($u$, $v$) が最遠頂点対であり、すなわち木の直径である。</p>
+
+	<h4>計算量</h4>
+	<p>$O(E)$</p>
+
+	<h4>実装例</h4>
+	<pre><code class="cpp" src="source/tree-diameter.cpp"></code></pre>
+	<h4>問題例</h4>
+</section>
+      <section>
+	      <h2>素因数分解</h2>
+	
+	      <h4>説明</h4>
+	      <p>素因数分解する。</p>
+
+        <h4>計算量</h4>
+        <p>$O(\sqrt N)$</p>
+
+	      <h4>実装例</h4>
+        <pre><code class="cpp" src="source/prime-factor.cpp"></code></pre>
+        <h4>応用: 約数の個数</h4>
+        <p>ある自然数 $n$ を素因数分解して $n = \prod_{i=1}^r {p_i}^{a_i}$ ($p_i$ は素数) の形で表せたとする。</p>
+        <p>自然数 $n$ の約数の個数 $d(n)$ は $d(n) = \prod_{i=1}^r (a_i + 1)$ と等しいことが示せる。</p>
+
+	      <h4>問題例</h4>
+</section>
+      <section>
+	      <h2>素因数分解</h2>
+	
+	      <h4>説明</h4>
+	      <p>約数を列挙する。</p>
+
+        <h4>計算量</h4>
+        <p>$O(\sqrt N)$</p>
+
+	      <h4>実装例</h4>
+        <pre><code class="cpp" src="source/divisor.cpp"></code></pre>
+        <h4>応用: 高度合成数</h4>
+        <p>高度合成数とは, 自然数でそれ未満のどの自然数よりも約数の個数が多いものをいう。</p>
+        <p>高度合成数の表より, $10^9$ 以下の高度合成数の最大値は $735134400$  の $1344$ 個である。</p>
+	      <h4>問題例</h4>
+</section>
+      <section>
+	<h2>繰り返し二乗法</h2>
+	
+	<h4>説明</h4>
+	<p>冪乗を高速に求めるアルゴリズム。すべての自然数は $2$ の冪乗和の組み合わせで表すことができるという性質を利用している。 $N$ を $2$ の冪乗和で表すと $N = 2^{K_1} + 2^{K_2} + 2^{K_3} + \dots$ となる。よって $x^N = x^{2^{K_1}} \times x^{2^{K_2}} \times x^{2^{K^3}} \times \dots$。$2$ 進数で操作すればよいので, $1$ のビットが立つ部分 $i$ について, 解に $x^i$ を掛けていく。</p>
+
+	<h4>計算量</h4>
+	<p>$O(\log N)$</p>
+
+	<h4>実装例</h4>
+	<pre><code class="cpp" src="source/pow-mod.cpp"></code></pre>
+	<h4>問題例</h4>
+</section>
+      <section>
+	<h2>素数列挙(Sieve of Eratosthenes)</h2>
+	
+	<h4>説明</h4>
+	<p>エラトステネスの篩による素数列挙アルゴリズム。指定された自然数以下の全ての素数を発見するための単純なアルゴリズム。具体的には, まず $2$ の倍数を除外する。次に $3$ の倍数を除外する。 $4$ は除外されているので $5$ の倍数を除外する。 $6$ は除外されているので $7$ を除外する。... というふうに, 素数の倍数を貪欲に除外していく。</p>
+
+	<h4>計算量</h4>
+	<p>$O(N \log \log N)$</p>
+
+	<h4>実装例</h4>
+	<pre><code class="cpp" src="source/get-prime.cpp"></code></pre>
+	<h4>問題例</h4>
+</section>
+      <section>
+        <h2>平面幾何の基本要素</h2>
+	
+        <h4>点(Point)</h4>
+        <p>点同士の加減乗算, スカラー倍などは operator で定義している。</p>
+
+	      <p>その他のメンバ関数の意味は以下の通り。</p>
+        <ul>
+          <li>$\mathrm{norm}() := x^2 + y^2$ (大きさの $2$ 乗)
+          <li>$\mathrm{abs}() := \sqrt {x^2 + y^2}$ (大きさ) 
+          <li>$\mathrm{arg}() := \tan^{-1} \frac y x$ (逆正接, $[-\pi, \pi]$ の範囲で返す)
+          <li>$\mathrm{rotate}(\theta) := (x\cos\theta-y\sin\theta, x\sin\theta+y\cos\theta)$ (反時計周りに $\theta$ 回転)
+          <li>$\mathrm{rotate90}() := (x\cos \frac \pi 2 -y\sin \frac \pi 2,x \sin \frac \pi 2 +y \cos \frac \pi 2) = (-y, x)$ (反時計周りに $\frac \pi 2$ 回転)
+        </ul>
+
+        <center>
+        <img src="image/geometry1.png" width="100%" style="max-width: 300px;">
+        </center>
+
+        <p>また, 点同士の演算に以下の関数も定義している。$a = (x_1, y_1), b = (x_2, y_2)$ とする。</p>
+        <ul>
+          <li>$\mathrm{cross}(a, b) := a \times b = x_1 y_2 + x_2 y_1 = |a||b|\sin\theta$ (外積)</li>
+          <li>$\mathrm{dot}(a, b) := a \cdot b = x_1 x_2 + y_1 y_2 = |a||b|\cos\theta$ (内積)</li>
+        </ul>
+
+        <center>
+        <img src="image/geometry2.png" width="100%" style="max-width: 300px;">
+        </center>
+
+        <ul>
+          <li>$\mathrm{RadianToDegree}(r) := r [rad] \to d [°]$
+          <li>$\mathrm{DegreeToRadian}(d) := d [°] \to r[rad]$
+          <li>$\mathrm{GetAngle(a, b, c)} := 3$ 点 $a \to b \to c$ の角度 $[0, \pi]$
+        </ul>
+
+        <h4>直線(Line)</h4>
+        <p>直線は, それが通る $2$ 点 $a, b$ を用いて表現している。</p>
+
+        <h4>線分(Segment)</h4>
+        <p>線分は, 端点 $a, b$ を用いて表現している。</p>
+
+        <h4>円(Circle)</h4>
+        <p>円は, 中心の座標 $p$ と半径 $r$ で表現している。</p>
+
+        <h4>その他</h4>
+        <ul>
+          <li>多角形(Polygon)</li>
+          <li>線分集合(Segments)</li>
+          <li>直線集合(Lines)</li>
+          <li>円集合(Circles)</li>
+          <li>$2$ 点(PointPoint)</li>
+        </ul>
+
+	      <h4>実装例</h4>
+	      <pre><code class="cpp" src="source/geometry.cpp"></code></pre>
+</section>
+      <section>
+        <h2>点の進行方向</h2>
+	
+        <h4>説明</h4>
+        <p>与えられた $3$ 点の位置関係は以下の $5$ つに分類できる。</p>
+        <ul>
+          <li>$a \to b$ 反時計回りの方向に $c$
+          <li>$a \to b$ 時計回りの方向に $c$
+          <li>$c \to a \to b$ の順に並ぶ
+          <li>$a \to b \to c$ の順に並ぶ
+          <li>$a \to c \to b$ の順に並ぶ
+        </ul>
+
+        <center>
+        <img src="image/ccw.png" width="100%" style="max-width: 400px;">
+        </center>
+
+        <p>判定アルゴリズムは以下の通り。$a$ から $b$ へ向かうベクトルを $\vec b$, $a$ から $c$ へ向かうベクトルを $\vec c$ とする。</p>
+        <ol>
+          <li>$\vec b \times \vec c \gt 0$ のとき, $\vec c$ は $\vec b$ から反時計回りの位置にあると判定できる。(外積は右ねじの方向を向く)
+          <li>$\vec b \times \vec c \lt 0$ のとき, $\vec c$ は $\vec b
+$ から時計回りの位置にあると判定できる。
+          <li>$\vec b \times \vec c = 0$ のとき $3$ 点が直線状に並ぶ。$\vec b \cdot \vec c \lt 0$ のとき, $c \to a \to b$ の順に並ぶと判定できる。($\cos \theta$ は $|\theta| \gt \frac \pi 2$ のとき負)
+          <li>$|\vec b| \lt |\vec c|$ のとき, $a \to b \to c$ の順に並ぶと判定できる。
+          <li>それ以外のとき, $a \to c \to b$ の順に並ぶと判定できる。
+        </ol>
+
+	      <h4>実装例</h4>
+	      <pre><code class="cpp">int ccw(const Point &amp;a, Point b, Point c)
+{
+  b = b - a, c = c - a;
+  if(cross(b, c) &gt; EPS) return +1;
+  if(cross(b, c) &lt; -EPS) return -1;
+  if(dot(b, c) &lt; 0) return +2;
+  if(b.norm() &lt; c.norm()) return -2;
+  return 0;
+}</code></pre>
+</section>
+      <section>
+        <h2>直線の直交・平行判定</h2>
+
+        <h4>直交判定</h4>
+        <p>$\mathrm{Parallel}(a, b):=$ 直線 $a, b$ が平行ならば true</p>
+        <p>内積 $a \cdot b = |a||b|\cos\theta$ をよく見ると $\theta = \pm \frac \pi 2$ のとき $\cos\theta = 0$ となる。</p>
+
+        <h4>平行判定</h4>
+        <p>$\mathrm{Orthogonal}(a, b):=$ 直線 $a, b$ が直交していれば true</p>
+
+        <p>外積 $a \times b = |a||b|\sin\theta$ をよく見ると $\theta = 0, \pi$ のとき $\sin\theta = 0$  となる。</p>
+
+        <h4>実装例</h4>
+	      <pre><code class="cpp">bool Parallel(const Line&amp; a,const Line&amp; b){
+  return abs(cross(a.b - a.a, b.b - b.a)) &lt; EPS;
+}
+bool Orthogonal(const Line&amp; a,const Line&amp; b){
+  return abs(dot(a.a - a.b, b.a - b.b)) &lt; EPS;
+}</code></pre>
+</section>
+      <section>
+        <h2>射影・反射</h2>
+
+        <h4>射影</h4>
+        <p>$\mathrm{Projection}(l, p):=$ 点 $p$ の直線 $l$ に対する射影を求める</p>
+        <p>点 $p$ から直線 $l = \vec {ab}$ に垂線をおろしたときの交点 $x$ を点 $p$ の射影と呼ぶ。</p>
+
+        <h4>反射</h4>
+        <p>$\mathrm{Reflection}(l, p):=$ 点 $p$ の直線 $l$ に対する反射を求める</p>
+        <p>直線 $l = \vec {ab}$ を対称軸として点 $p$ と線対称の位置にある点 $x$ を $p$ の反射と呼ぶ。</p>
+
+        <center>
+        <img src="image/projection.png" width="100%" style="max-width: 200px;">
+        </center> 
+        <h4>実装例</h4>
+	      <pre><code class="cpp">Point Projection(const Line&amp; l, const Point&amp; p){
+  double t = dot(p - l.a, l.a - l.b) / (l.a - l.b).norm();
+  return l.a + (l.a - l.b) * t;
+}
+Point Projection(const Segment&amp; l, const Point&amp; p){
+  double t = dot(p - l.a, l.a - l.b) / (l.a - l.b).norm();
+  return l.a + (l.a - l.b) * t;
+}
+Point Reflection(const Line&amp; l, const Point&amp; p){
+  return p + (Projection(l, p) - p) * 2.0;
+}</code></pre>
+</section>
+      <section>
+        <h2>距離</h2>
+
+        <h4>点(Point)と点(Point)の距離</h4>
+        <p>点 $a$ と点 $b$ の距離は $|\overrightarrow {a- b}|$ である。</p>
+
+        <h4>直線(Line)と点(Point)の距離</h4>
+        <p>直線 $l$ と点 $p$ の距離は, 点 $p$ と点 $p$ の直線 $l$ に対する射影との距離である。</p>
+
+        <h4>直線(Line)と直線(Line)の距離</h4>
+        <p>直線 $l$ と直線 $m$ の距離は, $l, m$ が交差しているとき $0$, 交差していない時は直線 $l$ 上の適当な点 $l.a$ と点 $l.a$ の直線 $m$ に対する射影との距離である。</p>
+
+        <h4>線分(Segment)と点(Point)の距離</h4>
+        <p>点 $p$ の線分 $l$ に対する射影 $r$ を求める。</p>
+        <p>点 $r$ が線分 $l$ 上にあればそれと点 $p$ との距離, なければ線分 $l$ の両端の点 $l.a, l.b$ と点 $r$ との距離の min となる。</p>
+
+        <h4>線分(Segment)と線分(Segment)の距離</h4>
+        <p>線分 $a$ と線分 $b$ との距離を求める。</p>
+        <p>$a$ と $b$ が交差している場合は $0$, 交差していない場合は線分と点との距離に帰着させる。$a, b$ の両端の点と線分との距離の min をとればよい。</p>
+
+        <h4>直線(Line)と線分(Segment)の距離</h4>
+        <p>直線 $l$ と線分 $s$ の距離は, 交差している場合は $0$, 交差していない場合は $l$ と線分 $s$ の端点 $s.a, s.b$ との距離の min となる。</p>
+ 
+        <h4>実装例</h4>
+	      <pre><code class="cpp">double Distance(const Point&amp; a,const Point&amp; b){
+  return (a - b).abs();
+}
+
+double Distance(const Line&amp; l,const Point&amp; p) {
+  return (p - Projection(l, p)).abs();
+}
+
+double Distance(const Line&amp; l,const Line&amp; m) {
+  return Intersect(l, m) ? 0 : Distance(l, m.a);
+}
+
+double Distance(const Segment&amp; s,const Point&amp; p){
+  Point r = Projection(s, p);
+  if (Intersect(s, r)) return (r - p).abs();
+  return min((s.a - p).abs(), (s.b - p).abs());
+}
+
+double Distance(const Segment&amp; a,const Segment&amp; b){
+  if(Intersect(a, b)) return 0;
+  return min(min(Distance(a, b.a), Distance(a, b.b)), min(Distance(b, a.a), Distance(b, a.b)));
+}
+
+double Distance(const Line&amp; l,const Segment&amp; s) {
+  if (Intersect(l, s)) return 0;
+  return min(Distance(l, s.a), Distance(l, s.b));
+}</code></pre>
+</section>
+      <section>
+        <h2>交差判定</h2>
+        <h4>実装例</h4>
+	      <pre><code class="cpp" src="source/intersect.cpp"></code></pre>
+</section>
+      <section>
+        <h2>交点</h2>
+        <h4>実装例</h4>
+	      <pre><code class="cpp" src="source/crosspoint.cpp"></code></pre>
+</section>
+      <section>
+        <h2>凸多角形判定</h2>
+        <h4>説明</h4>
+        <p>与えられた多角形が凸多角形かどうか判定する。点を順番に見ていき隣接 $3$ 点について点の進行方向が逆向きのものがないか確かめれば良い。</p>
+
+        <h4>計算量</h4>
+        <p>$O(N)$</p>
+
+        <h4>実装例</h4>
+	      <pre><code class="cpp">bool IsConvex(const Polygon&amp; p){
+  int n = p.size();
+  for(int i = 0; i &lt; n; i++){
+    if(ccw(p[(i + n - 1) % n], p[i], p[(i + 1) % n]) == -1) return false;
+  }
+  return true;
+}</code></pre>
+</section>
+      <section>
+        <h2>凸包</h2>
+        <h4>説明</h4>
+        <p>凸包を Andrew's Monotone Chain によって求める。</p>
+        <p>アルゴリズムの概要は以下の通り。</p>
+
+        <ol>
+          <li>点を x 座標の昇順でソートする。 x が同じ場合は y 座標の昇順で比較する。</li>
+          <li>上側凸包を求める。</li>
+          <ul>
+            <li>凸包の点をスタックで管理することとし, x 座標の昇順にスタックに点を $1$ つずつ追加していく。点を含めると凸でなくなる場合(点の進行方向 ccw を用いて判定) は凸になるまでスタックから点を取り除く。
+          </ul>
+          <li>下側凸包を求める。</li>
+        </ol>
+        <h4>計算量</h4>
+        <p>$O(N \log N)$</p>
+
+        <h4>実装例</h4>
+	      <pre><code class="cpp">Polygon Convex_Hull(Polygon&amp; p){
+  int n = p.size(), k = 0;
+  if(n &gt;= 3){
+    sort(p.begin(), p.end());
+    vector&lt; Point &gt; ch(2 * n);
+    for(int i = 0; i &lt; n; ch[k++] = p[i++]){
+      while(k &gt;= 2 &amp;&amp; cross(ch[k - 1] - ch[k - 2], p[i] - ch[k - 1]) &lt; 0) --k;
+    }
+    for(int i = n - 2, t = k + 1; i &gt;= 0; ch[k++] = p[i--]){
+      while(k &gt;= t &amp;&amp; cross(ch[k - 1] - ch[k - 2], p[i] - ch[k - 1]) &lt; 0) --k;
+    }
+    ch.resize(k - 1);
+    return ch;
+  } else {
+    return p;
+  }
+}</code></pre>
+</section>
+      <section>
+        <h2>点 - 多角形包含判定</h2>
+
+        <h4>実装例</h4>
+
+	      <pre><code class="cpp" src="source/contains.cpp"></code></pre>
+</section>
+      <section>
+        <h2>線分アレンジメント</h2>
+        <p>平行な線分が重なるときは MergeSemgnets を呼び出してから処理する.</p>
+        <p>
+        <h4>実装例</h4>
+        <pre><code class="cpp" src="source/merge-segments.cpp"></code></pre>
+	      <pre><code class="cpp" src="source/segment-arrangement.cpp"></code></pre>
+</section>
+      <section>
+        <h2>凸多角形の切断</h2>
+        <h4>説明</h4>
+        <p>凸多角形を直線 $l$ で切断し, その左側を返す。</p>
+        <p>直線より左側にあるものと, 直線 $l$ との交点を残している。</p>
+
+        <h4>実装例</h4>
+	      <pre><code class="cpp" src="source/convex-cut.cpp"></code></pre>
+</section>
+      <section>
+        <h2>多角形の面積</h2>
+        <p>実際の面積の 2 倍が返されるので注意</p>
+
+        <h4>実装例</h4>
+
+	      <pre><code class="cpp" src="source/area2.cpp"></code></pre>
+</section>
+      <section>
+        <h2>凸多角形の直径</h2>
+        <h4>説明</h4>
+        <p>凸多角形の直径を求める。ここで凸多角形の直径とは最も遠い頂点間の距離である。</p>
+        <p>最遠点対は凸包上の $2$ 点のいずれかなので, ある点集合が与えられたとするとその凸包をとって直径を求めることで最遠点対を求めることができる。</p>
+
+        <h4>計算量</h4>
+        <p>$O(N)$</p>
+
+        <h4>実装例</h4>
+	      <pre><code class="cpp">double Convex_Diameter(Polygon&amp; p){
+  int n = p.size();
+  int is = 0, js = 0;
+  for(int i = 1; i &lt; n; i++){
+    if(p[i].y &gt; p[is].y) is = i;
+    if(p[i].y &lt; p[js].y) js = i;
+  }
+  double maxdis = (p[is] - p[js]).norm();
+  
+  int maxi, maxj, i, j;
+  i = maxi = is;
+  j = maxj = js;
+  do {
+    if(cross(p[(i + 1) % n] - p[i], p[(j + 1) % n] - p[j]) &gt;= 0){
+      j = (j + 1) % n;
+    } else {
+      i = (i + 1) % n;
+    }
+    if((p[i] - p[j]).norm() &gt; maxdis){
+      maxdis = (p[i] - p[j]).norm();
+      maxi = i; maxj = j;
+    }
+  }  while (i != is || j != js);
+  return maxdis;
+}</code></pre>
+</section>
+      <section>
+	<h2>接尾辞配列(Suffix-Array)</h2>
+	
+	<h4>説明</h4>
+	<p>接尾辞配列。蟻本には $O(N \log^2 N)$ の実装が載っているが, ここでは $O(N \log N)$ の実装を扱う。SA-IS を使えば線形時間で構築できる。</p>
+
+	<h4>計算量</h4>
+	<ul>
+	  <li>Build_SA: $O(N \log N)$</li>
+          <li>lower_bound, lower_upper_bound: $O(M\log N)$
+	</ul>
+	<ul>
+	  <li>Build_LCA: $O(N)$</li>
+        </ul>
+
+	<h4>実装例</h4>
+	<pre><code class="cpp" src="source/suffix-array.cpp"></code></pre>
+	<h4>問題例</h4>
+</section>
+      <section>
+	<h2>ローリングハッシュ(Rolling-Hash)</h2>
+	
+	<h4>説明</h4>
+	<p>文字列の一致判定やLCPをハッシュを使って高速に求めるもの。</p>
+
+	<h4>計算量</h4>
+	<ul>
+	  <li>RollingHash: $O(N)$</li>
+	  <li>get, connect: $O(1)$</li>
+          <li>LCP: $O(\log N)$</li>
+        </ul>
+
+	<h4>実装例</h4>
+	<pre><code class="cpp" src="source/rolling-hash.cpp"></code></pre>
+	<h4>問題例</h4>
+</section>
+      <section>
+	<h2>Z-algorithm</h2>
+	
+	<h4>説明</h4>
+        <p>ある文字列 $S$ が与えられているとする。Z-algorithm では, それぞれの $i$ について $S$ と $S[i,|S|]$ の最長共通接頭辞の長さを記録した配列を線形時間で構築するアルゴリズムである。
+        </p>
+        <p>具体例を以下に示す。例えば $i = 5$ "aaaab" のときの最長共通接頭辞は "aaa", つまり $3$ 文字である。</p>
+        <pre><code>aaabaaaab
+921034210</code></pre>
+
+	<h4>計算量</h4>
+	<p>$O(|S|)$</p>
+
+	<h4>実装例</h4>
+	<pre><code class="cpp" src="source/z-algorithm.cpp"></code></pre>
+	<h4>問題例</h4>
+        <h4>参考資料</h4>
+        <ul>
+          <li><a href="http://snuke.hatenablog.com/entry/2014/12/03/214243">文字列の頭良い感じの線形アルゴリズムたち３ - snuke</a></li>
+        </ul>
+</section>
+      <section>
+	<h2>Manacher</h2>
+	
+	<h4>説明</h4>
+        <p>ある文字列 $S$ が与えられているとする。Manacher では, それぞれの $i$ について文字 $i$ を中心とする最長回文の半径を記録した配列を線形時間で構築するアルゴリズムである。
+        </p>
+        <p>具体例を以下に示す。例えば $i = 6$ を中心とする最長回文は "aba" つまり $2$ である。</p>
+        <pre><code>abaaababa
+121412321</code></pre>
+
+	<h4>計算量</h4>
+	<p>$O(|S|)$</p>
+
+	<h4>実装例</h4>
+        <p>Manacharよりも Manachan の方が可愛いので Manachan にしてあります(?)</p>
+
+	<pre><code class="cpp" src="source/manacher.cpp"></code></pre>
+	<h4>問題例</h4>
+        <h4>参考資料</h4>
+        <ul>
+          <li><a href="http://snuke.hatenablog.com/entry/2014/12/02/235837">文字列の頭良い感じの線形アルゴリズムたち２  - snuke</a></li>
+        </ul>
+</section>
+      <section>
+	<h2>Aho-Corasick</h2>
+	
+	<h4>説明</h4>
+	<p>パターンマッチングを行う。</p>
+
+	<h4>計算量</h4>
+	<p>$O(N + M)$</p>
+        <p>$N$: 入力文字列の長さ</p>
+        <p>$M$: パターンの文字列の長さの合計</p>
+
+	<h4>実装例</h4>
+        <p>パターンごとのマッチングの個数が不要な場合はset_union() を消したほうがよさそうです(重そうなので)。</p>
+	<pre><code class="cpp" src="source/aho-corasick.cpp"></code></pre>
+
+        <h4>参考資料</h4>
+</section>
+      <section>
+	<h2>一次元累積和</h2>
+	
+	<h4>説明</h4>
+	<p>$1$ 次元の累積和。前計算として事前に累積させておけば, 累積和を $O(1)$ で求めることが出来る。</p>
+
+	<h4>使い方</h4>
+	<ul>
+	  <li>set(k, x): 要素 $k$ に値 $x$ を加える</li>
+          <li>build(): 累積和を構築する</li>
+        </ul>
+        <ul>
+          <li>query(k): 区間 $[0, k]$ の和を求める</li>
+        </ul>
+    
+	<h4>計算量</h4>
+	<ul>
+          <li>build: $O(n)$</li>
+          <li>add, query: $O(1)$</li>
+	</ul>
+
+
+	<h4>実装例</h4>
+	<pre><code class="cpp" src="source/cumulative-sum.cpp"></code></pre>
+	<h4>問題例</h4>
+</section>
+      <section>
+	<h2>二次元累積和</h2>
+	
+	<h4>説明</h4>
+	<p>点add, 矩形sumの $2$ 次元の累積和。前計算として事前に累積させておけば, 累積和を $O(1)$ で求めることが出来る。</p>
+
+	<h4>使い方</h4>
+	<ul>
+	  <li>set(x, y, z): 要素 $(x, y)$ に値 $z$ を加える</li>
+          <li>build(): 累積和を構築する</li>
+        </ul>
+        <ul>
+          <li>query(sx, sy, gx, gy): 左上 $[sx, sy]$, 右下 $(gx, gy)$ の矩形内の和を求める(半開区間)</li>
+        </ul>
+    
+	<h4>計算量</h4>
+	<ul>
+          <li>build: $O(WH)$</li>
+          <li>add, query: $O(1)$</li>
+	</ul>
+
+
+	<h4>実装例</h4>
+	<pre><code class="cpp" src="source/cumulative-sum-2d.cpp"></code></pre>
+	<h4>問題例</h4>
+
+
+        <h4>参考資料</h4>
+        <ul>
+          <li><a href="https://imoz.jp/algorithms/imos_method.html">いもす法 - いもす研 (imos laboratory)</a></li>
+        </ul>
+</section>
+      <section>
+        <h2>サイコロ</h2>
+        <p>サイコロを転がします。</p>
+
+        <p>$l:=$ 左, $r:=$ 右, $f:=$ 前, $b:=$ 後ろ, $d:=$ 下, $u:=$ 上</p>
+	
+
+	      <h4>実装例</h4>
+	      <pre><code class="cpp" src="source/dice.cpp"></code></pre>
+</section>
+      <section>
+	<h2>分解可能問題</h2>
+	
+	<h4>説明</h4>
+        <p>クエリ問題が分解可能であるとは</p>
+        <ul>
+          <li>要素 $1$ つだけのデータ $[e]$ に対するクエリを $q([e])$ と表すとき, 要素列に対するクエリは $q([e_1, e_2, \dotsc, e_n]) = q([e_1]) \star q([e_2]) \star \dotsb \star q([e_n])$ となる演算子 $\star$ (結合法則を満たす) によって表すことができる</li>
+        </ul>
+        <p>ものをいう。ここでは分解可能問題に対する静的なデータ構造を与えられた時にインクリメンタルなデータ構造にしている。</p>
+
+	<h4>計算量</h4>
+	<p>$n$ 要素の静的データ構造が $T(n)$ で構築できるとき, $n$ 回の追加にかかる計算量 $O(T(n)\log n)$</p>
+        <p>$n$ 要素の静的データ構造に対するクエリと $\star$ が $U(n)$ で応答できるとき, $n$ 回のクエリにかかる計算量 $O(U(n)\log n)$</p>
+
+	<h4>実装例</h4>
+        <p>静的なデータ構造 $T_1$ と $T_2$  を結合する $T_1 + T_2$ オペレータを定義する必要がある。また, クエリに応答する際には, 添字演算子[] を使いデータ構造を取り出す。</p>
+	<pre><code class="cpp" src="source/decomposable-searching-structure.cpp"></code></pre>
+	<h4>問題例</h4>
+        <ul>
+          <li><span class="verified">検証済</span><a href="http://codeforces.com/contest/710/problem/F">ECR 16 F. String Set Queries</a> (Submittion: <a href="http://codeforces.com/contest/710/submission/24912583">#24912583</a>)</li>
+        </ul>
+        <h4>参考資料</h4>
+        <ul>
+          <li><a href="http://yukicoder.me/wiki/decomposable_searching_problem">Decomposable searching problem - yukicoder</a></li>
+        </ul>
+</section>
+</main>
+    <footer>
+      <small>Copyright&copy; ei1333's page All Rights Reserved.</small>
+    </footer>
+  </body>
+</html>
+
