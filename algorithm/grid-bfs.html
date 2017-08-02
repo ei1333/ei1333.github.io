@@ -16,7 +16,7 @@ MathJax.Hub.Config({
     <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/styles/github.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="readsource.js"></script>
   </head>
   <body>
     <header>
@@ -37,33 +37,7 @@ MathJax.Hub.Config({
 	<p>$O(WH)$</p>
 
 	<h4>実装例</h4>
-	<pre><code class="cpp">int W, H;
-char mas[500][500];
-int min_cost[500][500];
- 
-int bfs(int sx, int sy, char c)
-{
-  const int vx[] = {0, 1, 0, -1}, vy[] = {1, 0, -1, 0};
-  memset(min_cost, -1, sizeof(min_cost));
-   
-  queue&lt; pair&lt; int, int &gt; &gt; que;
-  que.emplace(sx, sy);
-  min_cost[sx][sy] = 0;
- 
-  while(!que.empty()) {
-    auto p = que.front(); que.pop();
-    if(mas[p.second][p.first] == c) return(min_cost[p.first][p.second]);
-    for(int i = 0; i &lt; 4; i++) {
-      int nx = p.first + vx[i], ny = p.second + vy[i];
-      if(nx &lt; 0 || ny &lt; 0 || nx &gt;= W || ny &gt;= H) continue;
-      if(min_cost[nx][ny] != -1) continue;
-      if(mas[ny][nx] == &#039;#&#039;) continue;
-      min_cost[nx][ny] = min_cost[p.first][p.second] + 1;
-      que.emplace(nx, ny);
-    }
-  }
-  return(-1);
-}</code></pre>
+	<pre><code class="cpp" src="source/bfs.cpp"></code></pre>
 	<h4>問題例</h4>
       </section>
     </main>
