@@ -31,9 +31,9 @@ struct Namori
       for(auto &to : g[idx]) {
         if(v[to]) continue;
         --in[to];
-        if(in[to] > 1) continue;
         forest[to].push_back(idx);
         forest[idx].push_back(to);
+        if(in[to] > 1) continue;
         que.emplace(to);
         v[to] = true;
       }

@@ -74,6 +74,11 @@ MathJax.Hub.Config({
         <p>セグメント木のノードに平衡二分探索木をのせた 2Dセグメント木も可能(但し定数倍がかなり重い)。 以下の実装では長方形内の点の個数を求めるクエリと, 点の追加削除のクエリをサポートしている。</p>
         <pre><code class="cpp" src="source/segment-tree-2d.cpp"></code></pre>
 
+        <h4>モノイド</h4>
+        <p>単位元を持つ半群(二項演算の結合律を満たす)はモノイドである。モノイドであればセグメント木にのせることができる</p>
+
+        <pre><code class="cpp" src="source/segment-tree-monoid.cpp"></code></pre>
+
         <h4>問題例</h4>
         <ul>
 	  <li><span class="verified">検証済</span><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=DSL_2_A&lang=jp">AOJ DSL_2_A Range Minimum Query (RMQ)</a></li>

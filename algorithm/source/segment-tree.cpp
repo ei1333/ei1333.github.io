@@ -15,7 +15,7 @@ struct SegmentTree
 
   T merge(T a, T b)
   {
-    return(max(a, b));
+    return(min(a, b));
   }
 
   void set(int k, int x)
