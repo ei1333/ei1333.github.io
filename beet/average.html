@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+    <title>ei1333's page</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://use.edgefonts.net/source-code-pro.js"></script>
+    <link rel="stylesheet" href="../css/static.css">
+    <script src="view2.js"></script>
+  </head>
+  <body>
+    <header>
+      <h1>ei1333's page</h1>
+      <div class="path">
+        <a href="../index.html">ホーム</a>
+      </div>
+    </header>
+    <main>
+      <section>
+        <h2>平均順位</h2>
+        <p>ABC, ARC, AGC それぞれの平均順位とパフォーマンスをしらべます。</p>
+
+        <form method="get">
+          <input type="text" id="handle" name="handle">
+          <input type="submit" value="send">
+        </form>
+
+        <h4>結果</h4>
+        <ul>
+          <li>All: <b><span id="now_all">Loading...</span></b>
+          <li>AGC: <b><span id="now_agc">Loading...</span></b>
+          <li>ARC: <b><span id="now_arc">Loading...</span></b>
+          <li>ABC: <b><span id="now_abc">Loading...</span></b>
+          <li>Other: <b><span id="now_oth">Loading...</span></b>
+        </ul>
+      </section>
+    </main>
+    <hr>
+    <footer>
+      <small>Copyright&copy; ei1333's page All Rights Reserved.</small>
+    </footer>
+  </body>
+</html>
