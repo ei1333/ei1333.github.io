@@ -114,7 +114,7 @@ console.log(sum0);
     var tweet = "平均";
     if(lattemalta != 1333) tweet += " 直近"+lattemalta+"ヶ月";
     tweet += "\n";
-    tweet += $("#now_all").text();
+    tweet += $("#now_all").text() + "\n";
     tweet += "AGC: " + $("#now_agc").text() + "\n";
     tweet += "ARC: " + $("#now_arc").text() + "\n";
     tweet += "ABC: " + $("#now_abc").text() + "\n";
