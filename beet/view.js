@@ -36,7 +36,7 @@ var colors = {
 
 $(function()
 {
-  var handle = undefined, enemy = undefined;
+  var handle = undefined;
   var match = location.search.match(/handle=(.*?)(&|$)/);
   if(match) {
     handle = decodeURIComponent(match[1]);
@@ -44,14 +44,6 @@ $(function()
   }
   if(handle === undefined) return;
 
-  match = location.search.match(/handle2=(.*?)(&|$)/);
-  if(match) {
-    enemy = decodeURIComponent(match[1]);
-    $('#handle2').val(enemy);
-  }
-
-
-  var flag = enemy === undefined;
   var beet = [];
   var Codeforces = function(handle) {
     var url = "http://codeforces.com/api/user.rating?handle=" + handle;
@@ -84,17 +76,8 @@ $(function()
           stocked.push({x: moment(new Date(data[i]['ratingUpdateTimeSeconds'] * 1000)), y: data[i]['newRating'], label: data[i]['contestName']});
         }
 
-        if(!flag) {
-          flag = true;
-          beet = stocked;
-          setRatingHtml('codeforces', "#now_cf", rating);
-          Codeforces(enemy);
-        } else if(enemy === undefined) {
-          createGraph("codeforces", "#canvas2", stocked, []); 
-          setRatingHtml('codeforces', "#now_cf", rating);      
-        } else {
-          createGraph("codeforces", "#canvas2", beet, stocked);
-        }
+        createGraph("codeforces", "#canvas2", stocked, []); 
+        setRatingHtml('codeforces', "#now_cf", rating);      
       }
     }).fail(function(data)
     {
