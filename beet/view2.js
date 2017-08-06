@@ -23,6 +23,18 @@ $(function()
   }
   if(handle === undefined) return;
 
+  var lattemalta = 1333;
+  var beet = location.search.match(/number=([0-9]+)(&|$)/);
+  if(beet) {
+    lattemalta = decodeURIComponent(beet[1]);
+    $('#number').val(lattemalta);
+  }
+  if(lattemalta > 1333) lattemalta = 1333;
+
+  var dt = new Date();
+  dt.setMonth(dt.getMonth() - lattemalta);
+
+
   var url = "https://atcoder.jp/user/" + handle + "/history";
   var xpath = '//*[@id="history"]/tbody';
   var query = "select * from htmlstring where url = '" + url + "' and xpath = '" + xpath + "'";
@@ -48,25 +60,27 @@ $(function()
     var sum4 = [0, 0, 0, 0];
 
     for(var i = 0; i < value.length; i += 6) {
+      var date = value[i + 0].innerHTML;
       var name = value[i + 1].innerHTML;
       var rank = value[i + 2].innerHTML;
       var perf = value[i + 3].innerHTML;
+      if(new Date(date) < dt) continue;
 
-      if(name.indexOf("Grand") != -1) {
+      if(name.indexOf("Grand Contest") != -1) {
         sum1[0]++;
         sum1[1] += parseInt(rank);
         if(perf != "-") {
           sum1[2]++;
           sum1[3] += parseInt(perf);
         }
-      } else if(name.indexOf("Regular") != -1) {
+      } else if(name.indexOf("Regular Contest") != -1) {
         sum2[0]++;
         sum2[1] += parseInt(rank);
         if(perf != "-") {
           sum2[2]++;
           sum2[3] += parseInt(perf);
         }
-      } else if(name.indexOf("Beginner") != -1) {
+      } else if(name.indexOf("Beginner Contest") != -1) {
         sum3[0]++;
         sum3[1] += parseInt(rank);
         if(perf != "-") {
@@ -97,8 +111,10 @@ console.log(sum0);
     setRatingHtml("atcoder", "#now_abc", sum3);
     setRatingHtml("atcoder", "#now_oth", sum4);
 
-    var tweet = "平均\n";
-    tweet += $("#now_all").text() + "\n";
+    var tweet = "平均";
+    if(lattemalta != 1333) tweet += " 直近"+lattemalta+"ヶ月";
+    tweet += "\n";
+    tweet += $("#now_all").text();
     tweet += "AGC: " + $("#now_agc").text() + "\n";
     tweet += "ARC: " + $("#now_arc").text() + "\n";
     tweet += "ABC: " + $("#now_abc").text() + "\n";
