@@ -38,12 +38,20 @@ MathJax.Hub.Config({
           <li>Dijkstra(g, s, t): 重み付き有向グラフ $g$ 上で, 頂点 $s$ から $t$ への最短路を求める。ただし非連結の時 $-1$ を返す。</li>
         </ul>
 
-	<h4>計算量</h4>
-	<p>$O(E \log V)$</p>
+	      <h4>計算量</h4>
+	      <p>$O(E \log V)$</p>
         <p>$V$: 頂点数, $E$: 辺数</p>
 
-	<h4>実装例</h4>
-	<pre><code class="cpp" src="source/dijkstra.cpp"></code></pre>
+        <h4>実装例</h4>
+        <pre><code class="cpp" src="source/dijkstra.cpp"></code></pre>
+
+        <h4>応用: 牛ゲー</h4>
+        <p>単一始点最短路は特殊な線形計画問題の双対である(いわゆる牛ゲー)。</p>
+        <p>頂点 $s$ から頂点 $v$ までの最短経路を $f(v)$ とする。グラフに負閉路がなければ $f(s) = 0$ である。また頂点 $u$ から $v$ へ向かう重み $w$ の辺が存在するとき $f(u) + w \ge f(v)$ が成立する。言い換えれば, 頂点 $v$ には最大でも $f(u) + w$ のコストで到達可能を意味していて, これは明らか。</p>
+        <p>最短路問題を解くことで各 $v$ について $f(v)$ がとりうる最大の値を求めることができる。つまり $f(v)$ の最大値を求める問題が最短路問題に対応する。</p>
+
+        <p>すべての制約が 変数+定数≧変数 の形で表される線形計画問題は, 対応するグラフ上での最短路問題を解くことで求めることが出来る。$f(u) + w \ge f(v)$ が成立するとき, 頂点 $u$ から頂点 $v$ へ向かう重み $w$ の辺を張れば良い。</p>
+
         <h4>問題例</h4>
         <ul>
           <li><span class="verified">検証済</span><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_1_A&lang=jp">AOJ GPL_1_A 単一始点最短経路</a></li>
