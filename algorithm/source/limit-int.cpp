@@ -22,7 +22,7 @@ struct LimitInt
 
   LimitInt &operator*=(const LimitInt &y)
   {
-    x = (double) x * y.x > high ? high : x + y.x;
+    x = (double) x * y.x > high ? high : x * y.x;
     return (*this);
   }
 
@@ -72,7 +72,7 @@ struct LimitInt
 
   LimitInt operator!=(const LimitInt &y) const
   {
-    return (x == y.x);
+    return (x != y.x);
   }
 
   LimitInt operator<(const LimitInt &y) const
