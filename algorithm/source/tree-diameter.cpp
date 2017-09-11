@@ -6,7 +6,7 @@ typedef vector< vector< edge > > Graph;
 
 pair< int, int > dfs(const Graph& graph, int idx, int prev)
 {
-  pair< int, int > ret = make_pair(0, -1);
+  pair< int, int > ret = make_pair(0, idx);
   for(int i = 0; i < graph[idx].size(); i++) {
     if(graph[idx][i].to != prev){
       pair< int, int > cost = dfs(graph, graph[idx][i].to, idx);
