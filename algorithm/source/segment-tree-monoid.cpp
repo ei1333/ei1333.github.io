@@ -1,3 +1,15 @@
+struct SegNode
+{
+  int v;
+  SegNode(int v) : v(v) {}
+
+  SegNode operator*(const SegNode& r) const 
+  {
+    return(SegNode(min(v, r.v)));
+  }
+
+} e(1 << 30);
+
 struct SegmentTree
 {
   int sz;
