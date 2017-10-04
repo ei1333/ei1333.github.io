@@ -39,8 +39,8 @@ struct SegmentTree
     return (query(a, b, 2 * k + 1, l, (l + r) >> 1) * query(a, b, 2 * k + 2, (l + r) >> 1, r));
   }
 
-  int64 query(int a, int b)
+  int query(int a, int b)
   {
-    return (query(a, b, 0, 0, sz).ans);
+    return (query(a, b, 0, 0, sz).v);
   }
 };

@@ -18,7 +18,7 @@ struct SegmentTree
     return(min(a, b));
   }
 
-  void set(int k, int x)
+  void set(int k, T x)
   {
     seg[k + sz - 1] = x;
   }

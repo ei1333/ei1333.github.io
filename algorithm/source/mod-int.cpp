@@ -21,13 +21,13 @@ struct ModInt
 
   ModInt &operator*=(const ModInt &p)
   {
-    x = 1LL * x * p.x % mod;
+    x = (int) (1LL * x * p.x % mod);
     return *this;
   }
 
   ModInt &operator/=(const ModInt &p)
   {
-    x = 1LL * x * p.inverse() % mod;
+    *this *= p.inverse();
     return *this;
   }
 
@@ -40,6 +40,10 @@ struct ModInt
   ModInt operator*(const ModInt &p) const { return ModInt(*this) *= p; }
 
   ModInt operator/(const ModInt &p) const { return ModInt(*this) /= p; }
+
+  bool operator==(const ModInt &p) const { return x == p.x; }
+
+  bool operator!=(const ModInt &p) const { return x != p.x; }
 
   ModInt inverse() const
   {
@@ -54,7 +58,7 @@ struct ModInt
     return ModInt(u);
   }
 
-  friend ostream &operator<<(ostream &os, ModInt< mod > &p)
+  friend ostream &operator<<(ostream &os, const ModInt< mod > &p)
   {
     return os << p.x;
   }
@@ -66,7 +70,7 @@ struct ModInt
     a = ModInt< mod >(a.x);
     return (is);
   }
-  
+
 };
 
 const int mod = 1e9 + 7;

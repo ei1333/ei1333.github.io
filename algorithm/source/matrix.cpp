@@ -5,9 +5,9 @@ struct Matrix
 
   Matrix() {}
 
-  Matrix(size_t n, size_t m) : A(n, vector< int >(m, 0)) {}
+  Matrix(size_t n, size_t m) : A(n, vector< T >(m, 0)) {}
 
-  Matrix(size_t n) : A(n, vector< int >(n, 0)) {};
+  Matrix(size_t n) : A(n, vector< T >(n, 0)) {};
 
   size_t height() const
   {
@@ -19,12 +19,12 @@ struct Matrix
     return (A[0].size());
   }
 
-  inline const vector< int > &operator[](int k) const
+  inline const vector< T > &operator[](int k) const
   {
     return (A.at(k));
   }
 
-  inline vector< int > &operator[](int k)
+  inline vector< T > &operator[](int k)
   {
     return (A.at(k));
   }
@@ -111,5 +111,36 @@ struct Matrix
       }
     }
     return (os);
+  }
+
+
+  T determinant()
+  {
+    Matrix B(*this);
+    assert(width() == height());
+    T ret = 1;
+    for(int i = 0; i < width(); i++) {
+      int idx = -1;
+      for(int j = i; j < width(); j++) {
+        if(B[j][i] != 0) idx = j;
+      }
+      if(idx == -1) return (0);
+      if(i != idx) {
+        ret *= -1;
+        swap(B[i], B[idx]);
+      }
+      ret *= B[i][i];
+      T vv = B[i][i];
+      for(int j = 0; j < width(); j++) {
+        B[i][j] /= vv;
+      }
+      for(int j = i + 1; j < width(); j++) {
+        T a = B[j][i];
+        for(int k = 0; k < width(); k++) {
+          B[j][k] -= B[i][k] * a;
+        }
+      }
+    }
+    return (ret);
   }
 };
