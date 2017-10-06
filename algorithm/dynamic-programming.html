@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+    <title>ei1333's page</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://use.edgefonts.net/source-code-pro.js"></script>
+    <link rel="stylesheet" href="../css/static.css">
+    <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+    </script>
+    <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/styles/github.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js"></script>
+    <script src="readsource.js"></script>
+  </head>
+  <body>
+    <header>
+      <h1>ei1333's page</h1>
+      <div class="path">
+	<a href="../index.html">ホーム</a> &gt;
+	<a href="index.html">Wiki</a>
+      </div>
+    </header>
+    <main>
+      <section>
+	      <h2>いろいろな動的計画法</h2>
+        <h3>高速化テク</h3>
+
+        <h4>Segment-Tree</h4>
+        <p>セグ木で高速化するのは典型だよね</p>
+
+        <h4>Monge</h4>
+        <p>コスト $C[i][j]$ が Monge かつ単調ならば色々な高速化ができる。Monge とは, $\forall a \le b \le c \le d$ に対し $C[a][c] + C[b][d] \le C[a][d] + C[b][c]$, 単調とは $C[b][c] \le C[a][d]$ を満たすものである。</p>
+
+        <ul>
+          <li>Divide-and-Conquer-Optimization</li>
+          <p>$\displaystyle dp[i][j] = \min_{0 \le k \lt j} \{dp[i - 1][k] + C[k][j]\}$</p>
+          <p>例題として次のような問題を考える。長さ $n$ の配列 $w_i$ が与えられる。 部分列の$w_i$ の二乗和の総和が最小になるように, $m$ 個の連続した部分列に分割する。$dp[i][j]$ を区間 $[0, j)$ を $i$ 個の配列で被覆するときの二乗和の最小値とし, $C[i][j]$ を区間 $[i, j)$ の二乗和と定義すれば, 上記のような漸化式の形となる。</p>
+
+          <p>単純なDPを行うと計算量が $O(m n^2)$ かかる。しかしながらここで $A[i][j] := dp[i][j]$ を最小とする $k$ とおくと, $\forall p$ に対し $A[i][p]  \le A[i][p + 1]$ をみたす。これを利用すると計算量を $O(mn \log n)$ に落とすことができる。$m$ 通りの $i$ に対して $O(n \log n)$ を行うイメージ。ある $i$ に対し, 任意の $j$ に対して解を求めたいとする。最初に $O(n)$ かけて $dp[i][\frac n 2]$ を求めると, そのときの $A[i][\frac n 2]$ を用いて $[0, \frac n 2), [\frac n 2 + 1, n)$ のそれぞれの区間において, 探索すべき範囲が定まる。これを再帰的に行う。探索範囲は全体で $2n$ を超えないため $O(n \log n)$ である。
+          </p>
+
+          <pre><code class="cpp" src="source/divide-and-conquer-optimization.cpp"></code></pre>
+
+          <li>Knuth Optimization</li>
+          <p>$\displaystyle dp[i][j] = \min_{i \lt k \lt j} \{dp[i][k] + dp[k][j]\} + C[i][j]$</p>
+
+          <p>単純なDPを行うと計算量が $O(n^3)$ かかる。しかしながらここで $A[i][j] := dp[i][j]$ を最小とする $k$ とおくと, $dp[i][j]$ に対し $k$ となる可能性のある区間は $A[i][j - 1]  \le k \le A[i + 1][j]$ に限定される。これを用いると $O(n^2)$ となる。</p>
+        </ul>
+
+        <h4>Convex-Hull-Trick</h4>
+        <p>はい</p>
+
+        <h4>問題例</h4>
+        <ul>
+          <li><span class="verified">検証済(Divide-and-Conquer-Optimization)</span><a href="http://codeforces.com/contest/868/problem/F">CF #438 F. Yet Another Minimization Problem</a>(Submittion: <a href="http://codeforces.com/contest/868/submission/31050682">#31050682</a>)</li>
+        </ul>
+
+        <h4>参考資料</h4>
+        <ul>
+          <li><a href="https://topcoder.g.hatena.ne.jp/spaghetti_source/20120915/1347668163">Knuth-Yao speedup - 週刊 spaghetti_source</a></li>
+          <li><a href="http://codeforces.com/blog/entry/8219">Dynamic Programming Optimizations - Codeforces</a></li>
+
+        </ul>
+      </section>
+    </main>
+    <hr>
+    <footer>
+      <small>Copyright&copy; ei1333's page All Rights Reserved.</small>
+    </footer>
+
+  </body>
+</html>
