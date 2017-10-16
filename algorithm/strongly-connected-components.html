@@ -90,7 +90,23 @@ MathJax.Hub.Config({
     }
   }
 };</code></pre>
-	<h4>問題例</h4>
+        <h4>応用: 2-SAT</h4>
+        <p>SAT(充足可能性問題) とは, 論理式が与えられたときにその論理変数に適切な真偽値を割り振ることによって, 全体の真偽値を真とすることができるか判定する問題である。</p>
+        <p>次のような形の論理式を乗法標準形とよぶ。</p>
+        <p>$(a \lor b \lor \dots) \land (c \lor d \lor \dots) \land \dots$</p>
+        <p>$a, b, \dots$ はリテラルといい, 論理変数かその否定である。また $(a \lor b \lor \dots)$ のように $\lor$ でつながれた部分をクロージャといい, 特にクロージャ内のリテラル数が高々 $2$ であるような乗法標準形の論理式に対する SAT を 2-SAT とよぶ。</p>
+        <p>クロージャ ($a \lor b)$ を $\Rightarrow$ (含意) を用いて $(\lnot a \Rightarrow b \land \lnot b \Rightarrow a)$ に変換する。すると乗法標準形は $(a \Rightarrow b) \land (c \Rightarrow d) \land \dots$ のようにすべて $\land$ で結ばれた論理式に表すことができる。ここで $x$ と $\lnot x$ に対応する頂点をつくって, $\Rightarrow$ を辺とした有向グラフを作成する。このグラフを強連結成分分解して $x$ と $\lnot x$ が同じ強連結成分に含まれるものが存在するとき充足不能, 逆に存在しないときは $x$ の強連結成分のトポロジカル順序が $\lnot x$ を含む強連結成分より後ろかどうかを真偽値として充足可能となる解を求めることが出来る。</p>
+
+        <p>変形例として主なものを以下にあげる。</p>
+
+        <ul>
+          <li>$x$ → $(x \Rightarrow \lnot x)$</li>
+          <li>$\lnot x$ → $(\lnot x \Rightarrow x)$</li>
+          <li>$\lnot (x \land y)$ → $(\lnot x \lor \lnot y)$ → $(x \Rightarrow \lnot y) \land (y \Rightarrow \lnot x)$
+
+        </ul>
+
+     	  <h4>問題例</h4>
         <ul>
           <li><span class="verified">検証済</span><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_3_C&lang=jp">AOJ GRL_3_C Strongly Connected Components</a></li>
         </ul>
