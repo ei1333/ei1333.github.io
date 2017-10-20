@@ -5,7 +5,7 @@ struct edge
 typedef vector< vector < edge > > Graph;
 
 template< typename T = int >
-T Dijkstra(Graph &g, int s, int t)
+vector< T > Dijkstra(Graph &g, int s)
 {
   typedef pair< T, int > Pi;
 
@@ -16,7 +16,6 @@ T Dijkstra(Graph &g, int s, int t)
   while(!que.empty()) {
     auto p = que.top();
     que.pop();
-    if(p.second == t) return (p.first);
     if(p.first > min_cost[p.second]) continue;
     for(auto &e : g[p.second]) {
       if(p.first + e.cost >= min_cost[e.to]) continue;
@@ -24,5 +23,5 @@ T Dijkstra(Graph &g, int s, int t)
       que.emplace(min_cost[e.to], e.to);
     }
   }
-  return (-1);
+  return (min_cost);
 }
