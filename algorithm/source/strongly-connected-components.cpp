@@ -6,7 +6,7 @@ struct StronglyConnectedComponents
 
   StronglyConnectedComponents(size_t v) : gg(v), rg(v), comp(v, -1), used(v, 0) {}
 
-  virtual void add_edge(int x, int y)
+  void add_edge(int x, int y)
   {
     gg[x].push_back(y);
     rg[y].push_back(x);

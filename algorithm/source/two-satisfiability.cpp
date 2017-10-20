@@ -4,15 +4,15 @@ struct TwoSatisfiability : StronglyConnectedComponents
 
   TwoSatisfiability(size_t v) : sz(v), StronglyConnectedComponents(v + v) {}
 
-  void add_edge(int u, int v)
+  void add_literal(int u, int v)
   {
-    StronglyConnectedComponents::add_edge(rev(u), v);
-    StronglyConnectedComponents::add_edge(rev(v), u);
+    add_edge(rev(u), v);
+    add_edge(rev(v), u);
   }
 
-  void add_edge(int u)
+  void add_literal(int u)
   {
-    TwoSatisfiability::add_edge(u, u);
+    add_edge(u, u);
   }
 
   inline int rev(int x)
