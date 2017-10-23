@@ -5,9 +5,8 @@ struct SegNode
 
   SegNode operator*(const SegNode& r) const 
   {
-    return(SegNode(min(v, r.v)));
+    return(v < r.v ? *this : r);
   }
-
 } e(1 << 30);
 
 struct SegmentTree
@@ -39,8 +38,8 @@ struct SegmentTree
     return (query(a, b, 2 * k + 1, l, (l + r) >> 1) * query(a, b, 2 * k + 2, (l + r) >> 1, r));
   }
 
-  int query(int a, int b)
+  SegNode query(int a, int b)
   {
-    return (query(a, b, 0, 0, sz).v);
+    return (query(a, b, 0, 0, sz));
   }
 };
