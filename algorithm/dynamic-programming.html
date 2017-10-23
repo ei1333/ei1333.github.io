@@ -47,7 +47,7 @@ MathJax.Hub.Config({
 
           <pre><code class="cpp" src="source/divide-and-conquer-optimization.cpp"></code></pre>
 
-          <li>Knuth Optimization</li>
+          <li>Knuth-Optimization</li>
           <p>$\displaystyle dp[i][j] = \min_{i \lt k \lt j} \{dp[i][k] + dp[k][j]\} + C[i][j]$</p>
 
           <p>単純なDPを行うと計算量が $O(n^3)$ かかる。しかしながらここで $A[i][j] := dp[i][j]$ を最小とする $k$ とおくと, $dp[i][j]$ に対し $k$ となる可能性のある区間は $A[i][j - 1]  \le k \le A[i + 1][j]$ に限定される。これを用いると $O(n^2)$ となる。</p>
@@ -60,6 +60,7 @@ MathJax.Hub.Config({
         <h4>問題例</h4>
         <ul>
           <li><span class="verified">検証済(Divide-and-Conquer-Optimization)</span><a href="http://codeforces.com/contest/868/problem/F">CF #438 F. Yet Another Minimization Problem</a>(Submittion: <a href="http://codeforces.com/contest/868/submission/31050682">#31050682</a>)</li>
+          <li><span class="verified">検証済(Knuth-Optimization)</span><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=2415">AOJ2415 刺身</a></li>
         </ul>
 
         <h4>参考資料</h4>
