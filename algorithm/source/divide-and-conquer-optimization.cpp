@@ -17,5 +17,3 @@ void rec(int idx, int left, int right, int latte, int malta)
 
 /* initialize dp[0][0] = 0 */
 /* call rec([1,m], 0, N + 1, 0, N + 1) */
-
-

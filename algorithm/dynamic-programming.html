@@ -53,6 +53,8 @@ MathJax.Hub.Config({
           <p>単純なDPを行うと計算量が $O(n^3)$ かかる。しかしながらここで $A[i][j] := dp[i][j]$ を最小とする $k$ とおくと, $dp[i][j]$ に対し $k$ となる可能性のある区間は $A[i][j - 1]  \le k \le A[i + 1][j]$ に限定される。これを用いると $O(n^2)$ となる。</p>
         </ul>
 
+        <pre><code class="cpp" src="source/knuth-optimization.cpp"></code></pre>
+
         <h4>Convex-Hull-Trick</h4>
         <p>はい</p>
 
