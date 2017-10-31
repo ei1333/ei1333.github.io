@@ -28,17 +28,23 @@ MathJax.Hub.Config({
     </header>
     <main>
       <section>
-	<h2>HL分解(Centroid-Path-Decomposition)</h2>
-	
-	<h4>説明</h4>
-	<p>木をHL分解する。結構癖のある書き方みたい。</p>
+        <h2>HL分解(Centroid-Path-Decomposition)</h2>
 
-	<h4>計算量</h4>
-	<p>$O(V + E)$</p>
+        <h4>説明</h4>
+        <p>木をHL分解する。</p>
 
-	<h4>実装例</h4>
-	<pre><code class="cpp" src="source/centroid-path-decomposition.cpp"></code></pre>
-	<h4>問題例</h4>
+        <h4>計算量</h4>
+        <p>$O(V)$</p>
+        <p>LCA, query: $O(\log V)$</p>
+
+	      <h4>実装例</h4>
+	      <pre><code class="cpp" src="source/centroid-path-decomposition.cpp"></code></pre>
+
+        <h4>Tree-Array</h4>
+        <p>上の実装では, データ構造をheavy-path 個分必要だったが, 面倒なので $1$ 個に変換してみる。計算量は $\log V$ がのって悪くなるが実装は楽になる。</p>
+
+        <pre><code class="cpp" src="source/tree-array.cpp"></code></pre>
+
       </section>
     </main>
     <hr>

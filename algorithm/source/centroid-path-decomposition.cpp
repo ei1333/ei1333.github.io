@@ -4,33 +4,40 @@ struct CentroidPathDecomposition
   {
     int ParIndex, ParDepth, Deep;
     vector< int > node;
-    inline int size()
+
+    Centroid(int idx, int dep, int deep) : ParIndex(idx), ParDepth(dep), Deep(deep) {}
+
+    inline size_t size()
     {
-      return(node.size());
+      return (node.size());
     }
+
     inline int &operator[](int k)
     {
-      return(node[k]);
+      return (node[k]);
     }
+
     inline pair< int, int > Up()
     {
-      return(make_pair(ParIndex, ParDepth));
+      return (make_pair(ParIndex, ParDepth));
     }
   };
-    
+
+  vector< vector< int > > graph;
   vector< int > SubTreeSize, NextPath;
   vector< int > TreeIndex, TreeDepth;
   vector< Centroid > Centroids;
-    
+
   void BuildSubTreeSize()
   {
     stack< pair< int, int > > s;
-    s.push({0, -1});
+    s.emplace(0, -1);
     while(!s.empty()) {
-      auto p = s.top(); s.pop();
+      auto p = s.top();
+      s.pop();
       if(~SubTreeSize[p.first]) {
         NextPath[p.first] = -1;
-        for(auto& to : graph[p.first]) {
+        for(auto &to : graph[p.first]) {
           if(p.second == to) continue;
           SubTreeSize[p.first] += SubTreeSize[to];
           if(NextPath[p.first] == -1 || SubTreeSize[NextPath[p.first]] < SubTreeSize[to]) {
@@ -40,58 +47,64 @@ struct CentroidPathDecomposition
       } else {
         s.push(p);
         SubTreeSize[p.first] = 1;
-        for(auto& to : graph[p.first]) {
-          if(p.second != to) s.push({to, p.first});
+        for(auto &to : graph[p.first]) {
+          if(p.second != to) s.emplace(to, p.first);
         }
       }
     }
   }
+
   void BuildPath()
   {
     stack< pair< int, int > > s;
-    Centroids.push_back((Centroid){-1, -1, 0});
-    s.push({0, -1});
+    Centroids.emplace_back(-1, -1, 0);
+    s.emplace(0, -1);
     TreeIndex[0] = 0;
     while(!s.empty()) {
-      auto p = s.top(); s.pop();
-      TreeDepth[p.first] = Centroids[TreeIndex[p.first]].size();
-      for(auto& to : graph[p.first]) {
-        if(p.second != to) {
-          if(to == NextPath[p.first]) { // Centroid-Path
-            TreeIndex[to] = TreeIndex[p.first];
-          } else {                  // Not Centroid-Path
-            TreeIndex[to] = Centroids.size();
-            Centroids.push_back((Centroid){TreeIndex[p.first], TreeDepth[p.first], Centroids[TreeIndex[p.first]].Deep + 1});
-          }
-          s.push({to, p.first});
+      auto p = s.top();
+      s.pop();
+      TreeDepth[p.first] = (int) Centroids[TreeIndex[p.first]].size();
+      for(auto &to : graph[p.first]) {
+        if(p.second == to) continue;
+        if(to == NextPath[p.first]) { // Centroid-Path
+          TreeIndex[to] = TreeIndex[p.first];
+        } else {                  // Not Centroid-Path
+          TreeIndex[to] = (int) Centroids.size();
+          Centroids.emplace_back(TreeIndex[p.first], TreeDepth[p.first], Centroids[TreeIndex[p.first]].Deep + 1);
         }
+        s.emplace(to, p.first);
       }
-      Centroids[TreeIndex[p.first]].node.push_back(p.first);
+      Centroids[TreeIndex[p.first]].node.emplace_back(p.first);
     }
   }
+
   void AddEdge(int x, int y)
   {
     graph[x].push_back(y);
     graph[y].push_back(x);
   }
-  void Build()
+
+  virtual void Build()
   {
     BuildSubTreeSize();
     BuildPath();
   }
-    
-  inline int size()
+
+  inline size_t size()
   {
-    return(Centroids.size());
+    return (Centroids.size());
   }
+
   inline pair< int, int > Information(int idx)
   {
-    return(make_pair(TreeIndex[idx], TreeDepth[idx]));
+    return (make_pair(TreeIndex[idx], TreeDepth[idx]));
   }
+
   inline Centroid &operator[](int k)
   {
-    return(Centroids[k]);
+    return (Centroids[k]);
   }
+
   inline int LCA(int a, int b)
   {
     int TreeIdxA, TreeDepthA, TreeIdxB, TreeDepthB;
@@ -105,9 +118,27 @@ struct CentroidPathDecomposition
       }
     }
     if(TreeDepthA > TreeDepthB) swap(TreeDepthA, TreeDepthB);
-    return(Centroids[TreeIdxA][TreeDepthA]);
+    return (Centroids[TreeIdxA][TreeDepthA]);
   }
- 
+
+  inline virtual void query(int a, int b, const function< void(int, int, int) > &f)
+  {
+    int TreeIdxA, TreeDepthA, TreeIdxB, TreeDepthB;
+    tie(TreeIdxA, TreeDepthA) = Information(a);
+    tie(TreeIdxB, TreeDepthB) = Information(b);
+    while(TreeIdxA != TreeIdxB) {
+      if(Centroids[TreeIdxA].Deep > Centroids[TreeIdxB].Deep) {
+        f(TreeIdxA, 0, TreeDepthA + 1);
+        tie(TreeIdxA, TreeDepthA) = Centroids[TreeIdxA].Up();
+      } else {
+        f(TreeIdxB, 0, TreeDepthB + 1);
+        tie(TreeIdxB, TreeDepthB) = Centroids[TreeIdxB].Up();
+      }
+    }
+    if(TreeDepthA > TreeDepthB) swap(TreeDepthA, TreeDepthB);
+    f(TreeIdxA, TreeDepthA, TreeDepthB + 1);
+  }
+
   CentroidPathDecomposition(int SZ)
   {
     graph.resize(SZ);
@@ -117,3 +148,4 @@ struct CentroidPathDecomposition
     TreeDepth.resize(SZ);
   }
 };
+
