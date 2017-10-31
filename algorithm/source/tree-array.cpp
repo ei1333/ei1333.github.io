@@ -16,7 +16,8 @@ struct TreeArray : CentroidPathDecomposition
 
   inline int get(int a)
   {
-    return (index[a]);
+    auto p = Information(a);
+    return (index[p.first] + p.second);
   }
 
   inline void query(int a, int b, const function< void(int, int) > &f)
