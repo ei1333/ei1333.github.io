@@ -62,8 +62,8 @@ MathJax.Hub.Config({
 
           <pre><code class="cpp" src="source/convex-hull-trick-add-query-monotone.cpp"></code></pre>
 
-          <li>それ以外</li>
-          <p>悲しいね</p>
+          <li>追加クエリについて, 与えられる $a_i$ が単調ではない場合</li>
+          <p>直線の位置を二分探索で求めて気合いをすることになる。悲しいね。実装に $O(n!)$ 時間かかってつらいが, 計算量は全体でも $O(n \log n)$  となる。</p>
         </ul>
 
         <h4>Bit-DP</h4>
@@ -91,6 +91,7 @@ MathJax.Hub.Config({
           <p>それぞれの頂点集合 $S_i$  に対し, その部分集合 $T_i$ を試すDPは $O(3^n)$ で行える。これは $n$ 個の頂点を $T_i$, $S_i - T_i$, その他に分ける方法を試していることと等価であることからいえる。</p>
           <p>具体的に頂点集合 $bit$ の部分集合を列挙するためには, 以下のコードを用いれば良い。変数 $i$ に入るものが $bit$ の部分集合である。 $i = \emptyset$ を許容しないことに注意すること(許容するときは別途処理する)。</p>
 
+          <pre><code class="cpp" src="source/subset-recursion.cpp"></code></pre>
 
           <p>補足として, $O(3^n)$ のDPは基本的に $O(2^n n^2)$ くらいで何かを前計算しておいて, それを用いて計算量を削減することが多い。</p>
 
