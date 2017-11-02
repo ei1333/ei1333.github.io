@@ -2,9 +2,9 @@ template< class T >
 struct ConvexHullTrickAddQueryMonotone
 {
   deque< pair< T, T > > L;
-  int head, isdec;
+  int isdec;
 
-  ConvexHullTrickAddQueryMonotone() : head(0), isdec(-1) {}
+  ConvexHullTrickAddQueryMonotone() : isdec(-1) {}
 
   inline T getX(const pair< T, T > &a, const T &x)
   {
@@ -16,6 +16,8 @@ struct ConvexHullTrickAddQueryMonotone
     return ((b.first - a.first) * (c.second - b.second) >= (b.second - a.second) * (c.first - b.first));
   }
 
+  inline bool empty() { return (L.empty()); }
+
   void add(T a, T b)
   {
     pair< T, T > line(a, b);
@@ -26,9 +28,17 @@ struct ConvexHullTrickAddQueryMonotone
     }
 
     if(isdec == 1) {
+      if(!L.empty() && L.back().first == a) {
+        line.second = min(line.second, L.back().second);
+        L.pop_back();
+      }
       while(L.size() >= 2 && check(L[L.size() - 2], L.back(), line)) L.pop_back();
       L.emplace_back(line);
     } else {
+      if(!L.empty() && L.front().first == a) {
+        line.second = min(line.second, L.front().second);
+        L.pop_front();
+      }
       while(L.size() >= 2 && check(line, L[0], L[1])) L.pop_front();
       L.emplace_front(line);
     }
@@ -47,10 +57,9 @@ struct ConvexHullTrickAddQueryMonotone
 
   T getMinimumQueryMonotone(T x)
   {
-    while(head + 1 < L.size() && getX(L[head], x) >= getX(L[head + 1], x)) {
-      ++head;
+    while(L.size() >= 2 && getX(L[0], x) >= getX(L[1], x)) {
+      L.pop_front();
     }
-    return (getX(L[head], x));
+    return (getX(L[0], x));
   }
 };
-
