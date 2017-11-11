@@ -1,6 +1,6 @@
-typedef long long int64;
+using int64 = long long;
 
-vector< int64 > Divisor(int64 n)
+vector< int64 > divisor(int64 n)
 {
   vector< int64 > ret;
   for(int64 i = 1; i * i <= n; i++) {

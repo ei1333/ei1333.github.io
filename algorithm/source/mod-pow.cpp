@@ -1,6 +1,6 @@
-typedef long long int64;
+using int64 = long long;
 
-int64 pow_mod(int64 x, int64 n, int64 mod)
+int64 mod_pow(int64 x, int64 n, int64 mod)
 {
   int64 ret = 1;
   while(n > 0) {

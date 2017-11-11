@@ -1,4 +1,5 @@
-typedef long long int64;
+using int64 = long long;
+
 map< int64, int > prime_factor(int64 n)
 {
   map< int64, int > ret;
