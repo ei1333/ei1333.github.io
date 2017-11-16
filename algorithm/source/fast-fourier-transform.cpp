@@ -13,7 +13,7 @@ namespace FastFourierTransform
     C w, s, t;
     for(int i = 1; i < N; i <<= 1) {
       for(int k = 0; k < i; k++) {
-        w = std::polar(1.0, PI / i * k);
+        w = polar(1.0, PI / i * k);
         for(int j = 0; j < N; j += i * 2) {
           s = F[j + k];
           t = C(F[j + k + i].real() * w.real() - F[j + k + i].imag() * w.imag(),
