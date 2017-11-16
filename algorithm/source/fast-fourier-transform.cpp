@@ -28,7 +28,7 @@ namespace FastFourierTransform
   vector< long long > Multiply(const vector< int > &A, const vector< int > &B)
   {
     int sz = 1;
-    while(sz <= A.size() + B.size()) sz <<= 1;
+    while(sz < A.size() + B.size() - 1) sz <<= 1;
     vector< C > F(sz), G(sz);
     for(int i = 0; i < A.size(); i++) F[i] = A[i];
     for(int i = 0; i < B.size(); i++) G[i] = B[i];
