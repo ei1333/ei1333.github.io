@@ -60,7 +60,7 @@ struct Matrix
   {
     size_t n = height(), m = B.width(), p = width();
     assert(p == B.height());
-    vector< vector< int > > C(n, vector< int >(m, 0));
+    vector< vector< T > > C(n, vector< T >(m, 0));
     for(int i = 0; i < n; i++)
       for(int j = 0; j < m; j++)
         for(int k = 0; k < p; k++)
