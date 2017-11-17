@@ -21,7 +21,7 @@ struct NumberTheoreticTransform
     return (mod_pow(x, mod - 2));
   }
 
-  inline int add(int x, int y)
+  inline int add(unsigned x, int y)
   {
     x += y;
     if(x >= mod) x -= mod;
