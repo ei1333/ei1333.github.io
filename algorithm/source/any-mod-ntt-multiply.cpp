@@ -30,7 +30,7 @@ inline int inverse(int x, int mod)
   return (mod_pow(x, mod - 2, mod));
 }
 
-vector< int > AnyModNTTMultiply(vector< int > a, vector< int > b, int mod)
+vector< int > AnyModNTTMultiply(vector< int >& a, vector< int >& b, int mod)
 {
   for(auto &x : a) x %= mod;
   for(auto &x : b) x %= mod;
