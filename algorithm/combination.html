@@ -43,7 +43,7 @@ MathJax.Hub.Config({
         <h4>説明</h4>
         <p>${}_n \mathrm{C} _r = \frac {n!} {(n-r)! r!} = n! ((n-r)!)^{-1} (r!)^{-1}$ を利用する。$n$ までの階乗と階乗の逆元を列挙したあとに, その値を用いて計算する</p>
         <h4>計算量</h4>
-        <p>前計算 $O(n \log n)$, クエリ $O(1)$</p>
+        <p>前計算 $O(n + \log n)$, クエリ $O(1)$</p>
         <h4>実装例</h4>
         <pre><code class="cpp" src="source/combination.cpp"></code></pre>
 
@@ -53,7 +53,7 @@ MathJax.Hub.Config({
         <h4>計算量</h4>
         <p>クエリ $O(r)$</p>
         <h4>実装例</h4>
-        <pre><code class="cpp" src="source/pow-mod.cpp"></code></pre>
+        <pre><code class="cpp" src="source/combination-r.cpp"></code></pre>
 
       </section>
     </main>
