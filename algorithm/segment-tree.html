@@ -31,30 +31,32 @@ MathJax.Hub.Config({
         <h2>セグメント木(Segment-Tree)</h2>
 	
 	      <h4>説明</h4>
-	     <p>完全2分木である。区間に対する様々な演算が$O(\log N)$で実現できるが, ここでは一般的な操作であるRMQを実装している。</p>
+	     <p>完全2分木である。モノイド(二項演算の結合律を満たす)に対する区間への様々な演算が$O(\log N)$ で実現できる。</p>
 
-        <p>実装では木を配列で実現している。ノード $k$ について, 親ノードは $\frac {k - 1} {2}$, 子ノードは $2k+1, 2k+2$ である。</p>
+        <p>実装では木を 0-indexed の配列で実現している。ノード $k$ について, 親ノードは $\frac {k - 1} {2}$, 子ノードは $2k+1, 2k+2$ である。</p>
 
         <h4>使い方</h4>
+        <p>構造体 $\mathrm{SegNode}$ に対して二項演算 $*$ と単位元を定義しておく</p>
+ 
         <ul>
           <li>$\mathrm{SegmentTree}(n)$: サイズ $n$ のセグ木の初期化</li>
-          <li>$\mathrm{set}(k, x)$: $k$ 番目の要素に値 $x$ をセットする</li>
+          <li>$\mathrm{set}(k, x)$: $k$ 番目の要素に $x$ をセットする</li>
 	        <li>$\mathrm{build}()$: 構築する</li>
         </ul>
         
         <ul>
-          <li>$\mathrm{rmq}(l, r)$: 区間 $[l, r)$ の最小値を求める</li>
-          <li>$\mathrm{update}(k, x)$: $k$ 番目の要素を値 $x$ に変更する</li> 
+          <li>$\mathrm{query}(l, r)$: 区間 $[l, r)$ に対して二項演算 $*$ をした結果を返す</li>
+          <li>$\mathrm{update}(k, x)$: $k$ 番目の要素を $x$ に変更する</li> 
         </ul>
 
 	      <h4>計算量</h4>
 	      <ul>
           <li>build: $O(N)$</li>
-          <li>rmq, update: $O(\log N)$</li>
+          <li>query, update: $O(\log N)$</li>
         </ul>
        
 	      <h4>実装例</h4>
-	      <pre><code class="cpp" src="source/segment-tree.cpp"></code></pre>
+        <pre><code class="cpp" src="source/segment-tree-monoid.cpp"></code></pre>
 
         <h4>応用 1: 区間加算</h4>
         <p>Starry-Sky-Tree と呼ばれる有名なセグメント木がある。このセグメント木では以下の $2$ つのクエリをサポートする。</p>
@@ -80,10 +82,6 @@ MathJax.Hub.Config({
         <h4>応用 4: フラクショナルカスケーディング</h4>
         <p>静的な場合に, 次元を1個落とすテク。コードを見たほうが早い気がする。セグ木を下る時に縦方向の範囲をいい感じに計算しておくことで毎回の二分探索が不要となっている。(たぶんAOJのDSLでverified(MLEやが))</p>
         <pre><code class="cpp" src="source/segment-tree-fractional-cascading.cpp"></code></pre>
-
-        <h4>モノイド</h4>
-        <p>単位元を持つ半群(二項演算の結合律を満たす)はモノイドである。モノイドであればセグメント木にのせることができる。以下はRMQの場合である。(こっちのほうが色々定義しやすいし, 汎用性が高い気がする)</p>
-        <pre><code class="cpp" src="source/segment-tree-monoid.cpp"></code></pre>
 
         <h4>問題例</h4>
         <ul>

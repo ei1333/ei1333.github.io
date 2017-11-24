@@ -1,11 +1,12 @@
 struct SegNode
 {
   int v;
+
   SegNode(int v) : v(v) {}
 
-  SegNode operator*(const SegNode& r) const 
+  SegNode operator*(const SegNode &r) const
   {
-    return(v < r.v ? *this : r);
+    return (v < r.v ? *this : r);
   }
 } e(1 << 30);
 
@@ -19,6 +20,18 @@ struct SegmentTree
     sz = 1;
     while(sz < n) sz <<= 1;
     seg.assign(2 * sz - 1, e);
+  }
+
+  void set(int k, const SegNode &x)
+  {
+    seg[k + sz - 1] = x;
+  }
+
+  void build()
+  {
+    for(int k = sz - 2; k >= 0; k--) {
+      seg[k] = seg[2 * k + 1] * seg[2 * k + 2];
+    }
   }
 
   void update(int k, const SegNode &x)

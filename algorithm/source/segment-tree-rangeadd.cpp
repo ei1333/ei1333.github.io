@@ -21,7 +21,7 @@ struct SegmentTree
     return(min(a, b));
   }
 
-  void set(int k, int x)
+  void set(int k, T x)
   {
     seg[k + sz - 1] = x;
   }
@@ -46,7 +46,7 @@ struct SegmentTree
     return (rmq(a, b, 0, 0, sz));
   }
 
-  void rangeadd(int a, int b, int x, int k, int l, int r)
+  void rangeadd(int a, int b, T x, int k, int l, int r)
   {
     if(a >= r || b <= l) return;
     if(a <= l && r <= b) {
