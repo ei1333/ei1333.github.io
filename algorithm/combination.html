@@ -28,8 +28,8 @@ MathJax.Hub.Config({
     </header>
     <main>
       <section>
-	      <h2>組み合わせ</h2>
-	      <p>${}_n \mathrm{C} _r$ を求める。</p>
+	      <h2>組合せ</h2>
+	      <p>${}_n \mathrm{C} _r$ などを求める。</p>
 
         <h3>列挙(パスカルの三角形)</h3>
         <h4>説明</h4>
@@ -43,17 +43,67 @@ MathJax.Hub.Config({
         <h4>説明</h4>
         <p>${}_n \mathrm{C} _r = \frac {n!} {(n-r)! r!} = n! ((n-r)!)^{-1} (r!)^{-1}$ を利用する。$n$ までの階乗と階乗の逆元を列挙したあとに, その値を用いて計算する</p>
         <h4>計算量</h4>
-        <p>前計算 $O(n + \log m)$, クエリ $O(1)$</p>
+        <p>前計算 $O(n + \log mod)$, クエリ $O(1)$</p>
         <h4>実装例</h4>
         <pre><code class="cpp" src="source/combination.cpp"></code></pre>
 
-        <h3>値(逆元)</h3>
+        <h3>値</h3>
         <h4>説明</h4>
         <p>${}_n \mathrm{C} _r = \frac {n(n-1)\dots (n-r+1)} {r(r-1)\dots 1}$ を利用する。</p>
         <h4>計算量</h4>
         <p>クエリ $O(r)$</p>
         <h4>実装例</h4>
         <pre><code class="cpp" src="source/combination-r.cpp"></code></pre>
+
+        <h3>写像 12 相</h3>
+        <p>$n$ 個のボールを $k$ 個の箱に入れる場合の数を, 状況によって以下の $12$ 種類の問題設定に分けることが出来る。</p>
+        <table style="max-width: 100%; width: 100%;">
+         <tr>
+           <th>ボール</th>
+           <th>箱</th>
+           <th>ボールの入れ方に制限がない</th>
+           <th>$1$ つの箱に入れられるボールが高々 $1$ 個</th>
+           <th>$1$ つの箱に最低 $1$ 個のボールを入れる</th>
+         </tr>
+         <tr>
+           <th>区別あり</th>
+           <th>区別あり</th>
+           <td>$k^n$</td>
+           <td>${}_k \mathrm{P} _n$</td>
+           <td>$\displaystyle \sum_{i=1}^k(-1)^{k-i}{}_k\mathrm{C}_{i}i^n$
+         </tr>
+         <tr>
+           <th>区別なし</th>
+           <th>区別あり</th>
+           <td>${}_{k}\mathrm{H}_{n}$</td>
+           <td>${}_k\mathrm{C}_n$ </td>
+           <td>${}_{n-1}\mathrm{C}_{k-1}$</td>
+         </tr>
+         <tr>
+           <th>区別あり</th>
+           <th>区別なし</th>
+           <td>$B(n,k)$</td>
+           <td>$1$</td>
+           <td>$S(n,k)$</td>
+         </tr>
+         <tr>
+           <th>区別なし</th>
+           <th>区別なし</th>
+           <td>${}_{n+k}\mathrm{P}_{k}$</td>
+           <td>$1$</td>
+           <td>${}_{n}\mathrm{P}_{k}$</td>
+         </tr>
+        </table>
+        <h3>カタラン数</h3>
+        <p>$C_n$ は $n$ 番目のカタラン数である。カタラン数は様々な意味付けがなされていて, 以下にその例をあげる。</p>
+        <ul>
+          <li>valid な括弧列の個数: $x$ 組の () を正しく並べる個数は $C_x$</li>
+          <li>$x+1$ 個の葉を持つ二分木の個数は $C_x$</li>
+          <li>平面グラフの交差: $2x$ 人が手を交差させないで握手する場合の数は $C_x$</li>
+        </ul>
+        <p>カタラン数 $C_n$ の一般項は $C_n = {}_{2n} \mathrm{C} _{n} -  {}_{2n} \mathrm{C} _{n-1}$ である。</p>
+        <h3>モンモール数</h3>
+        <p>モンモール数 $a_n$ は長さ $n$ の完全順列の個数である。$n$ 番目に置く数の選び方は $1$ から $n-1$ の $(n-1)$ 通りで, ここで選んだ数を $i$ とする。$i$ 番目に置いた数が $n$ であれば残り $(n-2)$ 個の並べ方の個数は $a_{n-2}$ に等しい。$i$ 番目に置いた数が $n$ でないとき残り $(n-1)$ 個の並べ方の個数は $a_{n-1}$ に等しい。よって漸化式が $a_1 = 0, a_2 = 1, a_n = (n-1)(a_{n-1} + a_{n-2})$ となる。</p>
 
       </section>
     </main>

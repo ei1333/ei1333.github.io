@@ -1,6 +1,6 @@
 struct SegmentTreeFractionalCascading
 {
-  vector< vector< pair< int, int > > > seg;
+  vector< vector< int > > seg;
   vector< vector< int > > LL, RR;
   int sz;
 
