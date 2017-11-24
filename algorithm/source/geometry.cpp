@@ -76,6 +76,21 @@ struct Line
 
   Line(Point a, Point b) : a(a), b(b) {};
 
+  // Ax + By = C
+  Line(double A, double B, double C)
+  {
+    if(eq(A, 0)) {
+      a = Point(0, C / B);
+      b = Point(1, C / B);
+    } else if(eq(B, 0)) {
+      a = Point(C / A, 0);
+      b = Point(C / A, 1);
+    } else {
+      a = Point(0, C / B);
+      b = Point(C / A, 0);
+    }
+  }
+
   friend ostream &operator<<(ostream &os, Line &p) { return os << "(" << p.a.x << "," << p.a.y << ") to (" << p.b.x << "," << p.b.y << ")"; }
 
   friend istream &operator>>(istream &is, Line &a) { return is >> a.a.x >> a.a.y >> a.b.x >> a.b.y; }
