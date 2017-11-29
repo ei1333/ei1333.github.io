@@ -66,8 +66,8 @@ struct ModInt
   friend istream &operator>>(istream &is, ModInt< mod > &a)
   {
     long long x;
-    is >> a.x;
-    a = ModInt< mod >(a.x);
+    is >> x;
+    a = ModInt< mod >(x);
     return (is);
   }
 
