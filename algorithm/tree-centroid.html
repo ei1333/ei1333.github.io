@@ -28,18 +28,18 @@ MathJax.Hub.Config({
     </header>
     <main>
       <section>
-	<h2>平衡二分探索木(RBST)</h2>
-	
-	<h4>説明</h4>
-	<p>RBST(Randomized Binary Search Tree)は平衡二分探索木の一種。ランダムなノードを根にして期待値的に木の高さを$O(\log N)$ に抑える。</p>
+        <h2>重心(Centroid)</h2>
 
-	<h4>計算量</h4>
-	<p>$O(\log N)$</p>
+        <h4>説明</h4>
+        <p>木の重心を列挙する。</p>
+        <p>木の重心は $2$ つか $1$ つあり, $2$ つあるときは両方の部分木の大きさが $N/2$, $1$ つあるときはその頂点の部分木の大きさが $\frac {(N-1)} {2}$ 以下となる。
 
-	<h4>実装例</h4>
-	<pre><code class="cpp" src="source/rbst.cpp"></code></pre>
-  <pre><code class="cpp" src="source/rbstmap.cpp"></code></pre>
-	<h4>問題例</h4>
+        <h4>計算量</h4>
+        <p>$O(N)$</p>
+
+	      <h4>実装例</h4>
+	      <pre><code class="cpp" src="source/tree-centroid.cpp"></code></pre>
+
       </section>
     </main>
     <hr>
