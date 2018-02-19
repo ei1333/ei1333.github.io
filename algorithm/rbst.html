@@ -28,18 +28,36 @@ MathJax.Hub.Config({
     </header>
     <main>
       <section>
-	<h2>平衡二分探索木(RBST)</h2>
+	      <h2>平衡二分探索木(RBST)</h2>
 	
-	<h4>説明</h4>
-	<p>RBST(Randomized Binary Search Tree)は平衡二分探索木の一種。ランダムなノードを根にして期待値的に木の高さを$O(\log N)$ に抑える。</p>
+        <h4>説明</h4>
+        <p>RBST(Randomized Binary Search Tree)は平衡二分探索木の一種。ランダムなノードを根にして期待値的に木の高さを$O(\log N)$ に抑える。</p>
 
-	<h4>計算量</h4>
-	<p>$O(\log N)$</p>
+        <p>遅延評価が不要な場合は引数が $3$ つのコンストラクタを呼び出す。左からノードの大きさ, 二項演算, 単位元。</p>
+       <h4>計算量</h4>
+        <p>$O(\log N)$</p>
 
-	<h4>実装例</h4>
-	<pre><code class="cpp" src="source/rbst.cpp"></code></pre>
-  <pre><code class="cpp" src="source/rbstmap.cpp"></code></pre>
-	<h4>問題例</h4>
+        <h4>実装例</h4>
+        <pre><code class="cpp" src="source/randomized-binary-search-tree.cpp"></code></pre>
+
+        <h4>応用 1: multiset, set</h4>
+        <p>RBSTを単に multiset や set として使うことも可能。$k$ 番目に小さい値を $O(\log n)$ で取得できる機能を追加で持つ。</p>
+
+        <pre><code class="cpp" src="source/ordered-multi-set.cpp"></code></pre>
+
+        <pre><code class="cpp" src="source/ordered-set.cpp"></code></pre>
+
+        <h4>応用 2: 完全永続</h4>
+        <p>永続をします（ア。コンストラクタに与える pool の大きさに十分な余裕を持つこと。</p>
+        <pre><code class="cpp" src="source/president-randomized-binary-search-tree.cpp"></code></pre>
+
+        <h4>問題例</h4>
+        <ul>
+          <li><span class="verified">検証済</span><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=1508">AOJ 1508 RMQ</a></li>
+          <li><span class="verified">検証済(応用1)</span><a href="https://arc033.contest.atcoder.jp/submissions/2115461">ARC 033 C データ構造</a></li>
+          <li><span class="verified">検証済(応用2)</span><a href="https://beta.atcoder.jp/contests/arc030/submissions/2114822">ARC 030 D グラフではない</a></li>
+          <li><a href="https://joisc2012.contest.atcoder.jp/tasks/joisc2012_copypaste">JOI2012 春合宿 コピー&ペースト</a></li>
+        </ul> 
       </section>
     </main>
     <hr>
