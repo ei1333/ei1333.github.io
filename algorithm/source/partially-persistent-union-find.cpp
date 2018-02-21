@@ -1,12 +1,12 @@
-struct PartiallyPresidentUnionFind
+struct PartiallyPersistentUnionFind
 {
   vector< int > data;
   vector< int > last;
   vector< vector< pair< int, int > > > add;
  
-  PartiallyPresidentUnionFind() {}
+  PartiallyPersistentUnionFind() {}
  
-  PartiallyPresidentUnionFind(int sz) : data(sz, -1), last(sz, 1e9), add(sz)
+  PartiallyPersistentUnionFind(int sz) : data(sz, -1), last(sz, 1e9), add(sz)
   {
     for(auto &vs : add) vs.emplace_back(-1, -1);
   }

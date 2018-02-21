@@ -1,5 +1,5 @@
 template< class Monoid, class OperatorMonoid = Monoid >
-struct PresidentRandomizedBinarySearchTree : RandomizedBinarySearchTree< Monoid, OperatorMonoid >
+struct PersistentRandomizedBinarySearchTree : RandomizedBinarySearchTree< Monoid, OperatorMonoid >
 {
   using RBST = RandomizedBinarySearchTree< Monoid, OperatorMonoid >;
   using Node = typename RBST::Node;
@@ -8,10 +8,10 @@ struct PresidentRandomizedBinarySearchTree : RandomizedBinarySearchTree< Monoid,
   using H = typename RBST::H;
   using P = typename RBST::P;
 
-  PresidentRandomizedBinarySearchTree(int sz, const F &f, const Monoid &M1) :
+  PersistentRandomizedBinarySearchTree(int sz, const F &f, const Monoid &M1) :
       RBST(sz, f, M1) {}
 
-  PresidentRandomizedBinarySearchTree(int sz, const F &f, const G &g, const H &h, const P &p,
+  PersistentRandomizedBinarySearchTree(int sz, const F &f, const G &g, const H &h, const P &p,
                                       const Monoid &M1, const OperatorMonoid &OM0) :
       RBST(sz, f, g, h, p, M1, OM0) {}
 
