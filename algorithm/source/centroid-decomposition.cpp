@@ -1,43 +1,65 @@
-const int MAX_N = 100000;
-
-vector< int > g[MAX_N];
-int sub[MAX_N];
-bool v[MAX_N];
-
-int build_dfs(int idx, int par)
+struct CentroidDecomposition
 {
-  sub[idx] = 1;
-  for(auto &to : g[idx]) {
-    if(to == par || v[to]) continue;
-    sub[idx] += build_dfs(to, idx);
+  vector< list< int > > g;
+  vector< int > sub;
+  vector< bool > v;
+
+  CentroidDecomposition() {}
+
+  CentroidDecomposition(int sz) { init(sz); }
+
+  void init(int sz)
+  {
+    g.resize(sz);
+    sub.resize(sz);
+    v.assign(sz, false);
   }
-  return (sub[idx]);
-}
 
-pair< int, int > search_centroid(int idx, int par, const int all)
-{
-  pair< int, int > ret(INF, -1);
-  int connect = all - sub[idx];
-  for(auto &to : g[idx]) {
-    if(to == par || v[to]) continue;
-    ret = min(ret, search_centroid(to, idx, all));
-    connect = max(connect, sub[to]);
+  inline int build_dfs(int idx, int par)
+  {
+    sub[idx] = 1;
+    auto it = begin(g[idx]);
+    while(it != end(g[idx])) {
+      if(*it == par) ++it;
+      else if(v[*it]) it = g[idx].erase(it);
+      else sub[idx] += build_dfs(*it++, idx);
+    }
+    return (sub[idx]);
   }
-  return (min(ret, make_pair(connect, idx)));
-}
 
-void beet(int idx)
-{
-
-}
-
-void centroid_decomp(int idx)
-{
-  int centroid = search_centroid(idx, -1, build_dfs(idx, -1)).second;
-  beet(centroid);
-  v[centroid] = true;
-  for(auto &to : g[centroid]) {
-    if(v[to]) continue;
-    centroid_decomp(to);
+  inline int search_centroid(int idx, int par, const int mid)
+  {
+    for(auto &to : g[idx]) {
+      if(to == par) continue;
+      if(sub[to] > mid) return search_centroid(to, idx, mid);
+    }
+    return (idx);
   }
+
+  void centroid_decomp(int idx = 0)
+  {
+    int centroid = search_centroid(idx, -1, build_dfs(idx, -1) / 2);
+    beet(centroid);
+    v[centroid] = true;
+    for(auto &to : g[centroid]) centroid_decomp(to);
+  }
+
+  void beet(int idx);
+
+  void add_edge(int x, int y)
+  {
+    g[x].emplace_back(y);
+    g[y].emplace_back(x);
+  }
+
+  list< int > &operator[](int k)
+  {
+    return g[k];
+  }
+};
+
+void CentroidDecomposition::beet(int idx)
+{
+  
 }
+
