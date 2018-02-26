@@ -31,21 +31,24 @@ MathJax.Hub.Config({
         <h2>セグメント木(Segment-Tree)</h2>
 	
 	      <h4>説明</h4>
-	     <p>完全2分木である。モノイド(二項演算の結合律を満たす)に対する区間への様々な演算が$O(\log N)$ で実現できる。</p>
+	      <p>完全2分木である。<b>モノイド</b> に対する区間への様々な演算が$O(\log N)$ で実現できる。</p>
+        <p><b>モノイド</b> は次の条件を満たす代数的構造である。</p>
+        <ul>
+          <li>結合率を満たす。つまり $S$ の各元 $a, b, c$ に対して, $(a \cdot b) \cdot c = a \cdot (b \cdot c)$ が満たされる。</li>
+          <li>単位元をもつ。つまり $S$ の任意の元 $a$ をとってきたときに $a \cdot e = e \cdot a = a$ なる $e$ が存在する。</li>
+        </ul>
 
-        <p>実装では木を 0-indexed の配列で実現している。ノード $k$ について, 親ノードは $\frac {k - 1} {2}$, 子ノードは $2k+1, 2k+2$ である。</p>
+        <p>実装では木を 1-indexed の配列で実現している。ノード $k$ について, 親ノードは $\frac {k} {2}$, 子ノードは $2k+0, 2k+1$ である。</p>
 
         <h4>使い方</h4>
-        <p>構造体 $\mathrm{SegNode}$ に対して二項演算 $*$ と単位元を定義しておく</p>
- 
         <ul>
-          <li>$\mathrm{SegmentTree}(n)$: サイズ $n$ のセグ木の初期化</li>
+          <li>$\mathrm{SegmentTree}(n, f, M1)$: サイズ $n$ のセグ木の初期化。$f$ は $2$ つの要素をマージする二項演算, $M1$ は単位元である。</li>
           <li>$\mathrm{set}(k, x)$: $k$ 番目の要素に $x$ をセットする</li>
 	        <li>$\mathrm{build}()$: 構築する</li>
         </ul>
         
         <ul>
-          <li>$\mathrm{query}(l, r)$: 区間 $[l, r)$ に対して二項演算 $*$ をした結果を返す</li>
+          <li>$\mathrm{query}(l, r)$: 区間 $[l, r)$ に対して二項演算をした結果を返す</li>
           <li>$\mathrm{update}(k, x)$: $k$ 番目の要素を $x$ に変更する</li> 
         </ul>
 
@@ -58,12 +61,27 @@ MathJax.Hub.Config({
 	      <h4>実装例</h4>
         <pre><code class="cpp" src="source/segment-tree/segment-tree.cpp"></code></pre>
 
+        <p>例えば区間 min をしたいときは次のようにする。</p>
+        <pre><code class="cpp">SegmentTree&lt; int &gt; seg(N, [](int a, int b){ return min(a, b); }, INT_MAX);</code></pre>
+        <p>また区間 sum とりたいときは次のようにする。</p>
+        <pre><code class="cpp">SegmentTree&lt; int &gt; seg(N, [](int a, int b){ return a + b; }, 0);</code></pre>
         <h4>応用 1: 遅延評価</h4>
         <p>遅延評価というテクがある。遅延評価を使うと, 区間に対する演算操作の幅が大きく広がる。
         </p>
-
+        <p>この場合はコンストラクタに対し追加で作用素の情報も与える。$g$ は要素と作用素のマージ, $h$ は作用素と作用素のマージ, $p$ は作用素を下に降ろすときに行う演算(第一引数は作用素のもとの値, 第二引数は降ろした後の区間の長さ), $OM0$ は作用素の単位元である。</p>
         <pre><code class="cpp" src="source/segment-tree/lazy-segment-tree.cpp"></code></pre>
 
+        <p>例えば区間 add 区間 min をとりたいときは次のようにする。</p>
+        <pre><code class="cpp">auto f = [](int a, int b) { return min(a, b); };
+auto g = [](int a, int b) { return a + b; };
+auto h = [](int a, int b) { return a + b; };
+auto p = [](int a, int b) { return a; };
+LazySegmentTree&lt; int &gt; seg(N, f, g, h, p, INT_MAX, 0);</code></pre>
+
+        <p>また区間 add 区間 sum をとりたいときは次のようにする。</p>
+        <pre><code class="cpp">auto f = [](int a, int b) { return a + b; };
+auto p = [](int a, int b) { return a * b; };
+LazySegmentTree&lt; int &gt; seg(N, f, f, f, p, 0, 0);</code></pre>
         <h4>応用 3: 2Dセグメント木</h4>
         <p>セグメント木のノードに平衡二分探索木をのせた 2Dセグメント木も可能(但し定数倍がかなり重い)。 以下の実装では長方形内の点の個数を求めるクエリと, 点の追加削除のクエリをサポートしている。静的な場合であれば応用4のフラクショナルカスケーディングを用いてlogを1個落とすことができる。</p>
         <pre><code class="cpp" src="source/segment-tree/segment-tree-2d.cpp"></code></pre>
