@@ -82,16 +82,21 @@ LazySegmentTree&lt; int &gt; seg(N, f, g, h, p, INT_MAX, 0);</code></pre>
         <pre><code class="cpp">auto f = [](int a, int b) { return a + b; };
 auto p = [](int a, int b) { return a * b; };
 LazySegmentTree&lt; int &gt; seg(N, f, f, f, p, 0, 0);</code></pre>
-        <h4>応用 3: 2Dセグメント木</h4>
+        <h4>応用 2: 2Dセグメント木</h4>
         <p>セグメント木のノードに平衡二分探索木をのせた 2Dセグメント木も可能(但し定数倍がかなり重い)。 以下の実装では長方形内の点の個数を求めるクエリと, 点の追加削除のクエリをサポートしている。静的な場合であれば応用4のフラクショナルカスケーディングを用いてlogを1個落とすことができる。</p>
         <pre><code class="cpp" src="source/segment-tree/segment-tree-2d.cpp"></code></pre>
 
         <p>(クエリを先読みするなどして)構造が静的な場合であれば, 座標圧縮してセグ木にBITをのせたりできる。補助のために関数 prequery() と preadd() を用意している(prequery()は場合によっては使わなくても良い)。実際にセグ木を構築する際に, これからくるクエリの引数を予め把握しておくことで, 縦方向の座標圧縮が可能となる。build() の呼び出しを忘れないように注意すること。</p>
         <pre><code class="cpp" src="source/segment-tree/segment-tree-bit.cpp"></code></pre>
 
-        <h4>応用 4: フラクショナルカスケーディング</h4>
+        <h4>応用 3: フラクショナルカスケーディング</h4>
         <p>静的な場合に, 次元を1個落とすテク。コードを見たほうが早い気がする。セグ木を下る時に縦方向の範囲をいい感じに計算しておくことで毎回の二分探索が不要となっている。(たぶんAOJのDSLでverified(MLEやが))</p>
         <pre><code class="cpp" src="source/segment-tree/segment-tree-fractional-cascading.cpp"></code></pre>
+
+        <h4>応用 4: 二分探索</h4>
+        <p>セグメント木 + 二分探索は愚直に実装すると $O(\log^2 N)$ かかるが, ほとんどの場合セグメント木上を二分探索することで $O(\log N)$ に落とすことができる。</p>
+
+        <p>参考: ARC033_C - データ構造 <a href="https://arc033.contest.atcoder.jp/submissions/2138279">#2138279</a></p>
 
         <h4>問題例</h4>
         <ul>

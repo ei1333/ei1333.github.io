@@ -49,6 +49,6 @@ struct SegmentTree
  
   Monoid operator[](const int &k) const
   {
-    return seg[k];
+    return seg[k + sz];
   }
 };
