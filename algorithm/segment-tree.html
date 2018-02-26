@@ -56,32 +56,24 @@ MathJax.Hub.Config({
         </ul>
        
 	      <h4>実装例</h4>
-        <pre><code class="cpp" src="source/segment-tree-monoid.cpp"></code></pre>
+        <pre><code class="cpp" src="source/segment-tree/segment-tree.cpp"></code></pre>
 
-        <h4>応用 1: 区間加算</h4>
-        <p>Starry-Sky-Tree と呼ばれる有名なセグメント木がある。このセグメント木では以下の $2$ つのクエリをサポートする。</p>
-        <ul>
-          <li>区間 $[a, b)$ に一様に値 $x$ を加算する</li>
-          <li>区間 $[a, b)$ に最小値を求める</li>
-        </ul>
-        <p>ここではその区間に一様に加算される値を持つ add 配列と, 区間の最小値を持つ small 配列を持つことによって実現している。</p>
-
-        <pre><code class="cpp" src="source/segment-tree-rangeadd.cpp"></pre></code>
-
-        <h4>応用 2: 遅延評価</h4>
+        <h4>応用 1: 遅延評価</h4>
         <p>遅延評価というテクがある。遅延評価を使うと, 区間に対する演算操作の幅が大きく広がる。
         </p>
 
+        <pre><code class="cpp" src="source/segment-tree/lazy-segment-tree.cpp"></code></pre>
+
         <h4>応用 3: 2Dセグメント木</h4>
         <p>セグメント木のノードに平衡二分探索木をのせた 2Dセグメント木も可能(但し定数倍がかなり重い)。 以下の実装では長方形内の点の個数を求めるクエリと, 点の追加削除のクエリをサポートしている。静的な場合であれば応用4のフラクショナルカスケーディングを用いてlogを1個落とすことができる。</p>
-        <pre><code class="cpp" src="source/segment-tree-2d.cpp"></code></pre>
+        <pre><code class="cpp" src="source/segment-tree/segment-tree-2d.cpp"></code></pre>
 
         <p>(クエリを先読みするなどして)構造が静的な場合であれば, 座標圧縮してセグ木にBITをのせたりできる。補助のために関数 prequery() と preadd() を用意している(prequery()は場合によっては使わなくても良い)。実際にセグ木を構築する際に, これからくるクエリの引数を予め把握しておくことで, 縦方向の座標圧縮が可能となる。build() の呼び出しを忘れないように注意すること。</p>
-        <pre><code class="cpp" src="source/segment-tree-bit.cpp"></code></pre>
+        <pre><code class="cpp" src="source/segment-tree/segment-tree-bit.cpp"></code></pre>
 
         <h4>応用 4: フラクショナルカスケーディング</h4>
         <p>静的な場合に, 次元を1個落とすテク。コードを見たほうが早い気がする。セグ木を下る時に縦方向の範囲をいい感じに計算しておくことで毎回の二分探索が不要となっている。(たぶんAOJのDSLでverified(MLEやが))</p>
-        <pre><code class="cpp" src="source/segment-tree-fractional-cascading.cpp"></code></pre>
+        <pre><code class="cpp" src="source/segment-tree/segment-tree-fractional-cascading.cpp"></code></pre>
 
         <h4>問題例</h4>
         <ul>
