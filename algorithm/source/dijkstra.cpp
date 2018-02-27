@@ -1,27 +1,57 @@
-struct edge
+template< typename T >
+struct WeightedGraph
 {
-  int to, cost;
+  struct edge
+  {
+    int to;
+    T cost;
+  };
+ 
+  vector< vector< edge > > g;
+ 
+  WeightedGraph() {}
+ 
+  WeightedGraph(int n) : g(n) {}
+ 
+  void add_edge(int u, int v, T cost)
+  {
+    g[u].emplace_back((edge) {v, cost});
+  }
+ 
+  vector< edge > &operator[](int k)
+  {
+    return g[k];
+  }
+ 
+  size_t size() const
+  {
+    return g.size();
+  }
 };
-typedef vector< vector < edge > > Graph;
 
-template< typename T = int >
-vector< T > Dijkstra(Graph &g, int s)
+template< typename T >
+vector< T > dijkstra(WeightedGraph< T > &g, int s)
 {
-  typedef pair< T, int > Pi;
-
-  vector< T > min_cost(g.size(), numeric_limits< T >::max());
+  const auto INF = numeric_limits< T >::max();
+  vector< T > dist;
+  dist.assign(g.size(), INF);
+ 
+  using Pi = pair< T, int >;
   priority_queue< Pi, vector< Pi >, greater< Pi > > que;
-  que.emplace(0, s);
-  min_cost[s] = 0;
+  dist[s] = 0;
+  que.emplace(dist[s], s);
   while(!que.empty()) {
-    auto p = que.top();
+    T cost;
+    int idx;
+    tie(cost, idx) = que.top();
     que.pop();
-    if(p.first > min_cost[p.second]) continue;
-    for(auto &e : g[p.second]) {
-      if(p.first + e.cost >= min_cost[e.to]) continue;
-      min_cost[e.to] = p.first + e.cost;
-      que.emplace(min_cost[e.to], e.to);
+    if(dist[idx] < cost) continue;
+    for(auto &e : g[idx]) {
+      auto next_cost = cost + e.cost;
+      if(dist[e.to] <= next_cost) continue;
+      dist[e.to] = next_cost;
+      que.emplace(dist[e.to], e.to);
     }
   }
-  return (min_cost);
+  return dist;
 }

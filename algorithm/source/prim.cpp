@@ -1,3 +1,10 @@
+struct edge
+{
+  int to, cost;
+};
+
+using Graph = vector< vector< edge > >;
+
 template< class T = int >
 T prim(Graph &g)
 {

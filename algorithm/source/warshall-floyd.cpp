@@ -1,5 +1,5 @@
 templete< typename T = int >
-void Warshall(vector< vector< T > > &g)
+void warshall_floyd(vector< vector< T > > &g)
 {
   for(int k = 0; k < g.size(); k++) {
     for(int i = 0; i < g.size(); i++) {
