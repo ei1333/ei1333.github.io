@@ -1,3 +1,4 @@
+template< typename G >
 struct CentroidPathDecomposition
 {
   struct Centroid
@@ -23,7 +24,7 @@ struct CentroidPathDecomposition
     }
   };
 
-  vector< vector< int > > graph;
+  const G &graph;
   vector< int > SubTreeSize, NextPath;
   vector< int > TreeIndex, TreeDepth;
   vector< Centroid > Centroids;
@@ -78,11 +79,6 @@ struct CentroidPathDecomposition
     }
   }
 
-  void AddEdge(int x, int y)
-  {
-    graph[x].push_back(y);
-    graph[y].push_back(x);
-  }
 
   virtual void Build()
   {
@@ -139,13 +135,12 @@ struct CentroidPathDecomposition
     f(TreeIdxA, TreeDepthA, TreeDepthB + 1);
   }
 
-  CentroidPathDecomposition(int SZ)
+  CentroidPathDecomposition(const G &g) : graph(g)
   {
-    graph.resize(SZ);
+    int SZ = g.size();
     SubTreeSize.assign(SZ, -1);
     NextPath.resize(SZ);
     TreeIndex.resize(SZ);
     TreeDepth.resize(SZ);
   }
 };
-

@@ -15,7 +15,6 @@ template< typename T >
 using Edges = vector< edge< T > >;
 template< typename T >
 using WeightedGraph = vector< Edges< T > >;
+using UnWeightedGraph = vector< vector< int > >;
 template< typename T >
-using UnWeightedGraph = vector< vector< T > >;
-template< typename T >
-using Matrix = UnWeightedGraph< T >;
+using Matrix = vector< vector< T > >;

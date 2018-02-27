@@ -1,16 +1,11 @@
+template< typename G >
 struct LowLink
 {
+  const G &g;
   UnionFind uf;
-  vector< vector< int > > g;
   vector< int > used, ord, low, parent;
 
-  LowLink(size_t v) : g(v), used(v, 0), ord(v), low(v), uf(v), parent(v, -1) {}
-
-  virtual void add_edge(int x, int y)
-  {
-    g[x].push_back(y);
-    g[y].push_back(x);
-  }
+  LowLink(const G &g) : g(g), uf(g.size()), used(g.size()), ord(g.size()), low(g.size()), parent(g.size(), -1) {}
 
   void dfs(int idx, int &k, int par = -1)
   {

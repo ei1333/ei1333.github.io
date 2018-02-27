@@ -1,10 +1,10 @@
 template< typename T >
 struct MinimumSpanningTreeArborescence
 {
-  WeightedGraph< T > g;
+  const WeightedGraph< T >& g;
   T INF;
 
-  MinimumSpanningTreeArborescence(const WeightedGraph< T > g) : INF(numeric_limits< T >::max()), g(g) {}
+  MinimumSpanningTreeArborescence(const WeightedGraph< T >& g) : INF(numeric_limits< T >::max()), g(g) {}
 
   T build(WeightedGraph< T > &g, int start, T sum)
   {

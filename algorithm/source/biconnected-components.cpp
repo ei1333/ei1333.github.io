@@ -1,34 +1,37 @@
-struct BiConnectedComponents : LowLink
+template< typename G >
+struct BiConnectedComponents : LowLink< G >
 {
-  vector< pair< int, int > > edges;
+  using LL = LowLink< G >;
+
   vector< int > comp;
 
-  BiConnectedComponents(size_t v) : LowLink(v), comp(v) {}
-
-  void add_edge(int x, int y)
-  {
-    LowLink::add_edge(x, y);
-    edges.push_back(minmax(x, y));
-  }
+  BiConnectedComponents(const G &g) : LL(g), comp(g.size()) {}
 
   int operator[](int k)
   {
     return (comp[k]);
   }
 
-  vector< pair< int, int > > build(vector< vector< int > > &t)
+  vector< pair< int, int > > build(UnWeightedGraph &t)
   {
-    LowLink::dfs();
+    LL::dfs();
     int ptr = 0;
-    vector< int > cc(g.size());
-    for(int i = 0; i < g.size(); i++) {
-      if(i == uf.find(i)) cc[i] = ptr++;
+    vector< int > cc(LL::g.size());
+    for(int i = 0; i < LL::g.size(); i++) {
+      if(i == LL::uf.find(i)) cc[i] = ptr++;
     }
 
     t.resize(ptr);
-    for(int i = 0; i < g.size(); i++) {
-      comp[i] = cc[uf.find(i)];
+    for(int i = 0; i < LL::g.size(); i++) {
+      comp[i] = cc[LL::uf.find(i)];
     }
+
+    vector< pair< int, int > > edges;
+    for(int i = 0; i < LL::g.size(); i++) {
+      for(auto &to : LL::g[i]) edges.emplace_back(minmax(i, to));
+    }
+    sort(begin(edges), end(edges));
+    edges.erase(unique(begin(edges), end(edges)), end(edges));
     vector< pair< int, int > > vs;
     for(auto &e : edges) {
       int x = comp[e.first], y = comp[e.second];
