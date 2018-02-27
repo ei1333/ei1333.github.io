@@ -1,21 +1,17 @@
+template< typename G >
 struct Namori
 {
-  vector< vector< int > > g;
+  const G &g;
   vector< int > in;
 
-  Namori(int n) : g(n), in(n, 0) {}
-
-  void add_edge(int x, int y)
-  {
-    g[x].push_back(y);
-    g[y].push_back(x);
-    ++in[x];
-    ++in[y];
-  }
+  Namori(const G &g) : g(g), in(g.size(), 0) {}
 
   void decomposition(vector< int > &loop, vector< vector< int > > &forest)
   {
     int N = (int) in.size();
+    for(int i = 0; i < N; i++) {
+      in[i] = g.size();
+    }
     forest.resize(N);
     queue< int > que;
     vector< bool > v(N, 0);
