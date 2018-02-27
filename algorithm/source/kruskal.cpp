@@ -1,19 +1,14 @@
-struct edge
+template< typename T >
+T kruskal(Edges< T > &edges, int V)
 {
-  int u, v, cost;
-  bool operator<(const edge& e) const
+  sort(begin(edges), end(edges), [](const edge< T > &a, const edge< T > &b)
   {
-    return(cost < e.cost);
-  };
-};
-template< class T = int >
-T kruskal(vector< edge > &edges, int V)
-{
-  sort(edges.begin(), edges.end());
+    return (a.cost < b.cost);
+  });
   UnionFind tree(V);
   T ret = 0;
-  for(auto& e : edges) {
-    if(tree.unite(e.u, e.v)) ret += e.cost;
+  for(auto &e : edges) {
+    if(tree.unite(e.src, e.to)) ret += e.cost;
   }
   return (ret);
 }

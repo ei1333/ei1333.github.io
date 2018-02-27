@@ -1,5 +1,5 @@
-template< typename T = int >
-void add_edge(vector< vector< T > > &g, int s, int t, T cost)
+template< typename T >
+void add_edge(Matrix< T > &g, int s, int t, T cost)
 {
   g[s][t] = g[t][s] = min(g[s][t], cost);
   for(int k : {s, t}) {

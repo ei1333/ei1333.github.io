@@ -1,14 +1,7 @@
-struct edge
+template< typename T >
+T prim(WeightedGraph< T > &g)
 {
-  int to, cost;
-};
-
-using Graph = vector< vector< edge > >;
-
-template< class T = int >
-T prim(Graph &g)
-{
-  typedef pair< T, int > Pi;
+  using Pi = pair< T, int >;
 
   T total = 0;
   vector< bool > used(g.size(), false);

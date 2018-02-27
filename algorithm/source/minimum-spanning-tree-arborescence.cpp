@@ -1,23 +1,12 @@
 template< typename T >
-struct MinimumSpanningTree_Arborescence
+struct MinimumSpanningTreeArborescence
 {
-
-  struct edge
-  {
-    int to;
-    T cost;
-  };
-  vector< vector< edge > > graph;
+  WeightedGraph< T > g;
   T INF;
 
-  MinimumSpanningTree_Arborescence(size_t v) : INF(numeric_limits< T >::max()), graph(v) {}
+  MinimumSpanningTreeArborescence(const WeightedGraph< T > g) : INF(numeric_limits< T >::max()), g(g) {}
 
-  void add_edge(int a, int b, T x)
-  {
-    graph[a].emplace_back((edge) {b, x});
-  }
-
-  T build(vector< vector< edge > > &g, int start, T sum)
+  T build(WeightedGraph< T > &g, int start, T sum)
   {
     int N = (int) g.size();
 
@@ -42,11 +31,11 @@ struct MinimumSpanningTree_Arborescence
     vector< vector< int > > renew;
     scc.build(renew);
     if(renew.size() == N) return (sum);
-    vector< vector< edge > > fixgraph(renew.size());
+    WeightedGraph< T > fixgraph(renew.size());
     for(int i = 0; i < N; i++) {
       for(auto &e : g[i]) {
         if(scc[i] == scc[e.to]) continue;
-        fixgraph[scc[i]].emplace_back((edge) {scc[e.to], e.cost - weight[e.to]});
+        fixgraph[scc[i]].emplace_back(scc[e.to], e.cost - weight[e.to]);
       }
     }
     return (build(fixgraph, scc[start], sum));
@@ -54,7 +43,7 @@ struct MinimumSpanningTree_Arborescence
 
   T build(int start)
   {
-    auto get = build(graph, start, 0);
+    auto get = build(g, start, 0);
     if(get >= INF) return (-1);
     return (get);
   }
