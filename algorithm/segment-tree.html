@@ -96,6 +96,10 @@ LazySegmentTree&lt; int &gt; seg(N, f, f, f, p, 0, 0);</code></pre>
         <h4>応用 4: 二分探索</h4>
         <p>セグメント木 + 二分探索は愚直に実装すると $O(\log^2 N)$ かかるが, ほとんどの場合セグメント木上を二分探索することで $O(\log N)$ に落とすことができる。</p>
 
+        <h4>応用 5: 永続セグメント木</h4>
+        <p>やるだけ。メモリ使用量に注意。定数倍に注意。</p>
+        <pre><code class="cpp" src="source/segment-tree/persistent-segment-tree.cpp"></code></pre>
+
         <p>参考: ARC033_C - データ構造 <a href="https://arc033.contest.atcoder.jp/submissions/2138279">#2138279</a></p>
 
         <h4>問題例</h4>

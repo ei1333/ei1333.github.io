@@ -7,7 +7,8 @@ struct LazySegmentTree
   using P = function< OperatorMonoid(OperatorMonoid, int) >;
 
   int sz;
-  vector< Monoid > data, lazy;
+  vector< Monoid > data;
+  vector< OperatorMonoid > lazy;
   const F f;
   const G g;
   const H h;
