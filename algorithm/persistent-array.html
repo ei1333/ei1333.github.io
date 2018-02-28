@@ -40,38 +40,6 @@ MathJax.Hub.Config({
 
         <pre><code class="cpp" src="source/persistent-array.cpp"></code></pre>
 
-        <h4>応用: 牛ゲー</h4>
-        <p>単一始点最短路は特殊な線形計画問題の双対である(いわゆる牛ゲー)。</p>
-        <p>頂点 $s$ から頂点 $v$ までの最短経路を $f(v)$ とする。グラフに負閉路がなければ $f(s) = 0$ である。また頂点 $u$ から $v$ へ向かう重み $w$ の辺が存在するとき $f(u) + w \ge f(v)$ が成立する。言い換えれば, 頂点 $v$ には最大でも $f(u) + w$ のコストで到達可能を意味していて, これは明らか。</p>
-        <p>最短路問題を解くことで各 $v$ について $f(v)$ がとりうる最大の値を求めることができる。つまり $f(v)$ の最大値を求める問題が最短路問題に対応する。</p>
-
-        <p>すべての制約が 変数+定数≧変数 の形で表される線形計画問題は, 対応するグラフ上での最短路問題を解くことで求めることが出来る。$f(u) + w \ge f(v)$ が成立するとき, 頂点 $u$ から頂点 $v$ へ向かう重み $w$ の辺を張れば良い。</p>
-
-        <h4>問題例</h4>
-        <ul>
-          <li><span class="verified">検証済</span><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_1_A&lang=jp">AOJ GPL_1_A 単一始点最短経路</a></li>
-          <li><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=0212">AOJ0212 高速バス</a></li>
-          <li><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=1156&lang=jp">AOJ1156 ちょろちょろロボット</a></li>
-          <li><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=2151">AOJ2151 Brave Princess Revisited</a></li>
-          <li><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=0596">AOJ0596 タクシー</a></li>
-          <li><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=1138&lang=jp">AOJ1138 Traveling by Stagecoach</a></li>
-          <li><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=1150&lang=jp">AOJ1150 崖登り</a></li>
-          <li><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=2021">AOJ2021 お姫様の危機</a></li>
-          <li><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=0155">AOJ0155 スパイダー人</a> (経路復元)</li> 
-          <li><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=0562">AOJ0562 JOI 国の買い物事情</a></li>
-          <li><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=1162&lang=jp">AOJ1162 離散的速度</a></li>
-          <li><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=2672">AOJ2672 郵便局員を救え</a></li>
-          <li><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=0601">AOJ0601 フクロモモンガ</a></li>
-          <li><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=0605">AOJ0605 現代的な屋敷</a></li>
-          <li><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=1183&lang=jp">AOJ1183 鎖中経路</a></li>
-          <li><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=2585">AOJ2585 一日乗車券</a></li>
-        </ul>
-
-
-        <h4>参考資料</h4>
-        <ul>
-          <li><a href="https://ja.wikipedia.org/wiki/ダイクストラ法">ダイクストラ法 - Wikipedia</a></li>
-        </ul>
       </section>
     </main>
     <hr>
