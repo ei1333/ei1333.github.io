@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+    <title>ei1333's page</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://use.edgefonts.net/source-code-pro.js"></script>
+    <link rel="stylesheet" href="../css/static.css">
+    <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+    </script>
+    <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/styles/github.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js"></script>
+    <script src="readsource.js"></script>
+  </head>
+  <body>
+    <header>
+      <h1>ei1333's page</h1>
+      <div class="path">
+	<a href="../index.html">ホーム</a> &gt;
+	<a href="index.html">Wiki</a>
+      </div>
+    </header>
+    <main>
+      <section>
+	<h2>単一始点最短路(SPFA)</h2>
+	
+	<h4>説明</h4>
+	<p>単一始点全点間最短路を求めるアルゴリズム。負辺があっても動作する。また負閉路も検出する。Bellman-Ford よりもはやいらしい。</p>
+
+        <h4>使い方</h4>
+        <ul>
+          <li>shortest_path_faster_algorithm(g, s): 重み付き有向グラフ $g$ 上で, 頂点 $s$ からすべての頂点への最短距離を求め, その列を返す。負閉路が検出された時空列を返す。</li>
+        </ul>
+
+	      <h4>計算量</h4>
+	      <p>$O(VE)$</p>
+        <p>$V$: 頂点数, $E$: 辺数</p>
+
+        <h4>実装例</h4>
+
+        <pre><code class="cpp" src="source/shortest-path-faster-algorithm.cpp"></code></pre>
+
+        <h4>問題例</h4>
+        <ul>
+          <li><span class="verified">検証済</span><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_1_B&lang=jp">AOJ GPL_1_B 単一始点最短経路（負の重みをもつ辺を含む）</a></li>
+        </ul>
+
+
+      </section>
+    </main>
+    <hr>
+    <footer>
+      <small>Copyright&copy; ei1333's page All Rights Reserved.</small>
+    </footer>
+
+  </body>
+</html>
