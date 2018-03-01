@@ -1,24 +1,20 @@
-struct edge
-{ 
-  int to, cost;
-};
-typedef vector< vector< edge > > Graph;
-
-pair< int, int > dfs(const Graph& graph, int idx, int prev)
+template< typename T >
+pair< T, int > dfs(const WeightedGraph< T > &g, int idx, int par)
 {
-  pair< int, int > ret = make_pair(0, idx);
-  for(int i = 0; i < graph[idx].size(); i++) {
-    if(graph[idx][i].to != prev){
-      pair< int, int > cost = dfs(graph, graph[idx][i].to, idx);
-      cost.first += graph[idx][i].cost;
-      ret = max(ret, cost);
-    }
+  pair< T, int > ret(0, idx);
+  for(auto &e : g[idx]) {
+    if(e.to == par) continue;
+    auto cost = dfs(g, e.to, idx);
+    cost.first += e.cost;
+    ret = max(ret, cost);
   }
-  return(ret);
+  return ret;
 }
-int Diameter(Graph& tree)
+
+template< typename T >
+T tree_diameter(const WeightedGraph< T > &g)
 {
-  pair< int, int > p = dfs(tree, 0, -1);
-  pair< int, int > q = dfs(tree, p.second, -1);
-  return(q.first);
+  auto p = dfs(g, 0, -1);
+  auto q = dfs(g, p.second, -1);
+  return (q.first);
 }
