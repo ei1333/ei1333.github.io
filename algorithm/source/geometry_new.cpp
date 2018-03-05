@@ -4,6 +4,10 @@ inline bool eq(double a, double b) { return fabs(b - a) < EPS; }
 
 using Point = complex< double >;
 
+Point operator*(const Point &p, const double &d) {
+  return Point(real(p) * d, imag(p) * d);
+}
+
 istream &operator>>(istream &is, Point &p) {
   double a, b;
   is >> a >> b;
@@ -94,6 +98,7 @@ double dot(const Point &a, const Point &b) {
   return real(a) * real(b) + imag(a) * imag(b);
 }
 
+// http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_1_C
 int ccw(const Point &a, Point b, Point c) {
   b = b - a, c = c - a;
   if(cross(b, c) > EPS) return +1;  // "COUNTER_CLOCKWISE"
@@ -103,14 +108,17 @@ int ccw(const Point &a, Point b, Point c) {
   return 0;                         // "ON_SEGMENT"
 }
 
+// http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_2_A
 bool parallel(const Line &a, const Line &b) {
   return abs(cross(a.b - a.a, b.b - b.a)) < EPS;
 }
 
+// http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_2_A
 bool orthogonal(const Line &a, const Line &b) {
-  return abs(cross(a.a - a.b, b.a - b.b)) < EPS;
+  return abs(dot(a.a - a.b, b.a - b.b)) < EPS;
 }
 
+// http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_1_A
 Point projection(const Line &l, const Point &p) {
   double t = dot(p - l.a, l.a - l.b) / norm(l.a - l.b);
   return l.a + (l.a - l.b) * t;
@@ -121,6 +129,7 @@ Point projection(const Segment &l, const Point &p) {
   return l.a + (l.a - l.b) * t;
 }
 
+// http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_1_B
 Point reflection(const Line &l, const Point &p) {
   return p + (projection(l, p) - p) * 2.0;
 }
@@ -128,7 +137,6 @@ Point reflection(const Line &l, const Point &p) {
 bool Intersect(const Line &l, const Point &p) {
   return abs(ccw(l.a, l.b, p)) != 1;
 }
-
 
 bool intersect(const Line &l, const Line &m) {
   return abs(cross(l.b - l.a, m.b - m.a)) > EPS || abs(cross(l.b - l.a, m.b - l.a)) < EPS;
@@ -152,6 +160,7 @@ bool intersect(const Circle &c, const Point &p) {
   return abs(abs(p - c.p) - c.r) < EPS;
 }
 
+// http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_2_B
 bool intersect(const Segment &s, const Segment &t) {
   return ccw(s.a, s.b, t.a) * ccw(s.a, s.b, t.b) <= 0 && ccw(t.a, t.b, s.a) * ccw(t.a, t.b, s.b) <= 0;
 }
@@ -163,6 +172,17 @@ int intersect(const Circle &c, const Segment &l) {
   if(d1 < c.r - EPS && d2 > c.r + EPS || d1 > c.r + EPS && d2 < c.r - EPS) return 1;
   const Point h = projection(l, c.p);
   if(dot(l.a - h, l.b - h) < 0) return 2;
+  return 0;
+}
+
+// http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_7_A&lang=jp
+int intersect(Circle c1, Circle c2) {
+  if(c1.r < c2.r) swap(c1, c2);
+  double d = abs(c1.p - c2.p);
+  if(c1.r + c2.r < d) return 4;
+  if(eq(c1.r + c2.r, d)) return 3;
+  if(c1.r - c2.r < d) return 2;
+  if(eq(c1.r - c2.r, d)) return 1;
   return 0;
 }
 
@@ -184,6 +204,7 @@ double distance(const Segment &s, const Point &p) {
   return min(abs(s.a - p), abs(s.b - p));
 }
 
+// http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_2_D
 double distance(const Segment &a, const Segment &b) {
   if(intersect(a, b)) return 0;
   return min({distance(a, b.a), distance(a, b.b), distance(b, a.a), distance(b, a.b)});
@@ -201,6 +222,7 @@ Point crosspoint(const Line &l, const Line &m) {
   return m.a + (m.b - m.a) * B / A;
 }
 
+// http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_2_C
 Point crosspoint(const Segment &l, const Segment &m) {
   double A = cross(l.b - l.a, m.b - m.a);
   double B = cross(l.b - l.a, l.b - m.a);
@@ -208,11 +230,13 @@ Point crosspoint(const Segment &l, const Segment &m) {
   return m.a + (m.b - m.a) * B / A;
 }
 
+// http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_7_D
 pair< Point, Point > crosspoint(const Circle &c, const Line l) {
-  Point hp = projection(l, c.p), h = hp - c.p;
-  const double d2 = norm(h);
-  Point v = (l.b - l.a) * sqrt(c.r * c.r - d2) / abs(l.b - l.a);
-  return {hp - v, hp + v};
+  Point pr = projection(l, c.p);
+  Point e = (l.b - l.a) / abs(l.b - l.a);
+  if(eq(distance(l, c.p), c.r)) return {pr, pr};
+  double base = sqrt(c.r * c.r - norm(pr - c.p));
+  return {pr + e * base, pr - e * base};
 }
 
 pair< Point, Point > crosspoint(const Circle &c, const Segment &l) {
@@ -224,6 +248,7 @@ pair< Point, Point > crosspoint(const Circle &c, const Segment &l) {
   return ret;
 }
 
+// http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_7_E
 pair< Point, Point > crosspoint(const Circle &c1, const Circle &c2) {
   double d = abs(c1.p - c2.p);
   double a = acos((c1.r * c1.r + d * d - c2.r * c2.r) / (2 * c1.r * d));
@@ -233,6 +258,12 @@ pair< Point, Point > crosspoint(const Circle &c1, const Circle &c2) {
   return {p1, p2};
 }
 
+// http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_7_F
+pair< Point, Point > tangent(const Circle &c1, const Point &p2) {
+  return crosspoint(c1, Circle(p2, sqrt(norm(c1.p - p2) - c1.r * c1.r)));
+}
+
+// http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_3_B
 bool is_convex(const Polygon &p) {
   int n = (int) p.size();
   for(int i = 0; i < n; i++) {
@@ -241,6 +272,7 @@ bool is_convex(const Polygon &p) {
   return true;
 }
 
+// http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_4_A
 Polygon convex_hull(Polygon &p) {
   int n = (int) p.size(), k = 0;
   if(n <= 2) return p;
@@ -256,6 +288,7 @@ Polygon convex_hull(Polygon &p) {
   return ch;
 }
 
+// http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_3_C
 enum {
   OUT, ON, IN
 };
@@ -328,7 +361,8 @@ vector< vector< int > > segment_arrangement(vector< Segment > &segs, vector< Poi
   return (g);
 }
 
-Polygon convex_cut(Polygon &U, Line l) {
+// http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_4_C
+Polygon convex_cut(const Polygon &U, Line l) {
   Polygon ret;
   for(int i = 0; i < U.size(); i++) {
     Point now = U[i], nxt = U[(i + 1) % U.size()];
@@ -340,6 +374,7 @@ Polygon convex_cut(Polygon &U, Line l) {
   return (ret);
 }
 
+// http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_3_A
 double area2(const Polygon &p) {
   double A = 0;
   for(int i = 0; i < p.size(); ++i) {
@@ -348,7 +383,8 @@ double area2(const Polygon &p) {
   return A;
 }
 
-double convex_diameter(Polygon &p) {
+// http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_4_B
+double convex_diameter(const Polygon &p) {
   int N = (int) p.size();
   int is = 0, js = 0;
   for(int i = 1; i < N; i++) {
@@ -375,48 +411,54 @@ double convex_diameter(Polygon &p) {
   return sqrt(maxdis);
 }
 
-pair< Point, Point > closer(const pair< Point, Point > &a, const pair< Point, Point > &b) {
-  return distance(a.first, a.second) < distance(b.first, b.second) ? a : b;
+// http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_5_A
+double closest_pair(Points ps) {
+  if(ps.size() <= 1) throw (0);
+
+  auto compare_y = [&](const Point &a, const Point &b) {
+    return imag(a) < imag(b);
+  };
+  vector< Point > beet(ps.size());
+
+  function< double(int, int) > rec = [&](int left, int right) {
+    if(right - left <= 1) return 1e18;
+    int mid = (left + right) >> 1;
+    auto x = real(ps[mid]);
+    auto ret = min(rec(left, mid), rec(mid, right));
+    inplace_merge(begin(ps) + left, begin(ps) + mid, begin(ps) + right, compare_y);
+    int ptr = 0;
+    for(int i = left; i < right; i++) {
+      if(abs(real(ps[i]) - x) >= ret) continue;
+      for(int j = 0; j < ptr; j++) {
+        auto luz = ps[i] - beet[ptr - j - 1];
+        if(imag(luz) >= ret) break;
+        ret = min(ret, abs(luz));
+      }
+      beet[ptr++] = ps[i];
+    }
+    return ret;
+  };
+  return rec(0, (int) ps.size());
 }
 
-pair< Point, Point > closest_pair_util(Points &ps, int l, int r) {
-  if(r - l == 2) {
-    return {ps[l], ps[l + 1]};
-  }
-  if(r - l == 3) {
-    pair< Point, Point > a(ps[l], ps[l + 1]), b(ps[l + 1], ps[l + 2]), c(ps[l], ps[l + 2]);
-    return closer(a, closer(b, c));
-  }
-
-  int mid = (l + r) / 2;
-  Point midPoint = ps[mid];
-  auto res = closer(closest_pair_util(ps, l, mid), closest_pair_util(ps, mid, r));
-  double d = distance(res.first, res.second);
-
-  Points pos[2];
-  for(int i = l; i < r; ++i) {
-    if(abs(ps[i].real() - midPoint.real()) < d) pos[i < mid].push_back(ps[i]);
-  }
-  for(const auto &i : pos[0]) {
-    for(const auto &j : pos[1]) {
-      if(distance(i, j) < d) {
-        d = distance(i, j);
-        res = {i, j};
-      }
+// http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_7_G
+Lines tangent(Circle c1, Circle c2) {
+  Lines ret;
+  if(c1.r < c2.r) swap(c1, c2);
+  double g = norm(c1.p - c2.p);
+  if(eq(g, 0)) return ret;
+  Point u = (c2.p - c1.p) / sqrt(g);
+  Point v = rotate(PI * 0.5, u);
+  for(int s : {-1, 1}) {
+    double h = (c1.r + s * c2.r) / sqrt(g);
+    if(eq(1 - h * h, 0)) {
+      ret.emplace_back(c1.p + u * c1.r, c1.p + (u + v) * c1.r);
+    } else if(1 - h * h > 0) {
+      Point uu = u * h, vv = v * sqrt(1 - h * h);
+      ret.emplace_back(c1.p + (uu + vv) * c1.r, c2.p - (uu + vv) * c2.r * s);
+      ret.emplace_back(c1.p + (uu - vv) * c1.r, c2.p - (uu - vv) * c2.r * s);
     }
   }
-  return res;
+  return ret;
 }
 
-pair< Point, Point > closest_pair(Points ps) {
-  if(ps.size() <= 1) exit(-1);
-  for(int i = 0; i < ps.size(); ++i) {
-    ps[i] = rotate(0.1, ps[i]);
-  }
-  sort(ps.begin(), ps.end());
-  if(ps.size() == 2) return {ps[0], ps[1]};
-  auto res = closest_pair_util(ps, 0, ps.size());
-  res.first = rotate(-0.1, res.first);
-  res.second = rotate(-0.1, res.second);
-  return res;
-}
