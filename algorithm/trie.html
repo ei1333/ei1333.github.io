@@ -46,7 +46,11 @@ MathJax.Hub.Config({
         <p>Aho-corasick に継承させたいので, そういう実装になってます。</p>
 	      <pre><code class="cpp" src="source/trie.cpp"></code></pre>
         
-        <h4>応用: パトリシア木</h4>
+        <h4>応用 1: 2 進数</h4>
+        <p>Trie は xor と相性が良い。以下では, トライ木に格納されている値全体に対する xor と, max, min, mex クエリを実装している。</p>
+
+        <pre><code class="cpp" src="source/binary-trie.cpp"></code></pre>
+        <h4>応用 2: パトリシア木</h4>
         <p>特に,  トライ木で子ノードが $1$ つしかないノードを子ノードとマージして縮約した木をパトリシア木(または基数木) と呼ぶ。無駄な探索を減らすことが出来る。</p>
 
         <h4>参考資料</h4>
