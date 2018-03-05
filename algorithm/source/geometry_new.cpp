@@ -236,7 +236,7 @@ pair< Point, Point > crosspoint(const Circle &c, const Line l) {
   Point e = (l.b - l.a) / abs(l.b - l.a);
   if(eq(distance(l, c.p), c.r)) return {pr, pr};
   double base = sqrt(c.r * c.r - norm(pr - c.p));
-  return {pr + e * base, pr - e * base};
+  return {pr - e * base, pr + e * base};
 }
 
 pair< Point, Point > crosspoint(const Circle &c, const Segment &l) {
@@ -261,6 +261,27 @@ pair< Point, Point > crosspoint(const Circle &c1, const Circle &c2) {
 // http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_7_F
 pair< Point, Point > tangent(const Circle &c1, const Point &p2) {
   return crosspoint(c1, Circle(p2, sqrt(norm(c1.p - p2) - c1.r * c1.r)));
+}
+
+// http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_7_G
+Lines tangent(Circle c1, Circle c2) {
+  Lines ret;
+  if(c1.r < c2.r) swap(c1, c2);
+  double g = norm(c1.p - c2.p);
+  if(eq(g, 0)) return ret;
+  Point u = (c2.p - c1.p) / sqrt(g);
+  Point v = rotate(PI * 0.5, u);
+  for(int s : {-1, 1}) {
+    double h = (c1.r + s * c2.r) / sqrt(g);
+    if(eq(1 - h * h, 0)) {
+      ret.emplace_back(c1.p + u * c1.r, c1.p + (u + v) * c1.r);
+    } else if(1 - h * h > 0) {
+      Point uu = u * h, vv = v * sqrt(1 - h * h);
+      ret.emplace_back(c1.p + (uu + vv) * c1.r, c2.p - (uu + vv) * c2.r * s);
+      ret.emplace_back(c1.p + (uu - vv) * c1.r, c2.p - (uu - vv) * c2.r * s);
+    }
+  }
+  return ret;
 }
 
 // http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_3_B
@@ -383,6 +404,29 @@ double area2(const Polygon &p) {
   return A;
 }
 
+// http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_7_H
+double area2(const Polygon &p, const Circle &c) {
+  if(p.size() < 3) return 0.0;
+  function< double(Circle, Point, Point) > cross_area = [&](const Circle &c, const Point &a, const Point &b) {
+    Point va = c.p - a, vb = c.p - b;
+    auto f = cross(va, vb), ret = 0.0;
+    if(eq(f, 0.0)) return ret;
+    if(max(abs(va), abs(vb)) < c.r + EPS) return f;
+    if(distance(Segment(a, b), c.p) > c.r - EPS) return c.r * c.r * arg(vb * conj(va));
+    auto u = crosspoint(c, Segment(a, b));
+    vector< Point > tot{a, u.first, u.second, b};
+    for(int i = 0; i + 1 < tot.size(); i++) {
+      ret += cross_area(c, tot[i], tot[i + 1]);
+    }
+    return ret;
+  };
+  double A = 0;
+  for(int i = 0; i < p.size(); i++) {
+    A += cross_area(c, p[i], p[(i + 1) % p.size()]);
+  }
+  return A;
+}
+
 // http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_4_B
 double convex_diameter(const Polygon &p) {
   int N = (int) p.size();
@@ -440,25 +484,3 @@ double closest_pair(Points ps) {
   };
   return rec(0, (int) ps.size());
 }
-
-// http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_7_G
-Lines tangent(Circle c1, Circle c2) {
-  Lines ret;
-  if(c1.r < c2.r) swap(c1, c2);
-  double g = norm(c1.p - c2.p);
-  if(eq(g, 0)) return ret;
-  Point u = (c2.p - c1.p) / sqrt(g);
-  Point v = rotate(PI * 0.5, u);
-  for(int s : {-1, 1}) {
-    double h = (c1.r + s * c2.r) / sqrt(g);
-    if(eq(1 - h * h, 0)) {
-      ret.emplace_back(c1.p + u * c1.r, c1.p + (u + v) * c1.r);
-    } else if(1 - h * h > 0) {
-      Point uu = u * h, vv = v * sqrt(1 - h * h);
-      ret.emplace_back(c1.p + (uu + vv) * c1.r, c2.p - (uu + vv) * c2.r * s);
-      ret.emplace_back(c1.p + (uu - vv) * c1.r, c2.p - (uu - vv) * c2.r * s);
-    }
-  }
-  return ret;
-}
-
