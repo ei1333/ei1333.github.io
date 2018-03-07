@@ -310,7 +310,6 @@ Polygon convex_hull(Polygon &p) {
 enum {
   OUT, ON, IN
 };
-
 int contains(const Polygon &Q, const Point &p) {
   bool in = false;
   for(int i = 0; i < Q.size(); i++) {
@@ -323,15 +322,17 @@ int contains(const Polygon &Q, const Point &p) {
 }
 
 
-bool merge_if_able(Segment &s1, const Segment &s2) {
-  if(abs(cross(s1.b - s1.a, s2.b - s2.a)) > EPS) return false;
-  if(ccw(s1.a, s2.a, s1.b) == 1 || ccw(s1.a, s2.a, s1.b) == -1) return false;
-  if(ccw(s1.a, s1.b, s2.a) == -2 || ccw(s2.a, s2.b, s1.a) == -2) return false;
-  s1 = Segment(min(s1.a, s2.a), max(s1.b, s2.b));
-  return true;
-}
-
+// http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=1033
 void merge_segments(vector< Segment > &segs) {
+
+  auto merge_if_able = [](Segment &s1, const Segment &s2) {
+    if(abs(cross(s1.b - s1.a, s2.b - s2.a)) > EPS) return false;
+    if(ccw(s1.a, s2.a, s1.b) == 1 || ccw(s1.a, s2.a, s1.b) == -1) return false;
+    if(ccw(s1.a, s1.b, s2.a) == -2 || ccw(s2.a, s2.b, s1.a) == -2) return false;
+    s1 = Segment(min(s1.a, s2.a), max(s1.b, s2.b));
+    return true;
+  };
+
   for(int i = 0; i < segs.size(); i++) {
     if(segs[i].b < segs[i].a) swap(segs[i].a, segs[i].b);
   }
@@ -344,6 +345,7 @@ void merge_segments(vector< Segment > &segs) {
   }
 }
 
+// http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=1033
 vector< vector< int > > segment_arrangement(vector< Segment > &segs, vector< Point > &ps) {
   vector< vector< int > > g;
   int N = (int) segs.size();
@@ -455,6 +457,7 @@ Real convex_diameter(const Polygon &p) {
 // http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=CGL_5_A
 Real closest_pair(Points ps) {
   if(ps.size() <= 1) throw (0);
+  sort(begin(ps), end(ps));
 
   auto compare_y = [&](const Point &a, const Point &b) {
     return imag(a) < imag(b);
@@ -482,3 +485,4 @@ Real closest_pair(Points ps) {
   };
   return rec(0, (int) ps.size());
 }
+
