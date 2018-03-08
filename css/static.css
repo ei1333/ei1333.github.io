@@ -91,6 +91,7 @@ a:hover {
 }
 
 pre {
+  margin-top: 0.5em;
   margin-left: 1em;
 }
 
@@ -124,6 +125,7 @@ td, th
 .div-sample-copy {
     position: relative;
     display: block;
+    margin-top: 0.5em;
 }
 .btn-sample-copy
 {
