@@ -1,5 +1,5 @@
 map< int64_t, int > moebius(int64_t n) {
-  vector< int > factor;
+  vector< int64_t > factor;
   for(int64_t i = 2; i * i <= n; i++) {
     if(n % i == 0) {
       factor.emplace_back(i);
