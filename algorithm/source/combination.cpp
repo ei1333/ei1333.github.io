@@ -3,7 +3,7 @@ struct Combination
   int mod;
   vector< int64_t > mfact, rfact;
 
-  Combination(int sz, int mod) : fact(sz + 1), rfact(sz + 1), mod(mod)
+  Combination(int sz, int mod) : mfact(sz + 1), rfact(sz + 1), mod(mod)
   {
     mfact[0] = 1;
     for(int i = 1; i < mfact.size(); i++) {
