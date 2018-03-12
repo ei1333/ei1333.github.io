@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+    <title>ei1333's page</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://use.edgefonts.net/source-code-pro.js"></script>
+    <link rel="stylesheet" href="../css/static.css">
+    <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+    </script>
+    <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/styles/github.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js"></script>
+    <script src="readsource.js"></script>
+  </head>
+  <body>
+    <header>
+      <h1>ei1333's page</h1>
+      <div class="path">
+	<a href="../index.html">ホーム</a> &gt;
+	<a href="index.html">Wiki</a>
+      </div>
+    </header>
+    <main>
+      <section>
+	<h2>メビウス関数(Möbius-Function)</h2>
+	
+	<h4>説明</h4>
+        <p>メビウス関数 $\mu(n)$ $(n \in \mathbb{N})$ は, 次のように定義される。</p>
+        <ul>
+          <li>$\mu(n) = 0$ := $n$ が $1$ 以外の平方数で割り切れる</p>
+          <li>$\mu(n) = 1$ := $n$ がもつ相異なる素因数が偶数個</li>
+          <li>$\mu(n) = -1$ := $n$ がもつ相異なる素因数が奇数個</li>
+        </ul>
+        <p>メビウスの反転公式(Möbius inversion formula) は以下の関係が成立することを示している。</p>
+        <ul>
+           <li>$\displaystyle f(n)=\sum _{{d\,\mid \,n}} g(d) \Longleftrightarrow g(n)=\sum _{{d\,\mid \,n}}\mu (\frac n d)f(d)$
+        </ul>
+        <p>ここでは例題として周期的でない長さ $n$ の文字列の数え上げを挙げる。$g(d)$ が周期がちょうど $d$ である文字列の個数(問題の解)で定義すると, $f(n)$ は周期が $n$ の約数である文字列の個数である。ここで $f(n)$ は簡単に求めることができる($=26^n$)ことを利用すると, $g(n)$ を右の式より比較的容易に求めることができる。以下の実装例では $n$ が与えられた時に, この計算に必要な全ての $\mu(\frac n d)$ (つまり $n$ の全ての約数に対してメビウス関数の値を求める) を返すものを実装している。</p>
+	<h4>計算量</h4>
+	<p>$O(\sqrt N)$</p>
+	<h4>実装例</h4>
+	<pre><code class="cpp" src="source/moebius.cpp"></code></pre>
+      </section>
+    </main>
+    <hr>
+    <footer>
+      <small>Copyright&copy; ei1333's page All Rights Reserved.</small>
+    </footer>
+
+  </body>
+</html>
