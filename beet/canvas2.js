@@ -50,15 +50,15 @@ $(function()
         str =  (str1 + str2 + str3)/1024;
         str = String(Math.floor((str * 100)) / 100);
         str = str.substring(0,4);
-        str = str + " KB";
+        str = str + " KiB";
       } else {
-        str = str + " MB";
+        str = str + " MiB";
       }
     } else {
       if(str >= 10000) str = "うしー";
       else {
         str = str.substring(0,4);
-        str = str + " GB"; 
+        str = str + " GiB"; 
       }
     }
 
