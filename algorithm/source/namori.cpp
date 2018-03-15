@@ -10,7 +10,7 @@ struct Namori
   {
     int N = (int) in.size();
     for(int i = 0; i < N; i++) {
-      in[i] = g.size();
+      in[i] = g[i].size();
     }
     forest.resize(N);
     queue< int > que;
