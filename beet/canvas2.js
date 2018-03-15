@@ -36,20 +36,32 @@ $(function()
     var str3 = Number(strText3) || 0;
     str3 *= 8;
 
-    var str = (str1 + str2 + str3)/1024/1024;
+    var str = (str1 + str2 + str3)/1024/1024/1024;
     str = String(Math.floor((str * 100)) / 100);
     ctx.fillStyle="#FFFFFF";
     ctx.fillRect(215, 55, 150, 50);
-    if(str >= 10000) str = "うしー";
-    str = str.substring(0,4);
-    if(str == "0") {
-      str =  (str1 + str2 + str3)/1024;
+    if(str[0] == "-") {
+      str = "うくやめろ";
+    } else if(str == "0") {
+      str =  (str1 + str2 + str3)/1024/1024;
       str = String(Math.floor((str * 100)) / 100);
       str = str.substring(0,4);
-      str = str + " KB";
+      if(str == "0") {
+        str =  (str1 + str2 + str3)/1024;
+        str = String(Math.floor((str * 100)) / 100);
+        str = str.substring(0,4);
+        str = str + " KB";
+      } else {
+        str = str + " MB";
+      }
     } else {
-      str = str + " MB";
+      if(str >= 10000) str = "うしー";
+      else {
+        str = str.substring(0,4);
+        str = str + " GB"; 
+      }
     }
+
     if(str.length > 0) {
       ctx.fillStyle="#000000";
       ctx.font = "20px _sans";
