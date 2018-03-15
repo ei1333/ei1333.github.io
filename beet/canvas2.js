@@ -25,40 +25,28 @@ $(function()
 
   function updateId()
   {
-    var strText1 = $('#id1').val();
-    var str1 = Number(strText1) || 0;
-
-    var strText2 = $('#id2').val();
-    var str2 = Number(strText2) || 0;
+    var str1 = eval($('#id1').val()) || 0;
+    var str2 = eval($('#id2').val()) || 0;
     str2 *= 4;
-
-    var strText3 = $('#id3').val();
-    var str3 = Number(strText3) || 0;
+    var str3 = eval($('#id3').val()) || 0;
     str3 *= 8;
 
-    var str = (str1 + str2 + str3)/1024/1024/1024;
+    var str = (str1 + str2 + str3)/1024/1024;
     str = String(Math.floor((str * 100)) / 100);
     ctx.fillStyle="#FFFFFF";
     ctx.fillRect(215, 55, 150, 50);
     if(str[0] == "-") {
       str = "うくやめろ";
     } else if(str == "0") {
-      str =  (str1 + str2 + str3)/1024/1024;
+      str =  (str1 + str2 + str3)/1024;
       str = String(Math.floor((str * 100)) / 100);
       str = str.substring(0,4);
-      if(str == "0") {
-        str =  (str1 + str2 + str3)/1024;
-        str = String(Math.floor((str * 100)) / 100);
-        str = str.substring(0,4);
-        str = str + " KiB";
-      } else {
-        str = str + " MiB";
-      }
+      str = str + " KiB";
     } else {
-      if(str >= 10000) str = "うしー";
+      if(str >= 100000) str = "うしー";
       else {
-        str = str.substring(0,4);
-        str = str + " GiB"; 
+        str = str.substring(0,5);
+        str = str + " MiB";
       }
     }
 
