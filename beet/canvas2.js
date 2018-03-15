@@ -6,7 +6,7 @@ $(function()
   var base = new Image();
   base.src = "ushi.png";
   base.onload = function() {
-    ctx.drawImage(base, 0, 0, 300, 200);
+    ctx.drawImage(base, 0, 0, 400, 200);
   };
 
   $('#id1').keyup(function(event)
@@ -39,7 +39,7 @@ $(function()
     var str = (str1 + str2 + str3)/1024/1024;
     str = String(Math.floor((str * 100)) / 100);
     ctx.fillStyle="#FFFFFF";
-    ctx.fillRect(195, 55, 77, 50);
+    ctx.fillRect(215, 55, 150, 50);
     if(str >= 10000) str = "うしー";
     str = str.substring(0,4);
     if(str == "0") {
@@ -53,7 +53,7 @@ $(function()
     if(str.length > 0) {
       ctx.fillStyle="#000000";
       ctx.font = "20px _sans";
-      ctx.fillText(str, 195, 85);
+      ctx.fillText(str, 230, 85);
     }
     var img_png_src = $("#row")[0].toDataURL("image/png");
     $("#output").attr("src", img_png_src);
