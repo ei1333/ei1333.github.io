@@ -1,0 +1,30 @@
+$(function()
+{
+  var canvas = $('#row');
+  var ctx = $('#row')[0].getContext('2d');
+  var fileReader = new FileReader();
+  var base = new Image();
+  base.src = "ushi.png";
+  base.onload = function() {
+    ctx.drawImage(base, 0, 0, canvas.width(), canvas.height());
+  };
+
+  $('#id').keyup(function(event)
+  {
+    updateId();
+  });
+
+  function updateId()
+  {
+    var str = $('#id').val();
+    ctx.fillStyle="#FFFFFF";
+    ctx.fillRect(380, 140, 250, 170);
+    if(str.length != 0) {
+      ctx.fillStyle="#000000";
+      ctx.font = "20px _sans";
+      ctx.fillText("("+str+")", 380, 300);
+    }
+    var img_png_src = $("#row")[0].toDataURL("image/png");
+    $("#output").attr("src", img_png_src);
+  };
+});

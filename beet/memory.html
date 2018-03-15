@@ -7,24 +7,30 @@
     <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://use.edgefonts.net/source-code-pro.js"></script>
-    <link rel="stylesheet" href="css/static.css">
+    <link rel="stylesheet" href="../css/static.css">
+    <script src="canvas2.js"></script>
   </head>
   <body>
     <header>
       <h1>ei1333's page</h1>
+      <div class="path">
+        <a href="../index.html">ホーム</a>
+      </div>
     </header>
     <main>
       <section>
-        <h2>Contents</h2>
-        <ul>
-          <li><a href="algorithm/index.html">アルゴリズムまとめ</a></li>
-          <li><a href="beet/index.html">レーティング取得</a></li>
-          <li><a href="beet/atcoder.html">AtCoder国内ランキング</a></li>
-          <li><a href="beet/average.html">AtCodor順位とパフォ平均</a></li>
-          <li><a href="beet/generator.html">学業に支障をきたした例</a></li>
-          <li><a href="beet/memory.html">配列のサイズと型を入力すると何MiBか教えてくれるうし</a></li>
-        </ul>
-      </section> 
+        <h2>配列のサイズと型を入力すると何MBか教えてくれるうし</h2>
+
+        <h4>入力</h4>
+        <p>bool/char <input type="number" name="id" id="id"> 個</p>
+        <p>int32_t <input type="number" name="id" id="id"> 個</p>
+        <p>int64_t <input type="number" name="id" id="id"> 個</p>
+        </div>
+ 
+        <h4>出力</h4>
+        <canvas id="row" width="600px" height="450px" style="display: none;"></canvas>
+        <img id="output" alt="" width="100%" style="max-width: 600px;"/>
+      </section>
     </main>
     <hr>
     <footer>
