@@ -29,21 +29,34 @@ $(function()
     var str1 = Number(strText1) || 0;
 
     var strText2 = $('#id2').val();
-    var str2 = Number(strText3) || 0;
+    var str2 = Number(strText2) || 0;
     str2 *= 4;
 
-    var strText3 = $('#id2').val();
+    var strText3 = $('#id3').val();
     var str3 = Number(strText3) || 0;
     str3 *= 8;
 
+    var str = (str1 + str2 + str3)/1024/1024;
+    str = String(Math.floor((str * 100)) / 100);
     ctx.fillStyle="#FFFFFF";
     ctx.fillRect(195, 55, 77, 50);
-    if(str.length != 0) {
+    if(str >= 10000) str = "うしー";
+    str = str.substring(0,4);
+    if(str == "0") {
+      str =  (str1 + str2 + str3)/1024;
+      str = String(Math.floor((str * 100)) / 100);
+      str = str.substring(0,4);
+      str = str + " KB";
+    } else {
+      str = str + " MB";
+    }
+    if(str.length > 0) {
       ctx.fillStyle="#000000";
-      ctx.font = "10px _sans";
-      ctx.fillText("("+(str1+str2+str3)+" MB)", 195, 55);
+      ctx.font = "20px _sans";
+      ctx.fillText(str, 195, 85);
     }
     var img_png_src = $("#row")[0].toDataURL("image/png");
     $("#output").attr("src", img_png_src);
   };
+
 });
