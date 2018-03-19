@@ -36,41 +36,32 @@ namespace BitWiseConvolution {
     }
   }
 
-
   void FastAndTransform(vector< int > &F, int mod, bool inv) {
     const int N = (int) F.size();
     for(int i = 1; i < N; i <<= 1) {
       for(int j = 0; j < N; j += i * 2) {
         for(int k = 0; k < i; k++) {
           int s = F[j + k], t = F[j + k + i];
-          if(inv) {
-            F[j + k] = add(mod - s, t, mod);
-            F[j + k + i] = s;
-          } else {
-            F[j + k] = t;
-            F[j + k + i] = add(s, t, mod);
-          }
+          if(inv) F[j + k] = add(s, mod - t, mod);
+          else F[j + k] = add(s, t, mod);
         }
       }
     }
   }
 
-  void FastZetaTransform(vector< int > &F, int mod) {
-    for(int i = 0; (1 << i) < F.size(); i++) {
-      for(int j = 0; j < F.size(); j++) {
-        if(j & (1 << i)) F[j] = add(F[j], F[j ^ (1 << i)], mod);
+
+  void FastOrTransform(vector< int > &F, int mod, bool inv) {
+    const int N = (int) F.size();
+    for(int i = 1; i < N; i <<= 1) {
+      for(int j = 0; j < N; j += i * 2) {
+        for(int k = 0; k < i; k++) {
+          int s = F[j + k], t = F[j + k + i];
+          if(inv) F[j + k + i] = add(mod - s, t, mod);
+          else F[j + k + i] = add(s, t, mod);
+        }
       }
     }
   }
-
-  void FastMoebiusTransform(vector< int > &F, int mod) {
-    for(int i = 0; (1 << i) < F.size(); i++) {
-      for(int j = 0; j < F.size(); j++) {
-        if(j & (1 << i)) F[j] = add(F[j], mod - F[j ^ (1 << i)], mod);
-      }
-    }
-  }
-
 
   vector< int > xor_convolution(vector< int > a, vector< int > b, int mod) {
     FastWalshHadamardTransform(a, mod);
@@ -90,31 +81,11 @@ namespace BitWiseConvolution {
     return a;
   }
 
-  vector< int > or_convolution(vector< int > a, int mod) {
-    vector< int > ret(a.size()), bit(a.size());
-    vector< vector< int > > cnt(18, vector< int >(a.size()));
-
-    for(int i = 1; i < 1 << 17; i++) {
-      bit[i] = bit[i & (i - 1)] + 1;
-    }
-    for(int i = 0; i < a.size(); i++) {
-      cnt[bit[i]][i] = add(cnt[bit[i]][i], a[i], mod);
-    }
-    for(int i = 0; i < 18; i++) {
-      FastZetaTransform(cnt[i], mod);
-    }
-    for(int i = 0; i <= 17; i++) {
-      vector< int > tmp(a.size());
-      for(int j = 0; j <= i; j++) {
-        for(int l = 0; l < a.size(); l++) {
-          tmp[l] = add(tmp[l], mul(cnt[j][l], cnt[i - j][l], mod), mod);
-        }
-      }
-      FastMoebiusTransform(tmp, mod);
-      for(int j = 0; j < a.size(); j++) {
-        if(bit[j] == i) ret[j] = add(ret[j], tmp[j], mod);
-      }
-    }
-    return ret;
+  vector< int > or_convolution(vector< int > a, vector< int > b, int mod) {
+    FastOrTransform(a, mod, false);
+    FastOrTransform(b, mod, false);
+    for(int i = 0; i < a.size(); i++) a[i] = mul(a[i], b[i], mod);
+    FastOrTransform(a, mod, true);
+    return a;
   }
 };
