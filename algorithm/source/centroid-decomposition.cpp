@@ -1,65 +1,36 @@
-struct CentroidDecomposition
-{
-  vector< list< int > > g;
+template< typename G >
+struct CentroidDecomposition {
+  const G &g;
   vector< int > sub;
   vector< bool > v;
 
-  CentroidDecomposition() {}
+  CentroidDecomposition(const G &g) : g(g), sub(g.size()), v(g.size()) {}
 
-  CentroidDecomposition(int sz) { init(sz); }
-
-  void init(int sz)
-  {
-    g.resize(sz);
-    sub.resize(sz);
-    v.assign(sz, false);
-  }
-
-  inline int build_dfs(int idx, int par)
-  {
+  inline int build_dfs(int idx, int par) {
     sub[idx] = 1;
-    auto it = begin(g[idx]);
-    while(it != end(g[idx])) {
-      if(*it == par) ++it;
-      else if(v[*it]) it = g[idx].erase(it);
-      else sub[idx] += build_dfs(*it++, idx);
+    for(auto &to : g[idx]) {
+      if(to == par || v[to]) continue;
+      sub[idx] += build_dfs(to, idx);
     }
     return (sub[idx]);
   }
 
-  inline int search_centroid(int idx, int par, const int mid)
-  {
+  inline int search_centroid(int idx, int par, const int mid) {
     for(auto &to : g[idx]) {
-      if(to == par) continue;
+      if(to == par || v[to]) continue;
       if(sub[to] > mid) return search_centroid(to, idx, mid);
     }
     return (idx);
   }
 
-  void centroid_decomp(int idx = 0)
-  {
+  inline void centroid_decomp(int idx = 0, const function< void(int) > &beet) {
     int centroid = search_centroid(idx, -1, build_dfs(idx, -1) / 2);
     beet(centroid);
     v[centroid] = true;
-    for(auto &to : g[centroid]) centroid_decomp(to);
+    for(auto &to : g[centroid]) if(!v[to]) centroid_decomp(to, beet);
   }
 
-  void beet(int idx);
-
-  void add_edge(int x, int y)
-  {
-    g[x].emplace_back(y);
-    g[y].emplace_back(x);
-  }
-
-  list< int > &operator[](int k)
-  {
-    return g[k];
+  inline bool killed(int idx) {
+    return v[idx];
   }
 };
-
-void CentroidDecomposition::beet(int idx)
-{
-  
-}
-
