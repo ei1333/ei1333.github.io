@@ -23,7 +23,7 @@ struct CentroidDecomposition {
     return (idx);
   }
 
-  inline void centroid_decomp(int idx = 0, const function< void(int) > &beet) {
+  inline void centroid_decomp(int idx, const function< void(int) > &beet) {
     int centroid = search_centroid(idx, -1, build_dfs(idx, -1) / 2);
     beet(centroid);
     v[centroid] = true;
