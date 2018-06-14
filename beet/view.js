@@ -15,12 +15,12 @@ var colors = {
     {color:'#008000', min:1200, max:1399, title:'Pupil' },
     {color:'#03A89E', min:1400, max:1599, title:'Specialist' },
     {color:'#0000FF', min:1600, max:1899, title:'Expert' },
-    {color:'#AA00AA', min:1900, max:2199, title:'Candidate Master' },
-    {color:'#AA00AA', min:2200, max:2299, title:'Master' },
+    {color:'#AA00AA', min:1900, max:2099, title:'Candidate Master' },
+    {color:'#FF8C00', min:2100, max:2299, title:'Master' },
     {color:'#FF8C00', min:2300, max:2399, title:'International Master'},
     {color:'#FF0000', min:2400, max:2599, title:'Grandmaster'},
-    {color:'#FF0000', min:2600, max:2899, title:'International Grandmaster'},
-    {color:'#FF0000', camelcolor: '#000000', min:2900, max:9999, title:'Legendary Grandmaster'}
+    {color:'#FF0000', min:2600, max:2999, title:'International Grandmaster'},
+    {color:'#FF0000', camelcolor: '#000000', min:3000, max:9999, title:'Legendary Grandmaster'}
   ],
     'topcoder':[
       { color:'#999999', min:   0, max: 899, title:'Gray'  },
@@ -96,16 +96,18 @@ $(function()
     cache    : false,
   }).done(function(data)
   {
-    console.log(data);
-
     var stocked = [];
     for(var i = 0; i < data['History'].length; i++) {
       stocked.push({x: moment(data['History'][i]['date'].replace(/\./g, '-')), y: data['History'][i]['rating'], label: data['History'][i]['challengeName']});
     }
+    console.log(stocked);
+
     stocked.sort(function(a,b) {
       return (a['x'] < b['x'] ? 1 : -1);
     });
+
     createGraph("topcoder", "#canvas1", stocked, []);
+
 
     setRatingHtml('topcoder', '#now_tc', data['rating']);
   }).fail(function(data)
