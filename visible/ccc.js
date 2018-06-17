@@ -147,8 +147,6 @@ function draw() {
     update();
 }
 
-
-
 var used = Array(points.length);
 for(var i = 0; i < used.length; i++) {
     used[i] = false;
