@@ -49,30 +49,57 @@ function get_random_points(num, field) {
     return points;
 }
 
-var UnionFind = function(sz) {
-    this.data = new Array(sz);
-    for(var i = 0; i < sz; i++) this.data[i] = -1;
-};
+var PriorityQueue = function(compare) {
+    this.heap = [null];
+    this.compare = compare;
+}
 
-UnionFind.prototype.find = function(k) {
-    if(this.data[k] < 0) {
-	return k;
-    } else {
-	this.data[k] = this.find(this.data[k]);
-	return this.data[k];
+PriorityQueue.prototype.push = function(data) {
+    var k = this.heap.length;
+    this.heap.push(data);
+    while(k > 1 && this.compare(this.heap[Math.floor(k / 2)], this.heap[k]) < 0) {
+	var buf = this.heap[k];
+	this.heap[k] = this.heap[Math.floor(k / 2)];
+	this.heap[Math.floor(k / 2)] = buf;
+	k = Math.floor(k / 2);
     }
 }
-UnionFind.prototype.unite = function(x, y) {
-    x = this.find(x);
-    y = this.find(y);
-    if(x == y) return;
-    if(this.data[x] > this.data[y]) {
-	var z = x;
-	x = y;
-	y = z;
+
+PriorityQueue.prototype.modify = function(k) {
+    var l = 2 * k;
+    var r = 2 * k + 1;
+    var largest = k;
+    if(l < this.heap.length && this.compare(this.heap[k], this.heap[l]) < 0) {
+	largest = l;
     }
-    this.data[x] += this.data[y];
-    this.data[y] = x;
+    if(r < this.heap.length && this.compare(this.heap[largest], this.heap[r]) < 0) {
+	largest = r;
+    }
+    
+    if(largest != k) {
+	var buf = this.heap[k];
+	this.heap[k] = this.heap[largest];
+	this.heap[largest] = buf;
+	this.modify(largest);
+    }
+}
+PriorityQueue.prototype.pop = function() {
+    var top = this.heap[1];
+    if(this.heap.length == 2) {
+	this.heap.pop();
+	return top;
+    } else {
+	
+	this.heap[1] = this.heap.pop();
+	this.modify(1);
+	return top;
+    }
+}
+PriorityQueue.prototype.size = function() {
+    return this.heap.length - 1;
+}
+PriorityQueue.prototype.empty = function() {
+    return this.heap.length <= 1;
 }
     
 
@@ -83,7 +110,7 @@ var timerID;
 cv = document.getElementById('cv');
 if(cv.getContext) {
     c = cv.getContext('2d');
-   timerID = setInterval(draw, 30);
+ timerID = setInterval(draw, 30);
 }
 
 var stage = {
@@ -101,7 +128,10 @@ var field  = new Polygon([
 ]);
 
 var points = get_random_points(500, field);
-var uf = new UnionFind(points.length);
+var que = new PriorityQueue(function(a, b) {
+    return b[0] - a[0];
+});
+
 var edges = [];
 var process = 0;
 
@@ -117,26 +147,26 @@ function draw() {
     update();
 }
 
-var init_edges = [];
-for(var i = 0; i < points.length; i++) {
-    for(var j = i + 1; j < points.length; j++) {
-	init_edges.push([dist(points[i], points[j]), i, j]);
-    }
+
+
+var used = Array(points.length);
+for(var i = 0; i < used.length; i++) {
+    used[i] = false;
 }
-init_edges.sort(function(a, b) {
-    if(a[0] < b[0]) return -1;
-    if(a[0] > b[0]) return 1;
-    return 0;
-});
+
+que.push([0, 0, -1]);
 
 function update() {
-    for(var i = process; i < init_edges.length; i++) {
-	var x = uf.find(init_edges[i][1]);
-	var y = uf.find(init_edges[i][2]);
-	if(x == y) continue;
-	uf.unite(x, y);
-	edges.push(new Segment(points[init_edges[i][1]], points[init_edges[i][2]]));
-	process = i + 1;
+    while(!que.empty()) {
+	var p = que.pop();
+
+	if(used[p[1]]) continue;
+	used[p[1]] = true;
+	if(p[2] != -1) edges.push(new Segment(points[p[1]], points[p[2]]));
+	
+	for(var i = 0; i < points.length; i++) {
+	    que.push([dist(points[p[1]], points[i]), i, p[1]]);
+	}
 	break;
     }
 }
