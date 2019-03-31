@@ -1,4 +1,4 @@
-templete< typename T = int >
+template< typename T = int >
 void warshall_floyd(Matrix< T > &g)
 {
   for(int k = 0; k < g.size(); k++) {
