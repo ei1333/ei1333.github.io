@@ -21,6 +21,10 @@ $(function()
   {
     updateId();
   });
+  $('#id4').keyup(function(event)
+  {
+    updateId();
+  });
 
 
   function updateId()
