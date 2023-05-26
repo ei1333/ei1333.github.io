@@ -30,15 +30,17 @@ $(function()
     str2 *= 4;
     var str3 = eval($('#id3').val()) || 0;
     str3 *= 8;
+    var str4 = eval($('#id4').val()) || 0;
+    str4 = Math.ceil(str4 / 8);
 
-    var str = (str1 + str2 + str3)/1024/1024;
+    var str = (str1 + str2 + str3 + str4)/1024/1024;
     str = String(Math.floor((str * 100)) / 100);
     ctx.fillStyle="#FFFFFF";
     ctx.fillRect(215, 55, 150, 50);
     if(str[0] == "-") {
       str = "うくやめろ";
     } else if(str == "0") {
-      str =  (str1 + str2 + str3)/1024;
+      str =  (str1 + str2 + str3 + str4)/1024;
       str = String(Math.floor((str * 100)) / 100);
       str = str.substring(0,4);
       str = str + " KiB";
